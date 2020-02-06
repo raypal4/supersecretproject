@@ -20,68 +20,79 @@ class Graph():
         self.edges[to_node].append(from_node)
         self.weights[(from_node, to_node)] = weight
         self.weights[(to_node, from_node)] = weight
+class main:
+    def creator():
+        graph = Graph()
 
-graph = Graph()
+        edges = [
+        ('home', 'bustop', 7),
+        ('home', 'B', 2),
+        ('home', 'C', 3),
+        ('home', 'E', 4),
+        ('bustop', 'B', 3),
+        ('bustop', 'D', 4),
+        ('B', 'D', 4),
+        ('B', 'H', 5),
+        ('C', 'L', 2),
+        ('D', 'F', 1),
+        ('F', 'H', 3),
+        ('G', 'H', 2),
+        ('G', 'school', 2),
+        ('I', 'J', 6),
+        ('I', 'K', 4),
+        ('I', 'L', 4),
+        ('J', 'L', 1),
+        ('K', 'school', 5),
+        ('blk222', 'blk334', 26),
+        ('blk222', 'blk223', 2),
+        ('blk223', 'blk224', 3),
+        ('blk224', 'blk226', 4),
+        ('blk226', 'blk227', 3),
+        ('blk227', 'blk330', 4),
+        ('blk330', 'blk331', 4),
+        ('blk331', 'blk332', 5),
+        ('blk332', 'blk333', 2),
+        ('blk332', 'blk334', 10),
+        ]
 
-edges = [
-('home', 'bustop', 7),
-('home', 'B', 2),
-('home', 'C', 3),
-('home', 'E', 4),
-('bustop', 'B', 3),
-('bustop', 'D', 4),
-('B', 'D', 4),
-('B', 'H', 5),
-('C', 'L', 2),
-('D', 'F', 1),
-('F', 'H', 3),
-('G', 'H', 2),
-('G', 'school', 2),
-('I', 'J', 6),
-('I', 'K', 4),
-('I', 'L', 4),
-('J', 'L', 1),
-('K', 'school', 5),
-]
+        for edge in edges:
+                graph.add_edge(*edge)
 
-for edge in edges:
-        graph.add_edge(*edge)
-
-def dijsktra(graph, initial, end):
-    # shortest paths is a dict of nodes
-    # whose value is a tuple of (previous node, weight)
-    shortest_paths = {initial: (None, 0)}
-    current_node = initial
-    visited = set()
+        def dijsktra(graph, initial, end):
+            # shortest paths is a dict of nodes
+            # whose value is a tuple of (previous node, weight)
+            shortest_paths = {initial: (None, 0)}
+            current_node = initial
+            visited = set()
     
-    while current_node != end:
-        visited.add(current_node)
-        destinations = graph.edges[current_node]
-        weight_to_current_node = shortest_paths[current_node][1]
+            while current_node != end:
+                visited.add(current_node)
+                destinations = graph.edges[current_node]
+                weight_to_current_node = shortest_paths[current_node][1]
 
-        for next_node in destinations:
-            weight = graph.weights[(current_node, next_node)] + weight_to_current_node
-            if next_node not in shortest_paths:
-                shortest_paths[next_node] = (current_node, weight)
-            else:
-                current_shortest_weight = shortest_paths[next_node][1]
-                if current_shortest_weight > weight:
-                    shortest_paths[next_node] = (current_node, weight)
+                for next_node in destinations:
+                    weight = graph.weights[(current_node, next_node)] + weight_to_current_node
+                    if next_node not in shortest_paths:
+                        shortest_paths[next_node] = (current_node, weight)
+                    else:
+                        current_shortest_weight = shortest_paths[next_node][1]
+                        if current_shortest_weight > weight:
+                            shortest_paths[next_node] = (current_node, weight)
         
-        next_destinations = {node: shortest_paths[node] for node in shortest_paths if node not in visited}
-        if not next_destinations:
-            return "Route Not Possible"
-        # next node is the destination with the lowest weight
-        current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
+                next_destinations = {node: shortest_paths[node] for node in shortest_paths if node not in visited}
+                if not next_destinations:
+                    return "Route Not Possible"
+                # next node is the destination with the lowest weight
+                current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
     
-    # Work back through destinations in shortest path
-    path = []
-    while current_node is not None:
-        path.append(current_node)
-        next_node = shortest_paths[current_node][0]
-        current_node = next_node
-    # Reverse path
-    path = path[::-1]
-    return path
+            # Work back through destinations in shortest path
+            path = []
+            while current_node is not None:
+                path.append(current_node)
+                next_node = shortest_paths[current_node][0]
+                current_node = next_node
+            # Reverse path
+            path = path[::-1]
+            return ', '.join(path)
 
-print(dijsktra(graph, 'home', 'bustop'))
+        return dijsktra(graph, 'blk222', 'blk334')
