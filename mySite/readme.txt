@@ -10,4 +10,4 @@ http://127.0.0.1:8000/admin
 Username: test
 pw: password
 
-IGNORE export CSV app!
+IGNORE IMPORT CSV app!
