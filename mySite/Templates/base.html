@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang=en>
+{% load leaflet_tags %}
 
 <head>
     <title>{% block head_title %}{% endblock head_title %}</title>
@@ -9,6 +10,8 @@
     <!--BootStrap 4 CSS-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% leaflet_js %}
+    {% leaflet_css %}
 </head>
 
 <body>

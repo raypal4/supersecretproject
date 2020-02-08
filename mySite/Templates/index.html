@@ -4,6 +4,11 @@
 
 {% block content %}
 <h1>HELLO MAINPAGE</h1>
+<div id="m" style="width:100vw; height:80vh"></div>
 
+<script type="text/javascript">
+    var m = L.map('m').setView([1.397986, 103.907411], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', { foo: 'bar', attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }).addTo(m);
+</script>
 
 {% endblock content %}

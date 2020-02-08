@@ -5,5 +5,5 @@ from .models import block
 from leaflet.admin import LeafletGeoAdmin
 # Register your models here.
 @admin.register(block)
-class ShopAdmin(LeafletGeoAdmin):
+class NodeAdmin(LeafletGeoAdmin):
     list_display = ('name', 'location')
