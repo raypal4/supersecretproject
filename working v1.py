@@ -6,6 +6,16 @@ from IPython.display import IFrame
 ox.config(log_console=True, use_cache=True)
 
 
+class Graph():
+    def __init__(self):
+        self.edges = defaultdict(list)
+        self.weights = {}
+
+    def add_edge(self, u, v, weight):
+        self.edges[u].append(v)
+        self.weights[(u, v)] = weight
+
+
 def dijsktra(graphs, initial, end):
     # shortest paths is a dict of nodes
     # whose value is a tuple of (previous node, weight)
@@ -47,16 +57,6 @@ def dijsktra(graphs, initial, end):
     return path
 
 
-class Graph():
-    def __init__(self):
-        self.edges = defaultdict(list)
-        self.weights = {}
-
-    def add_edge(self, u, v, weight):
-        self.edges[u].append(v)
-        self.weights[(u, v)] = weight
-
-
 def get_nodes(edges):
     temp = {}
     list_name = []
@@ -96,18 +96,36 @@ def creator(node_data, orig_node, target_node):
 
 org = (1.394290, 103.913011)
 dest = (1.410208, 103.905988)
-graph = ox.graph_from_point(org, distance=2000, network_type='drive')
+
+graph = ox.graph_from_point(org, distance=1000, network_type='walk')
 graph_projected = ox.project_graph(graph)
+
+# get cloest node to the point of search
 orig_node = ox.get_nearest_node(graph, org)
 target_node = ox.get_nearest_node(graph, dest)
 
 nodes, edges = ox.graph_to_gdfs(graph)
+
+# just a test route using default dijkstra
 Testroute = nx.shortest_path(graph, source=orig_node,
                              target=target_node, weight='length', method='dijkstra')
 
 node_data = get_nodes(edges)
-ourRoute = creator(node_data, orig_node, target_node)
+ourRoute = list(creator(node_data, orig_node, target_node))
 print("Number of nodes (Our route): ", len(ourRoute))
 print("Number of nodes (Test route): ", len(Testroute))
-fig, ax = ox.plot_graph_route(
-    graph_projected, ourRoute, fig_height=10, fig_width=10, save=True, file_format='svg')
+
+print(ourRoute)
+print(Testroute)
+
+# # --------------------------- PLotting -------------------------------------------
+
+# create route colors
+rc1 = ['r'] * (len(ourRoute) - 1)
+rc2 = ['b'] * len(Testroute)
+rc = rc1 + rc2
+nc = ['r', 'r', 'b', 'b']
+
+# plot the routes
+fig, ax = ox.plot_graph_routes(
+    graph, [Testroute, ourRoute], route_color=rc, orig_dest_node_color=nc, node_size=0)
