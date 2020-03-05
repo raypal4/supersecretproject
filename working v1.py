@@ -3,7 +3,13 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from collections import defaultdict
 from IPython.display import IFrame
+import heapq as heapq
+
 ox.config(log_console=True, use_cache=True)
+
+AlgoItterations1 = 0
+AlgoItterations2 = 0
+totalWeight = 0
 
 
 class Graph():
@@ -22,6 +28,7 @@ def dijsktra(graphs, initial, end):
     shortest_paths = {initial: (None, 0)}
     current_node = initial
     visited = set()
+    global AlgoItterations1
 
     while current_node != end:
         visited.add(current_node)
@@ -29,6 +36,7 @@ def dijsktra(graphs, initial, end):
         weight_to_current_node = shortest_paths[current_node][1]
 
         for next_node in destinations:
+            AlgoItterations1 += 1
             weight = graphs.weights[(
                 current_node, next_node)] + weight_to_current_node
             if next_node not in shortest_paths:
@@ -41,7 +49,7 @@ def dijsktra(graphs, initial, end):
         next_destinations = {
             node: shortest_paths[node] for node in shortest_paths if node not in visited}
         if not next_destinations:
-            return "Route Not Possible"
+            return "Route is Not Possible"
         # next node is the destination with the lowest weight
         current_node = min(next_destinations,
                            key=lambda k: next_destinations[k][1])
@@ -49,12 +57,41 @@ def dijsktra(graphs, initial, end):
     # Work back through destinations in shortest path
     path = []
     while current_node is not None:
+        AlgoItterations1 += 1
         path.append(current_node)
         next_node = shortest_paths[current_node][0]
         current_node = next_node
     # Reverse path
     path = path[::-1]
     return path
+
+
+def prioritydijsktra(node_data, initial, end):
+    global AlgoItterations2
+    g = defaultdict(list)
+    for e1, e2, cost in node_data:
+        g[e1].append((cost, e2))
+
+    pq = [(0, initial, ())]
+    seen = set()
+    mins = {initial: 0}
+    while len(pq) > 0:
+        (cost, v1, path) = heapq.heappop(pq)
+        if v1 not in seen:
+            seen.add(v1)
+            path += (v1, )
+            if v1 == target_node:
+                return path
+
+            for c, v2 in g.get(v1, ()):
+                AlgoItterations2 += 1
+                prev = mins.get(v2, None)
+                next = cost + c
+                if prev is None or next < prev:
+                    mins[v2] = next
+                    heapq.heappush(pq, (next, v2, path))
+
+    return float("Infinity")
 
 
 def get_nodes(edges):
@@ -87,6 +124,11 @@ def get_nodes(edges):
 
 
 def creator(node_data, orig_node, target_node):
+    j = prioritydijsktra(node_data, orig_node, target_node)
+    return j
+
+
+def creator2(node_data, orig_node, target_node):
     graphs = Graph()
     for edge in node_data:
         graphs.add_edge(*edge)
@@ -94,38 +136,57 @@ def creator(node_data, orig_node, target_node):
     return j
 
 
+# ---------------------- Initialising -------------------------------
 org = (1.394290, 103.913011)
 dest = (1.410208, 103.905988)
 
-graph = ox.graph_from_point(org, distance=1000, network_type='walk')
+
+# for tester data: 2 diff train station
+org1 = (1.4052523, 103.9085982)
+dest2 = (1.3996010, 103.9164448)
+
+# drive walk
+graph = ox.graph_from_point(org, distance=2000, network_type='drive')
 graph_projected = ox.project_graph(graph)
 
 # get cloest node to the point of search
 orig_node = ox.get_nearest_node(graph, org)
 target_node = ox.get_nearest_node(graph, dest)
 
+orig_node1 = ox.get_nearest_node(graph, org1)
+target_node1 = ox.get_nearest_node(graph, dest2)
+
 nodes, edges = ox.graph_to_gdfs(graph)
 
 # just a test route using default dijkstra
-Testroute = nx.shortest_path(graph, source=orig_node,
-                             target=target_node, weight='length', method='dijkstra')
+Testroute = nx.shortest_path(graph, source=orig_node1,
+                             target=target_node1, weight='length', method='dijkstra')
 
 node_data = get_nodes(edges)
 ourRoute = list(creator(node_data, orig_node, target_node))
-print("Number of nodes (Our route): ", len(ourRoute))
-print("Number of nodes (Test route): ", len(Testroute))
+ourRoute2 = list(creator2(node_data, orig_node, target_node))
 
-print(ourRoute)
-print(Testroute)
+print("\nDijkstra Number of nodes (yellow) | algo it:",
+      len(ourRoute), AlgoItterations1)
 
-# # --------------------------- PLotting -------------------------------------------
+print("\nPriority Dijkstra Number of nodes (red) | algo it:",
+      len(ourRoute2), AlgoItterations2)
+
+print("\nNumber of nodes (Test route):", len(Testroute))
+
+# --------------------------- PLotting -------------------------------------------
+
+route_list = [ourRoute2, ourRoute, Testroute]
 
 # create route colors
-rc1 = ['r'] * (len(ourRoute) - 1)
-rc2 = ['b'] * len(Testroute)
-rc = rc1 + rc2
-nc = ['r', 'r', 'b', 'b']
+list_of_colors = ['red', 'yellow', 'blue', 'orange']
+color_list = []
+
+for i in range(len(route_list)):
+    num_lines = len(route_list[i]) - 1
+    color_elements = num_lines * [list_of_colors[i]]
+    color_list = color_list + color_elements
 
 # plot the routes
 fig, ax = ox.plot_graph_routes(
-    graph, [Testroute, ourRoute], route_color=rc, orig_dest_node_color=nc, node_size=0)
+    graph_projected, route_list, route_color=color_list)
