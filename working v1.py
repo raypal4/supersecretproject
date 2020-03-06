@@ -106,8 +106,6 @@ def astar(nodes, node_data, initial, end):
     initialy = nodes.y[initial]
     init_coord = (initialy, initialx)
 
-    distance = 0
-
     for e1, e2, cost in node_data:
         g[e1].append((cost, e2))
     pq = [(0, initial, ())]
@@ -119,10 +117,10 @@ def astar(nodes, node_data, initial, end):
             seen.add(v1)
             path += (v1, )
             if v1 == target_node:
-                print(distance)
                 return path
 
             for c, v2 in g.get(v1, ()):
+                AlgoItterations3 += 1
                 x = nodes.x[v2]
                 y = nodes.y[v2]
                 current_coord = (y,x)
@@ -131,7 +129,6 @@ def astar(nodes, node_data, initial, end):
                 if prev is None or next < prev:
                     mins[v2] = next
                     heapq.heappush(pq, (next, v2, path))
-                AlgoItterations3 += 1
     return float("Infinity")
 
 def get_nodes(edges):
@@ -179,14 +176,26 @@ def creator3(nodes, node_data, orig_node, target_node):
     j = astar(nodes, node_data, orig_node, target_node)
     return j
 
+def getDistanceTravelled(nodes, route):
+    sum = 0
+    for i in range(0, len(route) - 1):
+        x1 = nodes.x[route[i]]
+        y1 = nodes.y[route[i]]
+        x2 = nodes.x[route[i+1]]
+        y2 = nodes.y[route[i+1]]
+        
+        sum += geopy.distance.vincenty((y1,x1), (y2,x2)).km
+    return sum
+
 # ---------------------- Initialising -------------------------------
-org = (1.394290, 103.913011)
-dest = (1.410208, 103.905988)
+# org = (1.394290, 103.913011)
+# dest = (1.410208, 103.905988)
+org = (1.401230, 103.909210)
+dest = (1.396560, 103.912340)
 
-
-# for tester data: 2 diff train station
-org1 = (1.4052523, 103.9085982)
-dest2 = (1.3996010, 103.9164448)
+# # for tester data: 2 diff train station
+# org1 = (1.4052523, 103.9085982)
+# dest2 = (1.3996010, 103.9164448)
 
 # drive walk
 graph = ox.graph_from_point(org, distance=2000, network_type='drive')
@@ -196,8 +205,8 @@ graph_projected = ox.project_graph(graph)
 orig_node = ox.get_nearest_node(graph, org)
 target_node = ox.get_nearest_node(graph, dest)
 
-orig_node1 = ox.get_nearest_node(graph, org1)
-target_node1 = ox.get_nearest_node(graph, dest2)
+# orig_node1 = ox.get_nearest_node(graph, org1)
+# target_node1 = ox.get_nearest_node(graph, dest2)
 
 nodes, edges = ox.graph_to_gdfs(graph)
 
@@ -211,12 +220,11 @@ ourRoute2 = list(creator2(node_data, orig_node, target_node))
 ourRoute3 = list(creator3(nodes, node_data, orig_node, target_node))
 
 
-print("\nDijkstra Number of nodes (yellow):" , len(ourRoute)," | algo it:", AlgoItterations1)
+print("\nDijkstra Number of nodes (yellow):" , len(ourRoute)," | algo it:", AlgoItterations1, " | distance:", getDistanceTravelled(nodes, ourRoute))
 
-print("\nPriority Dijkstra Number of nodes (red):", len(ourRoute2)," | algo it:", AlgoItterations2)
+print("\nPriority Dijkstra Number of nodes (red):", len(ourRoute2)," | algo it:", AlgoItterations2, " | distance:", getDistanceTravelled(nodes, ourRoute2))
 
-print("\nA-Star Number of nodes (blue):", len(ourRoute3), " | algo it:",
-      AlgoItterations3)
+print("\nA-Star Number of nodes (blue):", len(ourRoute3), " | algo it:", AlgoItterations3, " | distance:", getDistanceTravelled(nodes, ourRoute3))
 
 # print("\nNumber of nodes (Test route):", len(Testroute))
 
