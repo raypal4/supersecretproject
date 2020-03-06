@@ -58,6 +58,7 @@ def dijsktra(graphs, initial, end):
 
     # Work back through destinations in shortest path
     path = []
+    weightSum = 0
     while current_node is not None:
         AlgoItterations1 += 1
         path.append(current_node)
@@ -118,14 +119,13 @@ def astar(nodes, node_data, initial, end):
             path += (v1, )
             if v1 == target_node:
                 return path
-
             for c, v2 in g.get(v1, ()):
                 AlgoItterations3 += 1
                 x = nodes.x[v2]
                 y = nodes.y[v2]
                 current_coord = (y,x)
                 prev = mins.get(v2, None)
-                next = cost + c + geopy.distance.vincenty(target_coord, current_coord).km
+                next = cost + c*100 + geopy.distance.distance(target_coord, current_coord).km
                 if prev is None or next < prev:
                     mins[v2] = next
                     heapq.heappush(pq, (next, v2, path))
@@ -139,7 +139,6 @@ def get_nodes(edges):
     list_u = []
     list_v = []
     uvd = []
-
     edge_len = len(edges)
     for i in edges.osmid:
         list_osmid.append(i)
@@ -176,29 +175,29 @@ def creator3(nodes, node_data, orig_node, target_node):
     j = astar(nodes, node_data, orig_node, target_node)
     return j
 
-def getDistanceTravelled(nodes, route):
+def getDistanceTravelled(nodes, node_data, route):
     sum = 0
     for i in range(0, len(route) - 1):
-        x1 = nodes.x[route[i]]
-        y1 = nodes.y[route[i]]
-        x2 = nodes.x[route[i+1]]
-        y2 = nodes.y[route[i+1]]
-        
-        sum += geopy.distance.vincenty((y1,x1), (y2,x2)).km
+        for n in node_data:
+            if(n[0] == route[i] and n[1] == route[i+1]):
+                sum += n[2] * 100
     return sum
 
 # ---------------------- Initialising -------------------------------
 # org = (1.394290, 103.913011)
 # dest = (1.410208, 103.905988)
-org = (1.401230, 103.909210)
-dest = (1.396560, 103.912340)
+org = (1.40130, 103.90920)
+dest = (1.39620, 103.91270)
 
 # # for tester data: 2 diff train station
 # org1 = (1.4052523, 103.9085982)
 # dest2 = (1.3996010, 103.9164448)
 
 # drive walk
-graph = ox.graph_from_point(org, distance=2000, network_type='drive')
+graph1 = ox.graph_from_point(org, distance=1000, network_type='drive')
+graph2 = ox.graph_from_point(org, distance=1000, network_type='walk')
+graph = nx.compose(graph2, graph1)
+
 graph_projected = ox.project_graph(graph)
 
 # get cloest node to the point of search
@@ -220,11 +219,11 @@ ourRoute2 = list(creator2(node_data, orig_node, target_node))
 ourRoute3 = list(creator3(nodes, node_data, orig_node, target_node))
 
 
-print("\nDijkstra Number of nodes (yellow):" , len(ourRoute)," | algo it:", AlgoItterations1, " | distance:", getDistanceTravelled(nodes, ourRoute))
+print("\nDijkstra Number of nodes (yellow):" , len(ourRoute2)," | algo it:", AlgoItterations1, " | distance:", getDistanceTravelled(nodes, node_data, ourRoute2))
 
-print("\nPriority Dijkstra Number of nodes (red):", len(ourRoute2)," | algo it:", AlgoItterations2, " | distance:", getDistanceTravelled(nodes, ourRoute2))
+print("\nPriority Dijkstra Number of nodes (red):", len(ourRoute)," | algo it:", AlgoItterations2, " | distance:", getDistanceTravelled(nodes, node_data, ourRoute))
 
-print("\nA-Star Number of nodes (blue):", len(ourRoute3), " | algo it:", AlgoItterations3, " | distance:", getDistanceTravelled(nodes, ourRoute3))
+print("\nA-Star Number of nodes (blue):", len(ourRoute3), " | algo it:", AlgoItterations3, " | distance:", getDistanceTravelled(nodes, node_data, ourRoute3))
 
 # print("\nNumber of nodes (Test route):", len(Testroute))
 
