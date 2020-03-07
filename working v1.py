@@ -221,6 +221,8 @@ target_node = ox.get_nearest_node(graph, dest)
 
 nodes, edges = ox.graph_to_gdfs(graph)
 
+print(edges["maxspeed"].value_counts())
+
 # # just a test route using default dijkstra
 # Testroute = nx.shortest_path(graph, source=orig_node1,
 #                              target=target_node1, weight='length', method='dijkstra')
