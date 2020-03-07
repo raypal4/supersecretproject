@@ -198,17 +198,17 @@ graph = None
 # # for tester data: 2 diff train station
 # org = (1.4052523, 103.9085982)
 # dest = (1.3996010, 103.9164448)
-address = "510771, Singapore"  # can let graph_from_address auto geocode, either format will do
-dest = ox.geocode("9 Woodlands Ave 9, 738964, Singapore")  # can use full address also, this should be safer though
+address = "Renjong, Punggol Drive, Punggol, Northeast, 821676, Singapore"  # can let graph_from_address auto geocode, either format will do
+dest = ox.geocode("820639, Singapore")  # can use full address also, this should be safer though
 
 if org:
-    graph1 = ox.graph_from_point(org, distance=100000, network_type='drive')
-    graph2 = ox.graph_from_point(org, distance=100000, network_type='walk')
+    graph1 = ox.graph_from_point(org, distance=50000, network_type='drive')
+    graph2 = ox.graph_from_point(org, distance=50000, network_type='walk')
     graph = nx.compose(graph2, graph1)
 else:
-    (graph, org) = ox.graph_from_address(address, distance=50000, network_type='drive', return_coords=True)
-    # graph2 = ox.graph_from_address(address, distance=2000, network_type='drive')
-    # graph = nx.compose(graph1, graph2)
+    (graph1, org) = ox.graph_from_address(address, distance=2000, network_type='walk', return_coords=True)
+    graph2 = ox.graph_from_address(address, distance=2000, network_type='drive')
+    graph = nx.compose(graph1, graph2)
 
 graph_projected = ox.project_graph(graph)
 
