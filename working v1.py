@@ -189,8 +189,8 @@ org = None
 address = None
 graph = None
 
-# org = (1.394290, 103.913011)
-# dest = (1.410208, 103.905988)
+org = (1.3948802, 103.9061126)
+dest = (1.410208, 103.905988)
 
 # org = (1.40130, 103.90920)
 # dest = (1.39620, 103.91270)
@@ -198,16 +198,16 @@ graph = None
 # # for tester data: 2 diff train station
 # org = (1.4052523, 103.9085982)
 # dest = (1.3996010, 103.9164448)
-address = "Renjong, Punggol Drive, Punggol, Northeast, 821676, Singapore"  # can let graph_from_address auto geocode, either format will do
-dest = ox.geocode("820639, Singapore")  # can use full address also, this should be safer though
+# address = "Renjong, Punggol Drive, Punggol, Northeast, 821676, Singapore"  # can let graph_from_address auto geocode, either format will do
+# dest = ox.geocode("820639, Singapore")  # can use full address also, this should be safer though
 
 if org:
-    graph1 = ox.graph_from_point(org, distance=50000, network_type='drive')
-    graph2 = ox.graph_from_point(org, distance=50000, network_type='walk')
+    graph1 = ox.graph_from_point(org, distance=2000, network_type='drive')
+    graph2 = ox.graph_from_point(org, distance=2000, network_type='walk')
     graph = nx.compose(graph2, graph1)
 else:
-    (graph1, org) = ox.graph_from_address(address, distance=2000, network_type='walk', return_coords=True)
-    graph2 = ox.graph_from_address(address, distance=2000, network_type='drive')
+    (graph1, org) = ox.graph_from_address(address, distance=5000, network_type='walk', return_coords=True)
+    graph2 = ox.graph_from_address(address, distance=5000, network_type='drive')
     graph = nx.compose(graph1, graph2)
 
 graph_projected = ox.project_graph(graph)
@@ -216,12 +216,38 @@ graph_projected = ox.project_graph(graph)
 orig_node = ox.get_nearest_node(graph, org)
 target_node = ox.get_nearest_node(graph, dest)
 
+
+import json
+with open('data/busroute1.json') as f:
+    data = json.load(f)
+    f.close()
+test = data["3"]["coordinates"]
+testing = []
+osmid = None
+busGraph = nx.MultiDiGraph()
+for co in test:
+    x, y = co
+    osmid = ox.get_nearest_node(graph, (y,x))
+    if len(testing) == 0:
+        busGraph.add_edge(orig_node, osmid, highway='tertiary', maxspeed=60, oneway=False, length=54.549)
+        testing.append(osmid)
+    elif testing[-1] != osmid:
+        busGraph.add_edge(testing[-1], osmid, highway='tertiary', maxspeed=60, oneway=False, length=54.549)
+        # print(busGraph.get_edge_data(testing[-1], osmid).values())
+        testing.append(osmid)
+busGraph.add_edge(osmid, target_node, highway='tertiary', maxspeed=60, oneway=False, length=54.549)
+print(busGraph.get_edge_data(osmid, target_node).values())
+
+graph = nx.compose_all([busGraph, graph1, graph2])
+graph_projected = ox.project_graph(graph)
+
+
 # orig_node1 = ox.get_nearest_node(graph, org1)
 # target_node1 = ox.get_nearest_node(graph, dest2)
 
 nodes, edges = ox.graph_to_gdfs(graph)
 
-print(edges["maxspeed"].value_counts())
+# print(edges["maxspeed"].value_counts())
 
 # # just a test route using default dijkstra
 # Testroute = nx.shortest_path(graph, source=orig_node1,
@@ -243,7 +269,8 @@ print("\nA-Star Number of nodes (blue):", len(ourRoute3), " | algo it:", AlgoItt
 
 # --------------------------- PLotting -------------------------------------------
 
-route_list = [ourRoute2, ourRoute, ourRoute3]
+route_list = [testing, ourRoute, ourRoute3]
+# route_list = [ourRoute2, ourRoute, ourRoute3]
 
 # create route colors
 list_of_colors = ['red', 'yellow', 'blue']
@@ -255,5 +282,4 @@ for i in range(len(route_list)):
     color_list = color_list + color_elements
 
 # plot the routes
-fig, ax = ox.plot_graph_routes(
-    graph_projected, route_list, route_color=color_list)
+fig, ax = ox.plot_graph_routes(graph_projected, route_list, route_color=color_list)
