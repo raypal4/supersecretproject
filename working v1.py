@@ -5,6 +5,7 @@ from collections import defaultdict
 from IPython.display import IFrame
 import heapq as heapq
 import geopy.distance
+from shapely.geometry import Point, LineString
 
 ox.config(log_console=True, use_cache=True)
 
@@ -216,27 +217,66 @@ graph_projected = ox.project_graph(graph)
 orig_node = ox.get_nearest_node(graph, org)
 target_node = ox.get_nearest_node(graph, dest)
 
-
 import json
-with open('data/busroute1.json') as f:
+with open('test/punggol_bus_stops.json') as f:
     data = json.load(f)
     f.close()
-test = data["3"]["coordinates"]
-testing = []
-osmid = None
+
 busGraph = nx.MultiDiGraph()
-for co in test:
-    x, y = co
-    osmid = ox.get_nearest_node(graph, (y,x))
-    if len(testing) == 0:
-        busGraph.add_edge(orig_node, osmid, highway='tertiary', maxspeed=60, oneway=False, length=54.549)
-        testing.append(osmid)
-    elif testing[-1] != osmid:
-        busGraph.add_edge(testing[-1], osmid, highway='tertiary', maxspeed=60, oneway=False, length=54.549)
-        # print(busGraph.get_edge_data(testing[-1], osmid).values())
-        testing.append(osmid)
-busGraph.add_edge(osmid, target_node, highway='tertiary', maxspeed=60, oneway=False, length=54.549)
-print(busGraph.get_edge_data(osmid, target_node).values())
+
+for stop in data:
+    stopNo = stop["BusStopCode"]
+    name = stop["Description"]
+    lat = stop["Latitude"]
+    lon = stop["Longitude"]
+    busGraph.add_node(stopNo, name=name, y=lat, x=lon)
+
+with open('test/punggol_bus_routes.json') as f:
+    data = json.load(f)
+    f.close()
+
+with open('data/busroute0.json') as f:
+    geometry = json.load(f)
+    f.close()
+
+prev = 0
+prevdirection = 0
+prevservice = 0
+for route in data:
+    current = route["BusStopCode"]
+    service = route["ServiceNo"]
+    distance = route["Distance"]
+    direction = route["Direction"]
+
+    if distance == 0:
+        prev = current
+        prevdirection = direction
+        prevservice = service
+        continue
+    else:
+        lat = busGraph.nodes[prev]['y']
+        lon = busGraph.nodes[prev]['x']
+
+        clat = busGraph.nodes[current]['y']
+        clon = busGraph.nodes[current]['x']
+
+        geo = []
+        if service in geometry:
+            line = geometry[service]['coordinates']
+            flag = None
+            for point in line:
+                if [lon, lat] == point:
+                    flag = 1
+                if not flag:
+                    geo.append(point)
+                    if point == [clon, clat]:
+                        break
+
+        if len(geo) != 0:
+            busGraph.add_edge(prev, current, service=service, length=distance, direction=direction, geometry=LineString(geo))
+        prev = current
+        prevdirection = direction
+        prevservice = service
 
 graph = nx.compose_all([busGraph, graph1, graph2])
 graph_projected = ox.project_graph(graph)
@@ -246,6 +286,9 @@ graph_projected = ox.project_graph(graph)
 # target_node1 = ox.get_nearest_node(graph, dest2)
 
 nodes, edges = ox.graph_to_gdfs(graph)
+print(nodes.columns)
+print(edges.columns)
+
 
 # print(edges["maxspeed"].value_counts())
 
@@ -269,8 +312,8 @@ print("\nA-Star Number of nodes (blue):", len(ourRoute3), " | algo it:", AlgoItt
 
 # --------------------------- PLotting -------------------------------------------
 
-route_list = [testing, ourRoute, ourRoute3]
-# route_list = [ourRoute2, ourRoute, ourRoute3]
+# route_list = [testing, ourRoute, ourRoute3]
+route_list = [ourRoute2, ourRoute, ourRoute3]
 
 # create route colors
 list_of_colors = ['red', 'yellow', 'blue']

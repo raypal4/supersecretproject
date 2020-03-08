@@ -20,7 +20,7 @@ for stop in data:
     name = stop["Description"]
     lat = stop["Latitude"]
     lon = stop["Longitude"]
-    busGraph.add_node(stopNo, name=name, lat=lat, long=lon)
+    busGraph.add_node(stopNo, name=name, y=lat, x=lon)
 
 with open('test/punggol_bus_routes.json') as f:
     data = json.load(f)
@@ -41,17 +41,14 @@ for route in data:
         prevservice = service
         continue
     else:
-        busGraph.add_edge(prev, current, service=service, distance=distance, direction=direction)
-        # ----------to visualise------------
-        # import re
-        # service = re.sub("[A-Za-z]+", "", service);
-        # busGraph.add_edge(prev, current, weight=int(service), distance=distance, direction=direction)
+        busGraph.add_edge(prev, current, service=service, length=distance, direction=direction)
         prev = current
         prevdirection = direction
         prevservice = service
 
 edge_labels=dict([((u,v,),d['service'])
                  for u,v,d in busGraph.edges(data=True)])
+
 
 pos=nx.spring_layout(busGraph)
 nx.draw_networkx_edge_labels(busGraph,pos,edge_labels=edge_labels)
