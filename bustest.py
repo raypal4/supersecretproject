@@ -53,21 +53,53 @@ def get_nodes(edges):
 
 # ---------------------- Initialising -------------------------------
 
-with open('data/busstop.json') as f:
+with open('test/punggol_bus_stops.json') as f:
     data = json.load(f)
     f.close()
 
 busGraph = nx.MultiDiGraph()
 
-for stopNo in data.keys():
-    name = data[stopNo]["name"]
-    services = data[stopNo]["services"]
-    contour = data[stopNo]["contour"]
-    busGraph.add_node(stopNo, name=name, services=services, contour=contour)
+for stop in data:
+    stopNo = stop["BusStopCode"]
+    name = stop["Description"]
+    lat = stop["Latitude"]
+    lon = stop["Longitude"]
+    busGraph.add_node(stopNo, name=name, lat=lat, long=lon)
 
+with open('test/punggol_bus_routes.json') as f:
+    data = json.load(f)
+    f.close()
 
-graph_projected = ox.project_graph(busGraph)
+prev = 0
+prevdirection = 0
+prevservice = 0
+for route in data:
+    current = route["BusStopCode"]
+    service = route["ServiceNo"]
+    distance = route["Distance"]
+    direction = route["Direction"]
 
+    if distance == 0:
+        prev = current
+        prevdirection = direction
+        prevservice = service
+        continue
+    else:
+        busGraph.add_edge(prev, current, service=service, distance=distance, direction=direction)
+        # ----------to visualise------------
+        # import re
+        # service = re.sub("[A-Za-z]+", "", service);
+        # busGraph.add_edge(prev, current, weight=int(service), distance=distance, direction=direction)
+        prev = current
+        prevdirection = direction
+        prevservice = service
 
-# orig_node1 = ox.get_nearest_node(graph, org1)
-# target_node1 = ox.get_nearest_node(graph, dest2)
+edge_labels=dict([((u,v,),d['weight'])
+                 for u,v,d in busGraph.edges(data=True)])
+red_edges = [('C','D'),('D','A')]
+edge_colors = ['black' if not edge in red_edges else 'red' for edge in busGraph.edges()]
+
+pos=nx.spring_layout(busGraph)
+nx.draw_networkx_edge_labels(busGraph,pos,edge_labels=edge_labels)
+nx.draw(busGraph,pos,edge_color=edge_colors,edge_cmap=plt.cm.Reds)
+plt.show()
