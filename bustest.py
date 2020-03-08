@@ -94,12 +94,10 @@ for route in data:
         prevdirection = direction
         prevservice = service
 
-edge_labels=dict([((u,v,),d['weight'])
+edge_labels=dict([((u,v,),d['service'])
                  for u,v,d in busGraph.edges(data=True)])
-red_edges = [('C','D'),('D','A')]
-edge_colors = ['black' if not edge in red_edges else 'red' for edge in busGraph.edges()]
 
 pos=nx.spring_layout(busGraph)
 nx.draw_networkx_edge_labels(busGraph,pos,edge_labels=edge_labels)
-nx.draw(busGraph,pos,edge_color=edge_colors,edge_cmap=plt.cm.Reds)
+nx.draw(busGraph,pos)
 plt.show()
