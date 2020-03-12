@@ -1,6 +1,6 @@
 import json
 
-with open('data/routes.geojson') as f:
+with open('routes.geojson') as f:
 	data = json.load(f)
 	f.close()
 

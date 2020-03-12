@@ -1,6 +1,6 @@
 import json
 
-with open('data/stops.json') as f:
+with open('stops.json') as f:
 	data = json.load(f)
 	f.close()
 

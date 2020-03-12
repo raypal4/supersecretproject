@@ -144,7 +144,7 @@ def get_nodes(edges):
     for i in edges.osmid:
         list_osmid.append(i)
     for i in edges.length:
-        list_length.append(i)
+        list_length.append(i*100)
     for i in edges.u:
         list_u.append(i)
     for i in edges.v:
@@ -181,7 +181,7 @@ def getDistanceTravelled(nodes, node_data, route):
     for i in range(0, len(route) - 1):
         for n in node_data:
             if(n[0] == route[i] and n[1] == route[i+1]):
-                sum += n[2] * 100
+                sum += n[2]
     return sum
 
 # ---------------------- Initialising -------------------------------
@@ -211,11 +211,11 @@ else:
     graph2 = ox.graph_from_address(address, distance=5000, network_type='drive')
     graph = nx.compose(graph1, graph2)
 
-graph_projected = ox.project_graph(graph)
+# graph_projected = ox.project_graph(graph)
 
-# get cloest node to the point of search
-orig_node = ox.get_nearest_node(graph, org)
-target_node = ox.get_nearest_node(graph, dest)
+# # get cloest node to the point of search
+orig_node = ox.get_nearest_node(graph2, org)
+target_node = ox.get_nearest_node(graph2, dest)
 
 import json
 with open('test/punggol_bus_stops.json') as f:
@@ -229,7 +229,8 @@ for stop in data:
     name = stop["Description"]
     lat = stop["Latitude"]
     lon = stop["Longitude"]
-    busGraph.add_node(stopNo, name=name, y=lat, x=lon)
+    osmid = ox.get_nearest_node(graph2, (lat,lon))
+    busGraph.add_node(stopNo, osmid=osmid, name=name, y=lat, x=lon)
 
 with open('test/punggol_bus_routes.json') as f:
     data = json.load(f)
@@ -256,9 +257,11 @@ for route in data:
     else:
         lat = busGraph.nodes[prev]['y']
         lon = busGraph.nodes[prev]['x']
+        osmid = busGraph.nodes[prev]['osmid']
 
         clat = busGraph.nodes[current]['y']
         clon = busGraph.nodes[current]['x']
+        cosmid = busGraph.nodes[prev]['osmid']
 
         geo = []
         if service in geometry:
@@ -273,12 +276,13 @@ for route in data:
                         break
 
         if len(geo) != 0:
-            busGraph.add_edge(prev, current, service=service, length=distance, direction=direction, geometry=LineString(geo))
+            busGraph.add_edge(osmid, cosmid, service=service, length=distance, direction=direction, geometry=LineString(geo))
         prev = current
         prevdirection = direction
         prevservice = service
 
-graph = nx.compose_all([busGraph, graph1, graph2])
+# graph = nx.compose_all([busGraph, graph1, graph2])
+graph = nx.compose(busGraph, graph2)
 graph_projected = ox.project_graph(graph)
 
 
@@ -297,14 +301,14 @@ print(edges.columns)
 #                              target=target_node1, weight='length', method='dijkstra')
 
 node_data = get_nodes(edges)
-ourRoute = list(creator(node_data, orig_node, target_node))
+# ourRoute = list(creator(node_data, orig_node, target_node))
 ourRoute2 = list(creator2(node_data, orig_node, target_node))
 ourRoute3 = list(creator3(nodes, node_data, orig_node, target_node))
 
 
 print("\nDijkstra Number of nodes (yellow):" , len(ourRoute2)," | algo it:", AlgoItterations1, " | distance:", getDistanceTravelled(nodes, node_data, ourRoute2))
 
-print("\nPriority Dijkstra Number of nodes (red):", len(ourRoute)," | algo it:", AlgoItterations2, " | distance:", getDistanceTravelled(nodes, node_data, ourRoute))
+# print("\nPriority Dijkstra Number of nodes (red):", len(ourRoute)," | algo it:", AlgoItterations2, " | distance:", getDistanceTravelled(nodes, node_data, ourRoute))
 
 print("\nA-Star Number of nodes (blue):", len(ourRoute3), " | algo it:", AlgoItterations3, " | distance:", getDistanceTravelled(nodes, node_data, ourRoute3))
 
@@ -313,10 +317,10 @@ print("\nA-Star Number of nodes (blue):", len(ourRoute3), " | algo it:", AlgoItt
 # --------------------------- PLotting -------------------------------------------
 
 # route_list = [testing, ourRoute, ourRoute3]
-route_list = [ourRoute2, ourRoute, ourRoute3]
+route_list = [ourRoute2, ourRoute3]
 
 # create route colors
-list_of_colors = ['red', 'yellow', 'blue']
+list_of_colors = ['red', 'blue']
 color_list = []
 
 for i in range(len(route_list)):
