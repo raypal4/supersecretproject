@@ -113,6 +113,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.5.1/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.5.1/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://rawcdn.githack.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css"/>
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_788c54d4aaff40f4a4b9ef5fdf46cad0 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+</head>
+<body>    
+    
+            <div class="folium-map" id="map_788c54d4aaff40f4a4b9ef5fdf46cad0" ></div>
+        
+</body>
+<script>    
+    
+            var map_788c54d4aaff40f4a4b9ef5fdf46cad0 = L.map(
+                "map_788c54d4aaff40f4a4b9ef5fdf46cad0",
+                {
+                    center: [1.4061372907924143, 103.9047711705693],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 1,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_9baa2b9451fb4f36bff0d1083f439e70 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_788c54d4aaff40f4a4b9ef5fdf46cad0);
+        
+    
+            var poly_line_ccdc792973a54ffda39e5e308a4acf1b = L.polyline(
+                [[1.4093596, 103.9059703], [1.4093356, 103.9059793]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_788c54d4aaff40f4a4b9ef5fdf46cad0);
+        
+    
+        var popup_aa6d533a9b944d7c9ccb9d539c857966 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_e57204ef482745e4841eedb980497d50 = $(`<div id="html_e57204ef482745e4841eedb980497d50" style="width: 100.0%; height: 100.0%;">"Sentul Crescent"</div>`)[0];
+            popup_aa6d533a9b944d7c9ccb9d539c857966.setContent(html_e57204ef482745e4841eedb980497d50);
+        
+
+        poly_line_ccdc792973a54ffda39e5e308a4acf1b.bindPopup(popup_aa6d533a9b944d7c9ccb9d539c857966)
+        ;
+
+        
+    
+    
+            var poly_line_a767f0ee2f744637b5278241bd6bec71 = L.polyline(
+                [[1.4093356, 103.9059793], [1.4091929, 103.9060257], [1.409042, 103.9060528], [1.4088779, 103.9060564], [1.4087441, 103.906037], [1.4086023, 103.9060041], [1.4080785, 103.9058118], [1.4076454, 103.9056165]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_788c54d4aaff40f4a4b9ef5fdf46cad0);
+        
+    
+        var popup_6ace5a02a0404d7d8bc422d4cc859140 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_9c72ea30392842ddb03db5137f9ac680 = $(`<div id="html_9c72ea30392842ddb03db5137f9ac680" style="width: 100.0%; height: 100.0%;">"Sentul Crescent"</div>`)[0];
+            popup_6ace5a02a0404d7d8bc422d4cc859140.setContent(html_9c72ea30392842ddb03db5137f9ac680);
+        
+
+        poly_line_a767f0ee2f744637b5278241bd6bec71.bindPopup(popup_6ace5a02a0404d7d8bc422d4cc859140)
+        ;
+
+        
+    
+    
+            var poly_line_81db422efffc4abfb1aae45b6b0e7601 = L.polyline(
+                [[1.4076454, 103.9056165], [1.407324, 103.9054709]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_788c54d4aaff40f4a4b9ef5fdf46cad0);
+        
+    
+        var popup_af1784a459964c7f9e7502df776038b2 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_5bad8081f2444765ac2c09961ad6abd5 = $(`<div id="html_5bad8081f2444765ac2c09961ad6abd5" style="width: 100.0%; height: 100.0%;">"Sentul Crescent"</div>`)[0];
+            popup_af1784a459964c7f9e7502df776038b2.setContent(html_5bad8081f2444765ac2c09961ad6abd5);
+        
+
+        poly_line_81db422efffc4abfb1aae45b6b0e7601.bindPopup(popup_af1784a459964c7f9e7502df776038b2)
+        ;
+
+        
+    
+    
+            var poly_line_ea1c6b54cbb541aaae1a0efc1e3fe63a = L.polyline(
+                [[1.407324, 103.9054709], [1.4071957, 103.905411]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_788c54d4aaff40f4a4b9ef5fdf46cad0);
+        
+    
+        var popup_27ae61f7b6de4aa8a6e6084a46ce8415 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_e326492d40334ac194692cf64cb53554 = $(`<div id="html_e326492d40334ac194692cf64cb53554" style="width: 100.0%; height: 100.0%;">"Punggol Place"</div>`)[0];
+            popup_27ae61f7b6de4aa8a6e6084a46ce8415.setContent(html_e326492d40334ac194692cf64cb53554);
+        
+
+        poly_line_ea1c6b54cbb541aaae1a0efc1e3fe63a.bindPopup(popup_27ae61f7b6de4aa8a6e6084a46ce8415)
+        ;
+
+        
+    
+    
+            var poly_line_223980a0d1ac43d398ddbf7b599a2e35 = L.polyline(
+                [[1.4071957, 103.905411], [1.4068843, 103.9052635]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_788c54d4aaff40f4a4b9ef5fdf46cad0);
+        
+    
+        var popup_c16008f8e2a441018f0e76e05eaf13f9 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_f4957945d1184528b1b77ca155623aee = $(`<div id="html_f4957945d1184528b1b77ca155623aee" style="width: 100.0%; height: 100.0%;">"Punggol Place"</div>`)[0];
+            popup_c16008f8e2a441018f0e76e05eaf13f9.setContent(html_f4957945d1184528b1b77ca155623aee);
+        
+
+        poly_line_223980a0d1ac43d398ddbf7b599a2e35.bindPopup(popup_c16008f8e2a441018f0e76e05eaf13f9)
+        ;
+
+        
+    
+    
+            var poly_line_e3b3b3bdc8f84438b6b706f3dc8929b8 = L.polyline(
+                [[1.4068843, 103.9052635], [1.4066819, 103.9051579], [1.4064101, 103.9050061], [1.4057322, 103.9046274], [1.4054936, 103.9044941], [1.4052904, 103.9043806], [1.4049448, 103.9041876], [1.4046882, 103.9040443]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_788c54d4aaff40f4a4b9ef5fdf46cad0);
+        
+    
+        var popup_3cd4219297c84a8aa51573d1d5143265 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_6709a1f0e1e346f1aeb8ee5c73eaa562 = $(`<div id="html_6709a1f0e1e346f1aeb8ee5c73eaa562" style="width: 100.0%; height: 100.0%;">"Punggol Place"</div>`)[0];
+            popup_3cd4219297c84a8aa51573d1d5143265.setContent(html_6709a1f0e1e346f1aeb8ee5c73eaa562);
+        
+
+        poly_line_e3b3b3bdc8f84438b6b706f3dc8929b8.bindPopup(popup_3cd4219297c84a8aa51573d1d5143265)
+        ;
+
+        
+    
+    
+            var poly_line_0b5f1944fc2c489fb95d6b1afd403952 = L.polyline(
+                [[1.4046882, 103.9040443], [1.4044437, 103.9039067]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_788c54d4aaff40f4a4b9ef5fdf46cad0);
+        
+    
+        var popup_441629a99969471386da927e45f57f95 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_d53f3acd14294cf297396bf46d7e6dc6 = $(`<div id="html_d53f3acd14294cf297396bf46d7e6dc6" style="width: 100.0%; height: 100.0%;">"Punggol Place"</div>`)[0];
+            popup_441629a99969471386da927e45f57f95.setContent(html_d53f3acd14294cf297396bf46d7e6dc6);
+        
+
+        poly_line_0b5f1944fc2c489fb95d6b1afd403952.bindPopup(popup_441629a99969471386da927e45f57f95)
+        ;
+
+        
+    
+    
+            var poly_line_ffd0d372bfc045dca550a898f3a5a14e = L.polyline(
+                [[1.4044437, 103.9039067], [1.4043366, 103.9038354]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_788c54d4aaff40f4a4b9ef5fdf46cad0);
+        
+    
+        var popup_86c22558cf3549cd81fcaaa35c316fc5 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_d6c8cc13a4d943ea86299ed329084417 = $(`<div id="html_d6c8cc13a4d943ea86299ed329084417" style="width: 100.0%; height: 100.0%;">"Punggol Place"</div>`)[0];
+            popup_86c22558cf3549cd81fcaaa35c316fc5.setContent(html_d6c8cc13a4d943ea86299ed329084417);
+        
+
+        poly_line_ffd0d372bfc045dca550a898f3a5a14e.bindPopup(popup_86c22558cf3549cd81fcaaa35c316fc5)
+        ;
+
+        
+    
+    
+            var poly_line_d549af56ba3d412abe5d21c7bbd1fa60 = L.polyline(
+                [[1.4043366, 103.9038354], [1.4040922, 103.9036825]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_788c54d4aaff40f4a4b9ef5fdf46cad0);
+        
+    
+        var popup_179286300b784833b1c5e8b1bfe49b7e = L.popup({"maxWidth": "100%"});
+
+        
+            var html_160f18961d93400cbcb5ef352e7e4b50 = $(`<div id="html_160f18961d93400cbcb5ef352e7e4b50" style="width: 100.0%; height: 100.0%;">"Punggol Place"</div>`)[0];
+            popup_179286300b784833b1c5e8b1bfe49b7e.setContent(html_160f18961d93400cbcb5ef352e7e4b50);
+        
+
+        poly_line_d549af56ba3d412abe5d21c7bbd1fa60.bindPopup(popup_179286300b784833b1c5e8b1bfe49b7e)
+        ;
+
+        
+    
+    
+            var poly_line_96efbbf337994db0a912812f1d3e9079 = L.polyline(
+                [[1.4040922, 103.9036825], [1.4038042, 103.9035067], [1.4030778, 103.9030476]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_788c54d4aaff40f4a4b9ef5fdf46cad0);
+        
+    
+        var popup_a094264f180547eeb75e2ca8e1a5c49f = L.popup({"maxWidth": "100%"});
+
+        
+            var html_69530b702c8244979cc547c1ee624c3c = $(`<div id="html_69530b702c8244979cc547c1ee624c3c" style="width: 100.0%; height: 100.0%;">"Punggol Place"</div>`)[0];
+            popup_a094264f180547eeb75e2ca8e1a5c49f.setContent(html_69530b702c8244979cc547c1ee624c3c);
+        
+
+        poly_line_96efbbf337994db0a912812f1d3e9079.bindPopup(popup_a094264f180547eeb75e2ca8e1a5c49f)
+        ;
+
+        
+    
+    
+            var poly_line_061f070a225a4235b751546ff1747619 = L.polyline(
+                [[1.4030778, 103.9030476], [1.403068, 103.9030414]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_788c54d4aaff40f4a4b9ef5fdf46cad0);
+        
+    
+        var popup_c6bffec5eebb4c4791d67eb6ba901edd = L.popup({"maxWidth": "100%"});
+
+        
+            var html_08416880a2ef4d9980872b4f3f4f8f52 = $(`<div id="html_08416880a2ef4d9980872b4f3f4f8f52" style="width: 100.0%; height: 100.0%;">"Punggol Place"</div>`)[0];
+            popup_c6bffec5eebb4c4791d67eb6ba901edd.setContent(html_08416880a2ef4d9980872b4f3f4f8f52);
+        
+
+        poly_line_061f070a225a4235b751546ff1747619.bindPopup(popup_c6bffec5eebb4c4791d67eb6ba901edd)
+        ;
+
+        
+    
+    
+            map_788c54d4aaff40f4a4b9ef5fdf46cad0.fitBounds(
+                [[1.403068, 103.9030414], [1.4093596, 103.9060564]],
+                {}
+            );
+        
+    
+            var marker_a93c299c3e0b44e7aeb1a7294d012904 = L.marker(
+                [1.4102130499999999, 103.90609494504281],
+                {}
+            ).addTo(map_788c54d4aaff40f4a4b9ef5fdf46cad0);
+        
+    
+            var icon_5f316c061fd748ac98df7aecbf9b04db = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_a93c299c3e0b44e7aeb1a7294d012904.setIcon(icon_5f316c061fd748ac98df7aecbf9b04db);
+        
+    
+        var popup_022b31b2a1e54a8fb1968c65531a0f6c = L.popup({"maxWidth": "100%"});
+
+        
+            var html_fa69452c2404480984d13dbccc6a6eff = $(`<div id="html_fa69452c2404480984d13dbccc6a6eff" style="width: 100.0%; height: 100.0%;">SAFRA Punggol, Punggol Waterway, Punggol, Northeast, 824679, Singapore</div>`)[0];
+            popup_022b31b2a1e54a8fb1968c65531a0f6c.setContent(html_fa69452c2404480984d13dbccc6a6eff);
+        
+
+        marker_a93c299c3e0b44e7aeb1a7294d012904.bindPopup(popup_022b31b2a1e54a8fb1968c65531a0f6c)
+        ;
+
+        
+    
+    
+            var marker_e168d906d3b4496abc20995170843080 = L.marker(
+                [1.40273545, 103.90329458515905],
+                {}
+            ).addTo(map_788c54d4aaff40f4a4b9ef5fdf46cad0);
+        
+    
+            var icon_684b9ef5b4b3454e999c8abab592ac9e = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_e168d906d3b4496abc20995170843080.setIcon(icon_684b9ef5b4b3454e999c8abab592ac9e);
+        
+    
+        var popup_ba0457f90ed2492aae22a448642e65f5 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_bf1e77c7d01b4f01b1a221118babb983 = $(`<div id="html_bf1e77c7d01b4f01b1a221118babb983" style="width: 100.0%; height: 100.0%;">Blk 288B, Punggol Place, Punggol, Northeast, 821274, Singapore</div>`)[0];
+            popup_ba0457f90ed2492aae22a448642e65f5.setContent(html_bf1e77c7d01b4f01b1a221118babb983);
+        
+
+        marker_e168d906d3b4496abc20995170843080.bindPopup(popup_ba0457f90ed2492aae22a448642e65f5)
+        ;
+
+        
+    
+</script>

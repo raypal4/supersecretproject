@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 from django.http import HttpResponseRedirect
 from .forms import AddressForm
+from django.template import Context, Template
 
 import osmnx as ox
 import matplotlib.pyplot as plt
@@ -19,13 +20,16 @@ from geopy.geocoders import Nominatim
 ox.config(log_console=True, use_cache=True)
 
 AlgoItterations1 = 0
+AlgoItterations2 = 0
+AlgoItterations3 = 0
+totalWeight = 0
 
 def index(request):
 	if request.method == 'POST':
 		retrieveForm = AddressForm(request.POST)
 		if retrieveForm.is_valid():
-			org_var = retrieveForm.cleaned_data['var_org']
-			dst_var = retrieveForm.cleaned_data['var_dst']
+			org_var = retrieveForm.cleaned_data['var_org'] #828867
+			dst_var = retrieveForm.cleaned_data['var_dst'] #824679
 			
 			geolocator = Nominatim(user_agent="test")
 			org_addr = geolocator.geocode(org_var)
@@ -43,20 +47,38 @@ def index(request):
 				graph = nx.compose(graph1, graph2)
 			
 			# get cloest node to the point of search
+			global target_node
 			orig_node = ox.get_nearest_node(graph, org)
 			target_node = ox.get_nearest_node(graph, dest)
 			
 			nodes, edges = ox.graph_to_gdfs(graph)
 			
 			node_data = get_nodes(edges)
+			ourRoute = list(creator(node_data, orig_node, target_node))
 			ourRoute2 = list(creator2(node_data, orig_node, target_node))
-				
-			route_map = ox.plot_route_folium(graph, ourRoute2, popup_attribute='name', tiles='openstreetmap' ,route_color='blue')
-			folium.Marker(location=org, popup=org_addr.address, icon=folium.Icon(color='red')).add_to(route_map)
-			folium.Marker(location=dest, popup=dst_addr.address, icon=folium.Icon(color='blue')).add_to(route_map)
-			filepath = 'mapper/route.html'
-			route_map.save(filepath)
-			return HttpResponseRedirect('../result/')
+			ourRoute3 = list(creator3(nodes, node_data, orig_node, target_node))
+			
+			# usage of folium to create interactive web map
+			dijskra_map = ox.plot_route_folium(graph, ourRoute2, popup_attribute='name', tiles='openstreetmap' ,route_color='blue')
+			pdijskra_map = ox.plot_route_folium(graph, ourRoute, popup_attribute='name', tiles='openstreetmap' ,route_color='blue')
+			astar_map = ox.plot_route_folium(graph, ourRoute3, popup_attribute='name', tiles='openstreetmap' ,route_color='blue')
+			folium.Marker(location=org, popup=org_addr.address, icon=folium.Icon(color='red')).add_to(dijskra_map)
+			folium.Marker(location=dest, popup=dst_addr.address, icon=folium.Icon(color='blue')).add_to(dijskra_map)
+			folium.Marker(location=org, popup=org_addr.address, icon=folium.Icon(color='red')).add_to(pdijskra_map)
+			folium.Marker(location=dest, popup=dst_addr.address, icon=folium.Icon(color='blue')).add_to(pdijskra_map)
+			folium.Marker(location=org, popup=org_addr.address, icon=folium.Icon(color='red')).add_to(astar_map)
+			folium.Marker(location=dest, popup=dst_addr.address, icon=folium.Icon(color='blue')).add_to(astar_map)
+			filepath1 = 'mapper/dijskra_route.html'
+			filepath2 = 'mapper/pdijskra_route.html'
+			filepath3 = 'mapper/astar_route.html'
+			dijskra_map.save(filepath1)
+			pdijskra_map.save(filepath2)
+			astar_map.save(filepath3)
+			#return HttpResponseRedirect('../result/')
+			contentDict = {"org_addr": org_addr.address, "dst_addr": dst_addr.address, "node_dijkstra": len(ourRoute2), "node_pdijkstra": len(ourRoute), "node_astar": len(ourRoute3), 
+			"itterations_dijkstra": AlgoItterations1, "itterations_pdijkstra": AlgoItterations2, "itterations_astar": AlgoItterations3, "dist_dijkstra": getDistanceTravelled(nodes, node_data, ourRoute2)
+			, "dist_pdijkstra": getDistanceTravelled(nodes, node_data, ourRoute), "dist_astar": getDistanceTravelled(nodes, node_data, ourRoute3)}
+			return render(request, "main.html", contentDict)
 
 	else:
 		inputForm = AddressForm()
@@ -116,6 +138,68 @@ def dijsktra(graphs, initial, end):
     path = path[::-1]
     return path
 
+def prioritydijsktra(node_data, initial, end):
+    global AlgoItterations2
+    g = defaultdict(list)
+    for e1, e2, cost in node_data:
+        g[e1].append((cost, e2))
+
+    pq = [(0, initial, ())]
+    seen = set()
+    mins = {initial: 0}
+    while len(pq) > 0:
+        (cost, v1, path) = heapq.heappop(pq)
+        if v1 not in seen:
+            seen.add(v1)
+            path += (v1, )
+            if v1 == target_node:
+                return path
+
+            for c, v2 in g.get(v1, ()):
+                AlgoItterations2 += 1
+                prev = mins.get(v2, None)
+                next = cost + c
+                if prev is None or next < prev:
+                    mins[v2] = next
+                    heapq.heappush(pq, (next, v2, path))
+
+    return float("Infinity")
+
+def astar(nodes, node_data, initial, end):
+    global AlgoItterations3
+    g = defaultdict(list)
+    
+    targetx = nodes.x[end]
+    targety = nodes.y[end]
+    target_coord = (targety, targetx)
+    initialx = nodes.x[initial]
+    initialy = nodes.y[initial]
+    init_coord = (initialy, initialx)
+
+    for e1, e2, cost in node_data:
+        g[e1].append((cost, e2))
+    pq = [(0, initial, ())]
+    seen = set()
+    mins = {initial: 0}
+    while len(pq) > 0:
+        (cost, v1, path) = heapq.heappop(pq)
+        if v1 not in seen:
+            seen.add(v1)
+            path += (v1, )
+            if v1 == target_node:
+                return path
+            for c, v2 in g.get(v1, ()):
+                AlgoItterations3 += 1
+                x = nodes.x[v2]
+                y = nodes.y[v2]
+                current_coord = (y,x)
+                prev = mins.get(v2, None)
+                next = cost + c*100 + geopy.distance.distance(target_coord, current_coord).km
+                if prev is None or next < prev:
+                    mins[v2] = next
+                    heapq.heappush(pq, (next, v2, path))
+    return float("Infinity")
+
 def get_nodes(edges):
     temp = {}
     list_name = []
@@ -143,11 +227,19 @@ def get_nodes(edges):
         uvd.append(temp_tup)
     return uvd
 
+def creator(node_data, orig_node, target_node):
+    j = prioritydijsktra(node_data, orig_node, target_node)
+    return j
+
 def creator2(node_data, orig_node, target_node):
     graphs = Graph()
     for edge in node_data:
         graphs.add_edge(*edge)
     j = dijsktra(graphs, orig_node, target_node)
+    return j
+
+def creator3(nodes, node_data, orig_node, target_node):
+    j = astar(nodes, node_data, orig_node, target_node)
     return j
 
 def getDistanceTravelled(nodes, node_data, route):
