@@ -70,10 +70,10 @@ def dijsktra(graphs, initial, end):
     return path
 
 
-def prioritydijsktra(node_data, initial, end):
+def prioritydijsktra(edge_data, initial, end):
     global AlgoItterations2
     g = defaultdict(list)
-    for e1, e2, cost in node_data:
+    for e1, e2, cost in edge_data:
         g[e1].append((cost, e2))
 
     pq = [(0, initial, ())]
@@ -97,42 +97,64 @@ def prioritydijsktra(node_data, initial, end):
 
     return float("Infinity")
 
-def astar(nodes, node_data, initial, end):
-    global AlgoItterations3
-    g = defaultdict(list)
-    
+def astar(nodes, graphs, initial, end):
+    # shortest paths is a dict of nodes
+    # whose value is a tuple of (previous node, weight)
     targetx = nodes.x[end]
     targety = nodes.y[end]
     target_coord = (targety, targetx)
+
     initialx = nodes.x[initial]
     initialy = nodes.y[initial]
     init_coord = (initialy, initialx)
 
-    for e1, e2, cost in node_data:
-        g[e1].append((cost, e2))
-    pq = [(0, initial, ())]
-    seen = set()
-    mins = {initial: 0}
-    while len(pq) > 0:
-        (cost, v1, path) = heapq.heappop(pq)
-        if v1 not in seen:
-            seen.add(v1)
-            path += (v1, )
-            if v1 == target_node:
-                return path
-            for c, v2 in g.get(v1, ()):
-                AlgoItterations3 += 1
-                x = nodes.x[v2]
-                y = nodes.y[v2]
-                current_coord = (y,x)
-                prev = mins.get(v2, None)
-                next = cost + c*100 + geopy.distance.distance(target_coord, current_coord).km
-                if prev is None or next < prev:
-                    mins[v2] = next
-                    heapq.heappush(pq, (next, v2, path))
-    return float("Infinity")
+    shortest_paths = {initial: (None, 0)}
+    current_node = initial
+    visited = set()
+    global AlgoItterations3
 
-def get_nodes(edges):
+    while current_node != end:
+        visited.add(current_node)
+        destinations = graphs.edges[current_node]
+        weight_to_current_node = shortest_paths[current_node][1]
+
+        for next_node in destinations:
+            AlgoItterations3 += 1
+
+            x = nodes.x[next_node]
+            y = nodes.y[next_node]
+            current_coord = (y,x)
+
+            weight = graphs.weights[(current_node, next_node)] + weight_to_current_node + geopy.distance.distance(target_coord, current_coord).km + geopy.distance.distance(init_coord, current_coord).km
+            if next_node not in shortest_paths:
+                shortest_paths[next_node] = (current_node, weight)
+            else:
+                current_shortest_weight = shortest_paths[next_node][1]
+                if current_shortest_weight > weight:
+                    shortest_paths[next_node] = (current_node, weight)
+
+        next_destinations = {
+            node: shortest_paths[node] for node in shortest_paths if node not in visited}
+        if not next_destinations:
+            return "Route is Not Possible"
+        # next node is the destination with the lowest weight
+        current_node = min(next_destinations,
+                           key=lambda k: next_destinations[k][1])
+
+    # Work back through destinations in shortest path
+    path = []
+    weightSum = 0
+    while current_node is not None:
+        AlgoItterations3 += 1
+        path.append(current_node)
+        print(current_node)
+        next_node = shortest_paths[current_node][0]
+        current_node = next_node
+    # Reverse path
+    path = path[::-1]
+    return path
+
+def get_edges(edges):
     temp = {}
     list_name = []
     list_osmid = []
@@ -144,7 +166,7 @@ def get_nodes(edges):
     for i in edges.osmid:
         list_osmid.append(i)
     for i in edges.length:
-        list_length.append(i*100)
+        list_length.append((i*100)/6.15)
     for i in edges.u:
         list_u.append(i)
     for i in edges.v:
@@ -160,26 +182,29 @@ def get_nodes(edges):
     return uvd
 
 
-def creator(node_data, orig_node, target_node):
-    j = prioritydijsktra(node_data, orig_node, target_node)
+def creator(edge_data, orig_node, target_node):
+    j = prioritydijsktra(edge_data, orig_node, target_node)
     return j
 
 
-def creator2(node_data, orig_node, target_node):
+def creator2(edge_data, orig_node, target_node):
     graphs = Graph()
-    for edge in node_data:
+    for edge in edge_data:
         graphs.add_edge(*edge)
     j = dijsktra(graphs, orig_node, target_node)
     return j
 
-def creator3(nodes, node_data, orig_node, target_node):
-    j = astar(nodes, node_data, orig_node, target_node)
+def creator3(nodes, edge_data, orig_node, target_node):
+    graphs = Graph()
+    for edge in edge_data:
+        graphs.add_edge(*edge)
+    j = astar(nodes, graphs, orig_node, target_node)
     return j
 
-def getDistanceTravelled(nodes, node_data, route):
+def getDistanceTravelled(nodes, edge_data, route):
     sum = 0
     for i in range(0, len(route) - 1):
-        for n in node_data:
+        for n in edge_data:
             if(n[0] == route[i] and n[1] == route[i+1]):
                 sum += n[2]
     return sum
@@ -191,7 +216,7 @@ address = None
 graph = None
 
 org = (1.3948802, 103.9061126)
-dest = (1.410208, 103.905988)
+dest = (1.40423, 103.90500)
 
 # org = (1.40130, 103.90920)
 # dest = (1.39620, 103.91270)
@@ -203,19 +228,21 @@ dest = (1.410208, 103.905988)
 # dest = ox.geocode("820639, Singapore")  # can use full address also, this should be safer though
 
 if org:
-    graph1 = ox.graph_from_point(org, distance=2000, network_type='drive')
+    # graph1 = ox.graph_from_point(org, distance=2000, network_type='drive')
     graph2 = ox.graph_from_point(org, distance=2000, network_type='walk')
-    graph = nx.compose(graph2, graph1)
+    # graph = nx.compose(graph2, graph1)
+    # graph = nx.compose(graph2)
 else:
     (graph1, org) = ox.graph_from_address(address, distance=5000, network_type='walk', return_coords=True)
     graph2 = ox.graph_from_address(address, distance=5000, network_type='drive')
     graph = nx.compose(graph1, graph2)
 
-# graph_projected = ox.project_graph(graph)
+graph_projected = ox.project_graph(graph2)
 
 # # get cloest node to the point of search
 orig_node = ox.get_nearest_node(graph2, org)
 target_node = ox.get_nearest_node(graph2, dest)
+# ------------------------------BUS---------------------------------
 
 import json
 with open('test/punggol_bus_stops.json') as f:
@@ -276,18 +303,19 @@ for route in data:
                         break
 
         if len(geo) != 0:
-            busGraph.add_edge(osmid, cosmid, service=service, length=distance, direction=direction, geometry=LineString(geo))
+            busGraph.add_edge(osmid, cosmid, service=service, length=distance/55, direction=direction, geometry=LineString(geo))
         prev = current
         prevdirection = direction
         prevservice = service
 
+graph = nx.compose(graph2, busGraph)
 # graph = nx.compose_all([busGraph, graph1, graph2])
-graph = nx.compose(busGraph, graph2)
 graph_projected = ox.project_graph(graph)
 
+#  --------------------------------BUS END-------------------------------------------
 
-# orig_node1 = ox.get_nearest_node(graph, org1)
-# target_node1 = ox.get_nearest_node(graph, dest2)
+# orig_node1 = ox.get_nearest_node(graph, org)
+# target_node1 = ox.get_nearest_node(graph, dest)
 
 nodes, edges = ox.graph_to_gdfs(graph)
 print(nodes.columns)
@@ -300,27 +328,26 @@ print(edges.columns)
 # Testroute = nx.shortest_path(graph, source=orig_node1,
 #                              target=target_node1, weight='length', method='dijkstra')
 
-node_data = get_nodes(edges)
-# ourRoute = list(creator(node_data, orig_node, target_node))
-ourRoute2 = list(creator2(node_data, orig_node, target_node))
-ourRoute3 = list(creator3(nodes, node_data, orig_node, target_node))
+edge_data = get_edges(edges)
+ourRoute = list(creator(edge_data, orig_node, target_node))
+ourRoute2 = list(creator2(edge_data, orig_node, target_node))
+ourRoute3 = list(creator3(nodes, edge_data, orig_node, target_node))
 
+print("\nDijkstra Number of nodes (yellow):" , len(ourRoute2)," | algo it:", AlgoItterations1, " | distance:", getDistanceTravelled(nodes, edge_data, ourRoute2))
 
-print("\nDijkstra Number of nodes (yellow):" , len(ourRoute2)," | algo it:", AlgoItterations1, " | distance:", getDistanceTravelled(nodes, node_data, ourRoute2))
+print("\nPriority Dijkstra Number of nodes (red):", len(ourRoute)," | algo it:", AlgoItterations2, " | distance:", getDistanceTravelled(nodes, edge_data, ourRoute))
 
-# print("\nPriority Dijkstra Number of nodes (red):", len(ourRoute)," | algo it:", AlgoItterations2, " | distance:", getDistanceTravelled(nodes, node_data, ourRoute))
-
-print("\nA-Star Number of nodes (blue):", len(ourRoute3), " | algo it:", AlgoItterations3, " | distance:", getDistanceTravelled(nodes, node_data, ourRoute3))
+print("\nA-Star Number of nodes (blue):", len(ourRoute3), " | algo it:", AlgoItterations3, " | distance:", getDistanceTravelled(nodes, edge_data, ourRoute3))
 
 # print("\nNumber of nodes (Test route):", len(Testroute))
 
 # --------------------------- PLotting -------------------------------------------
 
-# route_list = [testing, ourRoute, ourRoute3]
-route_list = [ourRoute2, ourRoute3]
+route_list = [ourRoute2, ourRoute, ourRoute3]
+# route_list = [ourRoute2, ourRoute3]
 
 # create route colors
-list_of_colors = ['red', 'blue']
+list_of_colors = ['yellow', 'red', 'blue']
 color_list = []
 
 for i in range(len(route_list)):
