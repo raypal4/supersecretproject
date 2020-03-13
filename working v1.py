@@ -279,7 +279,7 @@ for route in data:
 
         clat = busGraph.nodes[current]['y']
         clon = busGraph.nodes[current]['x']
-        cosmid = busGraph.nodes[prev]['osmid']
+        cosmid = busGraph.nodes[current]['osmid']
 
         geo = []
         if service in geometry:
