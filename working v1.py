@@ -301,14 +301,14 @@ for route in data:
         prevservice = service
 
 # graph = nx.compose_all([busGraph, graph1, graph2])
-graph = nx.compose(busGraph, graph2)
-graph_projected = ox.project_graph(graph)
+# graph = nx.compose(busGraph, graph2)
+# graph_projected = ox.project_graph(graph)
 
 
 # orig_node1 = ox.get_nearest_node(graph, org1)
 # target_node1 = ox.get_nearest_node(graph, dest2)
 
-nodes, edges = ox.graph_to_gdfs(graph)
+nodes, edges = ox.graph_to_gdfs(graph2)
 print(nodes.columns)
 print(edges.columns)
 
@@ -359,4 +359,4 @@ for i in range(len(route_list)):
 
 # plot the routes
 fig, ax = ox.plot_graph_routes(
-    graph_projected, route_list, route_color=color_list)
+    graph2, route_list, route_color=color_list)
