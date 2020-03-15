@@ -56,5 +56,5 @@ with open("test/punggol_bus_routes.json","w") as f:
 	json.dump(routesvalue, f, indent=4,ensure_ascii=False)
 	f.close()
 
-# 1.393925,103.895516
-# 1.415805,103.923669
+# 1.3925,103.8904
+# 1.4216,103.9241

@@ -130,8 +130,7 @@ def astar(nodes, node_data, initial, end):
                 y = nodes.y[v2]
                 current_coord = (y, x)
                 prev = mins.get(v2, None)
-                next = cost + c*100 + \
-                    geopy.distance.distance(target_coord, current_coord).km
+                next = cost + c + geopy.distance.distance(target_coord, current_coord).km
                 if svc == "BASS" or (prev is None or next < prev):
                     mins[v2] = next
                     heapq.heappush(pq, (next, v2, path, svc))
@@ -224,8 +223,7 @@ if org:
     graph2 = ox.graph_from_point(org, distance=2000, network_type='walk')
     # graph = nx.compose(graph2, graph1)
 else:
-    (graph2, org) = ox.graph_from_address(
-        address, distance=2000, network_type='walk', return_coords=True)
+    (graph2, org) = ox.graph_from_address(address, distance=2000, network_type='walk', return_coords=True)
     # graph2 = ox.graph_from_address(
     #     address, distance=2000, network_type='drive')
     # graph = nx.compose(graph1, graph2)
@@ -294,8 +292,7 @@ for route in data:
                         break
 
         if len(geo) != 0:
-            busGraph.add_edge(osmid, cosmid, service=service, length=0,
-                              direction=direction, geometry=LineString(geo))
+            busGraph.add_edge(osmid, cosmid, service=service, length=0,direction=direction, geometry=LineString(geo))
         prev = current
         prevdirection = direction
         prevservice = service
