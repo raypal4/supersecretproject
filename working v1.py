@@ -125,7 +125,7 @@ def astar(nodes, graphs, initial, end):
             y = nodes.y[next_node]
             current_coord = (y,x)
 
-            weight = graphs.weights[(current_node, next_node)] + weight_to_current_node + geopy.distance.distance(target_coord, current_coord).km + geopy.distance.distance(init_coord, current_coord).km
+            weight = graphs.weights[(current_node, next_node)] + weight_to_current_node + geopy.distance.distance(target_coord, current_coord).km
             if next_node not in shortest_paths:
                 shortest_paths[next_node] = (current_node, weight)
             else:
