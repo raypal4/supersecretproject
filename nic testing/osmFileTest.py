@@ -12,12 +12,12 @@ import heapq
 
 from manualPatch.pois import *
 
-def weightCalc(G, weight):
-	if callable(weight):
-		return weight
-	if G.is_multigraph():
-		return lambda u, v, d: min(attr.get(weight, 1) for attr in d.values())
-	return lambda u, v, data: data.get(weight, 1)
+# def weightCalc(G, weight):
+# 	if callable(weight):
+# 		return weight
+# 	if G.is_multigraph():
+# 		return lambda u, v, d: min(attr.get(weight, 1) for attr in d.values())
+# 	return lambda u, v, data: data.get(weight, 1)
 
 def heuristic(G, u, v):
 	u = (G.nodes[u]['y'], G.nodes[u]['x'])
@@ -25,13 +25,15 @@ def heuristic(G, u, v):
 	return geopy.distance.distance(u, v).km
 
 
-def astar_path(G, source, target, weight='weight'):
+# def astar_path(G, source, target, weight='weight'):
+def astar_path(G, source, target):
 	if source not in G or target not in G:
 		raise nx.NodeNotFound(f"Either source {source} or target {target} is not in G")
 
 	push = heapq.heappush
 	pop = heapq.heappop
-	weight = weightCalc(G, weight)
+	# weight = weightCalc(G, weight)
+	weight = lambda u, v, d: min(attr.get(weight, 1) for attr in d.values())
 
 	c = count()
 	queue = [(0, next(c), source, 0, None)]
@@ -171,7 +173,7 @@ def bus(busGraph, start, end):
 	print ("transfers", transfers)
 	# STORE START AND END BUS STOPS THEN THROW INTO THE BUS ROUTING FUNCTION
 
-# INIT
+# ------------------------------------------INIT START-----------------------------------------------------------------
 # ox.config(log_console=True)
 print("Loading OSM")
 graph = ox.graph_from_file("punggol.osm", bidirectional=False, simplify=True, retain_all=False)
@@ -219,7 +221,7 @@ for service, path in routes_map.items():
 		next_code = next_route_stop["BusStopCode"]
 		busGraph[curr_code][(next_code, service)] = distance
 
-
+# ------------------------------------------------INIT END-----------------------------------------
 
 # start = ox.geocode("Singapore, Punggol MRT")
 # end = ox.geocode("singapore, Cove Stn")
@@ -232,23 +234,14 @@ end_node = ox.get_nearest_node(graph, end)
 
 nodes, edges = ox.graph_to_gdfs(graph)
 
-nodepath = astar_path(graph, start_node, end_node)
-
-prev = None
-for i in nodepath:
-	if prev:
-		pass
-		# print(graph[prev][i])
-	prev = i
-
-route_nodes = nodes.loc[nodepath]
-# print(route_nodes)
-
+# TO CREATE BUS ROUTING
 bus(busGraph, start, end)
 
+# TO CREATE WALK ROUTING
+nodepath = astar_path(graph, start_node, end_node)
+
+
+# TO DISPLAY ROUTE ON MAP
 graph_projected = ox.project_graph(graph)
-# ox.plot.plot_graph(graph_projected)
-
-
 fig, ax = ox.plot_graph_route(graph_projected, nodepath, origin_point=start,destination_point=end)
 plt.tight_layout()
