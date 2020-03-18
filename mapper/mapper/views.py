@@ -17,6 +17,9 @@ import folium
 import folium.plugins
 from geopy.geocoders import Nominatim
 
+import json
+from mysite.settings import JSON_FOLDER, ROUTE_FOLDER
+
 ox.config(log_console=True, use_cache=True)
 
 AlgoItterations1 = 0
@@ -51,6 +54,68 @@ def index(request):
 			orig_node = ox.get_nearest_node(graph, org)
 			target_node = ox.get_nearest_node(graph, dest)
 			
+			with open(JSON_FOLDER + 'punggol_bus_stops.json') as f:
+				data = json.load(f)
+				f.close()
+
+			busGraph = nx.MultiDiGraph()
+
+			for stop in data:
+				stopNo = stop["BusStopCode"]
+				name = stop["Description"]
+				lat = stop["Latitude"]
+				lon = stop["Longitude"]
+				busGraph.add_node(stopNo, name=name, y=lat, x=lon)
+
+			with open(JSON_FOLDER + 'punggol_bus_routes.json') as f:
+				data = json.load(f)
+				f.close()
+
+			with open(JSON_FOLDER + 'busroute0.json') as f:
+				geometry = json.load(f)
+				f.close()
+
+			prev = 0
+			prevdirection = 0
+			prevservice = 0
+			for route in data:
+				current = route["BusStopCode"]
+				service = route["ServiceNo"]
+				distance = route["Distance"]
+				direction = route["Direction"]
+
+				if distance == 0:
+					prev = current
+					prevdirection = direction
+					prevservice = service
+					continue
+				else:
+					lat = busGraph.nodes[prev]['y']
+					lon = busGraph.nodes[prev]['x']
+
+					clat = busGraph.nodes[current]['y']
+					clon = busGraph.nodes[current]['x']
+
+					geo = []
+					if service in geometry:
+						line = geometry[service]['coordinates']
+						flag = None
+						for point in line:
+							if [lon, lat] == point:
+								flag = 1
+							if not flag:
+								geo.append(point)
+								if point == [clon, clat]:
+									break
+
+					if len(geo) != 0:
+						busGraph.add_edge(prev, current, service=service, length=distance, direction=direction, geometry=LineString(geo))
+					prev = current
+					prevdirection = direction
+					prevservice = service
+
+			graph = nx.compose_all([busGraph, graph1, graph2])
+			
 			nodes, edges = ox.graph_to_gdfs(graph)
 			
 			node_data = get_nodes(edges)
@@ -68,9 +133,9 @@ def index(request):
 			folium.Marker(location=dest, popup=dst_addr.address, icon=folium.Icon(color='blue')).add_to(pdijskra_map)
 			folium.Marker(location=org, popup=org_addr.address, icon=folium.Icon(color='red')).add_to(astar_map)
 			folium.Marker(location=dest, popup=dst_addr.address, icon=folium.Icon(color='blue')).add_to(astar_map)
-			filepath1 = 'mapper/dijskra_route.html'
-			filepath2 = 'mapper/pdijskra_route.html'
-			filepath3 = 'mapper/astar_route.html'
+			filepath1 = ROUTE_FOLDER + 'dijskra_route.html'
+			filepath2 = ROUTE_FOLDER + 'pdijskra_route.html'
+			filepath3 = ROUTE_FOLDER + 'astar_route.html'
 			dijskra_map.save(filepath1)
 			pdijskra_map.save(filepath2)
 			astar_map.save(filepath3)

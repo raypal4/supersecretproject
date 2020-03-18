@@ -113,7 +113,15 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Allow usage of xframe in django
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+
+# json folder
+JSON_FOLDER = os.path.join(BASE_DIR, 'mapper/json/')
+
+# routes folder
+ROUTE_FOLDER = os.path.join(BASE_DIR, 'mapper/')
 
 
 # Static files (CSS, JavaScript, Images)
