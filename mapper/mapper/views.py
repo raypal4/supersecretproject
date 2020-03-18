@@ -33,6 +33,7 @@ def index(request):
 		if retrieveForm.is_valid():
 			org_var = retrieveForm.cleaned_data['var_org'] #828867
 			dst_var = retrieveForm.cleaned_data['var_dst'] #824679
+			type_var = retrieveForm.cleaned_data['var_type']
 			
 			geolocator = Nominatim(user_agent="test")
 			org_addr = geolocator.geocode(org_var)
@@ -40,81 +41,28 @@ def index(request):
 			org = (org_addr.latitude, org_addr.longitude)
 			dest = (dst_addr.latitude, dst_addr.longitude)
 			
-			if org:
-				graph1 = ox.graph_from_point(org, distance=2000, network_type='drive')
-				graph2 = ox.graph_from_point(org, distance=2000, network_type='walk')
-				graph = nx.compose(graph2, graph1)
-			else:
-				(graph1, org) = ox.graph_from_address(address, distance=5000, network_type='walk', return_coords=True)
-				graph2 = ox.graph_from_address(address, distance=5000, network_type='drive')
-				graph = nx.compose(graph1, graph2)
+			if type_var == 'Walk':
+				if org:
+					graph = ox.graph_from_point(org, distance=2000, network_type='walk')
+				else:
+					(graph, org) = ox.graph_from_address(address, distance=5000, network_type='walk', return_coords=True)
+			elif type_var == 'Drive':
+				if org:
+					graph = ox.graph_from_point(org, distance=2000, network_type='drive')
+				else:
+					graph = ox.graph_from_address(address, distance=5000, network_type='drive')
+			# to be implemented
+			#elif type_var == 'Bus':
 			
 			# get cloest node to the point of search
 			global target_node
 			orig_node = ox.get_nearest_node(graph, org)
 			target_node = ox.get_nearest_node(graph, dest)
 			
-			with open(JSON_FOLDER + 'punggol_bus_stops.json') as f:
-				data = json.load(f)
-				f.close()
-
-			busGraph = nx.MultiDiGraph()
-
-			for stop in data:
-				stopNo = stop["BusStopCode"]
-				name = stop["Description"]
-				lat = stop["Latitude"]
-				lon = stop["Longitude"]
-				busGraph.add_node(stopNo, name=name, y=lat, x=lon)
-
-			with open(JSON_FOLDER + 'punggol_bus_routes.json') as f:
-				data = json.load(f)
-				f.close()
-
-			with open(JSON_FOLDER + 'busroute0.json') as f:
-				geometry = json.load(f)
-				f.close()
-
-			prev = 0
-			prevdirection = 0
-			prevservice = 0
-			for route in data:
-				current = route["BusStopCode"]
-				service = route["ServiceNo"]
-				distance = route["Distance"]
-				direction = route["Direction"]
-
-				if distance == 0:
-					prev = current
-					prevdirection = direction
-					prevservice = service
-					continue
-				else:
-					lat = busGraph.nodes[prev]['y']
-					lon = busGraph.nodes[prev]['x']
-
-					clat = busGraph.nodes[current]['y']
-					clon = busGraph.nodes[current]['x']
-
-					geo = []
-					if service in geometry:
-						line = geometry[service]['coordinates']
-						flag = None
-						for point in line:
-							if [lon, lat] == point:
-								flag = 1
-							if not flag:
-								geo.append(point)
-								if point == [clon, clat]:
-									break
-
-					if len(geo) != 0:
-						busGraph.add_edge(prev, current, service=service, length=distance, direction=direction, geometry=LineString(geo))
-					prev = current
-					prevdirection = direction
-					prevservice = service
-
-			graph = nx.compose_all([busGraph, graph1, graph2])
+			# below is how to import json for usage
+			# with open(JSON_FOLDER + 'punggol_bus_stops.json') as f:
+				# data = json.load(f)
+				# f.close()
 			
 			nodes, edges = ox.graph_to_gdfs(graph)
 			
@@ -142,7 +90,7 @@ def index(request):
 			#return HttpResponseRedirect('../result/')
 			contentDict = {"org_addr": org_addr.address, "dst_addr": dst_addr.address, "node_dijkstra": len(ourRoute2), "node_pdijkstra": len(ourRoute), "node_astar": len(ourRoute3), 
 			"itterations_dijkstra": AlgoItterations1, "itterations_pdijkstra": AlgoItterations2, "itterations_astar": AlgoItterations3, "dist_dijkstra": getDistanceTravelled(nodes, node_data, ourRoute2)
-			, "dist_pdijkstra": getDistanceTravelled(nodes, node_data, ourRoute), "dist_astar": getDistanceTravelled(nodes, node_data, ourRoute3)}
+			, "dist_pdijkstra": getDistanceTravelled(nodes, node_data, ourRoute), "dist_astar": getDistanceTravelled(nodes, node_data, ourRoute3), "mode_var": type_var}
 			return render(request, "main.html", contentDict)
 
 	else:
