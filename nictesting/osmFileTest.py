@@ -291,10 +291,22 @@ def bus(busGraph, start, end):
 
 # ------------------------------------START OF MAIN--------------------------------------------
 
-# start = ox.geocode("Singapore, Punggol MRT")
-# end = ox.geocode("singapore, Cove Stn")
-start = (1.40525, 103.90235)
-end = (1.39960, 103.91646)
+# start = ox.geocode("Blk 187, Punggol Central, Punggol, Northeast")
+# end = ox.geocode("Punggol, Punggol Central, Punggol, Northeast")
+# start = (1.40525, 103.90235)
+# end = (1.39960, 103.91646)
+
+# # test 1
+# start = (1.40513, 103.9028)
+# end = (1.39946, 103.91383)
+
+# test 2
+start = (1.40512, 103.90279)
+end = (1.42027, 103.91045)
+
+# # test 3 - unlabeled bus stop
+# start = (1.4107318, 103.8975557)
+# end = (1.4035469, 103.8912351)
 
 start_node = ox.get_nearest_node(graph, start)
 end_node = ox.get_nearest_node(graph, end)
@@ -362,13 +374,6 @@ while i < len(path):
 nodepath = astar_path(graph, start_node, end_node)
 print(line)
 
-# TO DISPLAY ROUTE ON MATPLOTLIB
-fig, ax = ox.plot_graph_route(graph, nodepath, fig_height=10, fig_width=10,
-                              orig_dest_node_color='green', route_color='green', show=False, close=False)
-ax.scatter(start[1], start[0], c='red', s=50)
-ax.scatter(end[1], end[0], c='blue', s=50)
-plt.show()
-
 # FOLIUM
 # m = ox.plot_route_folium(graph, nodepath, route_color='green')
 # opacity 0 just to make the driving line disappear
@@ -385,4 +390,4 @@ folium.PolyLine([line[0], start], color="blue", weight=2.5,
                 opacity=1, dasharray="4").add_to(m)
 folium.PolyLine([line[-1], end], color="blue", weight=2.5,
                 opacity=1, dasharray="4").add_to(m)
-m
+m.save('index.html')
