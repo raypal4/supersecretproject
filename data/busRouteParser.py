@@ -12,7 +12,7 @@ for i in data["features"]:
 		latlong = i["geometry"]["coordinates"][j]
 		if len(latlong) == 2:
 			x,y = latlong
-		if not ((1.393925 < y < 1.415805) and (103.895516 < x < 103.923669)):
+		if not ((1.3925000 < y < 1.4216000) and (103.8904000 < x < 103.9241000)):
 			del i["geometry"]["coordinates"][j]
 		else:
 			j += 1
@@ -39,5 +39,5 @@ with open('busroute1.json', 'w') as json_file:
 	json_file.close()
 
 
-# 1.393925,103.895516
-# 1.415805,103.923669
+# 1.3925000,103.8904000
+# 1.4216000,103.9241000
