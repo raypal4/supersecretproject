@@ -24,7 +24,6 @@ print("Loading JSON")
 stops = json.loads(open("nictesting/stops.json").read())
 services = json.loads(open("nictesting/services.json").read())
 routes = json.loads(open("nictesting/routes.json").read())
-
 busRoute0 = json.loads(
     open("nictesting/punggolBusData/busroute0.json").read())
 busRoute1 = json.loads(
@@ -201,20 +200,22 @@ def bus(busGraph, start, end):
         "punggol stn/waterway point": "punggol stn",
         "opposite": "opp",
         "primary": "pr",
-        "school": "sch"
+        "school": "sch",
+        "before": "bef",
+        "after": "aft"
     }
 
     startlat = start[0]
     startLon = start[1]
     R = 6378137
-    dn = 50
-    de = 50
+    dn = 250
+    de = 250
     dLat = dn/R
     dLon = de/(R*math.cos(math.pi*startlat/180))
     maxstartLat = startlat + dLat * 180/math.pi
     maxstartLon = startLon + dLon * 180/math.pi
-    dn = -50
-    de = -50
+    dn = -250
+    de = -250
     dLat = dn/R
     dLon = de/(R*math.cos(math.pi*startlat/180))
     minstartLat = startlat + dLat * 180/math.pi
@@ -226,23 +227,26 @@ def bus(busGraph, start, end):
     busStopStart = None
     busStopStartName = None
 
+    print("\nPossible Starting Stops:")
     for name in bus["name"]:
+        print(name)
         name = name.lower()
         for word, initial in words_rep.items():
             name = name.replace(word, initial)
         busStopStartName = name.title()
+    print(busStopStartName)
 
     endlat = end[0]
     endLon = end[1]
     R = 6378137
-    dn = 50
-    de = 50
+    dn = 250
+    de = 250
     dLat = dn/R
     dLon = de/(R*math.cos(math.pi*endlat/180))
     maxendLat = endlat + dLat * 180/math.pi
     maxendLon = endLon + dLon * 180/math.pi
-    dn = -50
-    de = -50
+    dn = -250
+    de = -250
     dLat = dn/R
     dLon = de/(R*math.cos(math.pi*endlat/180))
     minendLat = endlat + dLat * 180/math.pi
@@ -250,14 +254,18 @@ def bus(busGraph, start, end):
 
     bus = pois_from_polygon(
         box(minendLon, minendLat, maxendLon, maxendLat), tags=tags)
-    # print(bus.columns)
+    print(bus.columns)
     busStopEnd = None
     busStopEndName = None
+
+    print("\nPossible Ending Stops:")
     for name in bus["name"]:
+        print(name)
         name = name.lower()
         for word, initial in words_rep.items():
             name = name.replace(word, initial)
         busStopEndName = name.title()
+    print(busStopEndName)
 
     startStation = dict(
         filter(lambda item: busStopStartName in item[0], stop_desc_map.items()))
@@ -267,17 +275,20 @@ def bus(busGraph, start, end):
     results = []
     for x in startStation:
         for y in endStation:
+            # print(startStation[x]["BusStopCode"], endStation[y]["BusStopCode"])
             results.append(
                 bfs(busGraph, startStation[x]["BusStopCode"], endStation[y]["BusStopCode"]))
 
     cheapest = None
     cheapestCost = float("Infinity")
     for cost, distance, transfers, path in results:
+        # print(cost, cheapestCost)
         if cost < cheapestCost:
             cheapest = (cost, distance, transfers, path)
             cheapestCost = cost
 
-    print(results)
+    print("RESULTS ", results)
+    print("CHEAPEST ", cheapest)
     cost, distance, transfers, path = cheapest
     for code, service in path:
         print(service, stop_code_map[code]["Description"])
@@ -291,18 +302,19 @@ def bus(busGraph, start, end):
 
 # ------------------------------------START OF MAIN--------------------------------------------
 
-# start = ox.geocode("Blk 187, Punggol Central, Punggol, Northeast")
-# end = ox.geocode("Punggol, Punggol Central, Punggol, Northeast")
-# start = (1.40525, 103.90235)
+start = ox.geocode("Horizon Primary school")
+end = ox.geocode("punggol safra")
+print(end)
+# # start = (1.40525, 103.90235)
 # end = (1.39960, 103.91646)
 
-# # test 1
+# test 1
 # start = (1.40513, 103.9028)
-# end = (1.39946, 103.91383)
+#end = (1.39946, 103.91383)
 
 # test 2
-start = (1.40512, 103.90279)
-end = (1.42027, 103.91045)
+# start = (1.40512, 103.90279)
+# end = (1.42027, 103.91045)
 
 # # test 3 - unlabeled bus stop
 # start = (1.4107318, 103.8975557)
@@ -372,7 +384,7 @@ while i < len(path):
 
 # TO CREATE WALK ROUTING
 nodepath = astar_path(graph, start_node, end_node)
-print(line)
+# print(line)
 
 # FOLIUM
 # m = ox.plot_route_folium(graph, nodepath, route_color='green')
