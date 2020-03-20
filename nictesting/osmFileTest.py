@@ -135,7 +135,7 @@ def astar_path(G, source, target):
 
 
 def bfs(graph, start, end):
-    cost_per_transfer = 5
+    cost_per_transfer = 10
     cost_per_stop = 1
     seen = set()
     # maintain a queue of paths
@@ -302,8 +302,11 @@ def bus(busGraph, start, end):
 
 # ------------------------------------START OF MAIN--------------------------------------------
 
-start = ox.geocode("Horizon Primary school")
-end = ox.geocode("punggol safra")
+start = ox.geocode(
+    "Greendale Secondary School, Singapore")
+end = ox.geocode(
+    "safra punggol")
+print(start)
 print(end)
 # # start = (1.40525, 103.90235)
 # end = (1.39960, 103.91646)
