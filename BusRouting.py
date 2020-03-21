@@ -17,17 +17,17 @@ from manualPatch.pois import *
 # ------------------------------------------INIT START--------------------
 # ox.config(log_console=True)
 print("Loading OSM")
-graph = ox.graph_from_file("nictesting\punggol.osm",
+graph = ox.graph_from_file("punggol.osm",
                            bidirectional=False, simplify=True, retain_all=False)
 
 print("Loading JSON")
-stops = json.loads(open("nictesting/stops.json").read())
-services = json.loads(open("nictesting/services.json").read())
-routes = json.loads(open("nictesting/routes.json").read())
+stops = json.loads(open("stops.json").read())
+services = json.loads(open("services.json").read())
+routes = json.loads(open("routes.json").read())
 busRoute0 = json.loads(
-    open("nictesting/punggolBusData/busroute0.json").read())
+    open("punggolBusData/busroute0.json").read())
 busRoute1 = json.loads(
-    open("nictesting/punggolBusData/busroute1.json").read())
+    open("punggolBusData/busroute1.json").read())
 
 print("Initializing tables")
 stop_desc_map = {stop["Description"]: stop for stop in stops}
