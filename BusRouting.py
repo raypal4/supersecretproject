@@ -430,11 +430,7 @@ if pathcheck[1] == 0:
                       icon=folium.Icon(color='green', icon='bus', prefix='fa')).add_to(m)
     folium.PolyLine(line, color="red", weight=2.5, opacity=1).add_to(m)
 
-    # folium.PolyLine([line[0], start], color="blue", weight=2.5,
-    #                 opacity=1, dasharray="4").add_to(m)
-    # folium.PolyLine([line[-1], end], color="blue", weight=2.5,
-    #                 opacity=1, dasharray="4").add_to(m)
-
+    # start point to start busstop
     folium.PolyLine([start, latlontobus[0]], color="blue", weight=2.5,
                     opacity=1, dasharray="4").add_to(m)
 
@@ -444,6 +440,7 @@ if pathcheck[1] == 0:
     folium.PolyLine([latlontobus[-1], line[0]], color="green", weight=2.5,
                     opacity=1, dasharray="4").add_to(m)
 
+    # End  bus stop to end point
     folium.PolyLine([line[-1], latlonfrombus[0]], color="green", weight=2.5,
                     opacity=1, dasharray="4").add_to(m)
 
