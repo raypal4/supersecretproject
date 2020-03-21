@@ -317,20 +317,6 @@ start = ox.geocode("punggol")
 end = ox.geocode("horizon primary school")
 print(start)
 print(end)
-# start = (1.399461, 103.905827)
-# end = (1.394477, 103.916076)
-
-# test 1
-# start = (1.40513, 103.9028)
-#end = (1.39946, 103.91383)
-
-# test 2
-# start = (1.40512, 103.90279)
-# end = (1.42027, 103.91045)
-
-# # test 3 - unlabeled bus stop
-# start = (1.4107318, 103.8975557)
-# end = (1.4035469, 103.8912351)
 
 start_node = ox.get_nearest_node(graph, start)
 end_node = ox.get_nearest_node(graph, end)
@@ -340,6 +326,7 @@ nodes, edges = ox.graph_to_gdfs(graph)
 # TO CREATE BUS ROUTING
 pathcheck = bus(busGraph, graph, start, end)
 
+# IF BUS ROUTE IS AVAILABLE
 if pathcheck[1] == 0:
     path = pathcheck[0]
     indexing = 0
@@ -418,7 +405,7 @@ if pathcheck[1] == 0:
                     opacity=1, dasharray="4").add_to(m)
     m.save('index.html')
 
-# if walkable distance
+# IF BUS ROUTE NOT FOUND, RUN WALK ROUTE
 if pathcheck[1] == 1:
     nodepath = pathcheck[0]
     m = ox.plot_route_folium(
