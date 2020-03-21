@@ -310,8 +310,8 @@ def bus(busGraph,  graph, start, end):
     return [path, busflag]
     # STORE START AND END BUS STOPS THEN THROW INTO THE BUS ROUTING FUNCTION
 
-
 # ------------------------------------START OF MAIN-----------------------
+
 
 start = ox.geocode("punggol")
 end = ox.geocode("horizon primary school")
@@ -383,12 +383,8 @@ if pathcheck[1] == 0:
                 break
             indexing += 1
         i += 1
-    # TO CREATE WALK ROUTING WITH BUS
+    # TO CREATE ROUTING WITH BUS
     nodepath = astar_path(graph, start_node, end_node)
-    # print(line)
-    # FOLIUM
-    # m = ox.plot_route_folium(graph, nodepath, route_color='green')
-    # opacity 0 just to make the driving line disappear
     m = ox.plot_route_folium(
         graph, nodepath, route_color='green', route_opacity=0)
     folium.Marker(location=(start[0], start[1]), popup='START', icon=folium.Icon(
