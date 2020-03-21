@@ -135,7 +135,7 @@ def astar_path(G, source, target):
 
 
 def bfs(graph, start, end):
-    cost_per_transfer = 10
+    cost_per_transfer = 5
     cost_per_stop = 1
     seen = set()
     # maintain a queue of paths
@@ -173,7 +173,7 @@ def bfs(graph, start, end):
                 queue, (new_cost, new_distance, new_transfers, new_path))
 
 
-def bus(busGraph, start, end):
+def bus(busGraph, graph, start, end):
     tags = {
         'highway': 'bus_stop',
     }
@@ -204,18 +204,19 @@ def bus(busGraph, start, end):
         "before": "bef",
         "after": "aft"
     }
+    busflag = 0
 
     startlat = start[0]
     startLon = start[1]
     R = 6378137
-    dn = 250
-    de = 250
+    dn = 200
+    de = 200
     dLat = dn/R
     dLon = de/(R*math.cos(math.pi*startlat/180))
     maxstartLat = startlat + dLat * 180/math.pi
     maxstartLon = startLon + dLon * 180/math.pi
-    dn = -250
-    de = -250
+    dn = -200
+    de = -200
     dLat = dn/R
     dLon = de/(R*math.cos(math.pi*startlat/180))
     minstartLat = startlat + dLat * 180/math.pi
@@ -234,19 +235,19 @@ def bus(busGraph, start, end):
         for word, initial in words_rep.items():
             name = name.replace(word, initial)
         busStopStartName = name.title()
-    print(busStopStartName)
+    print("START FROM: ", busStopStartName)
 
     endlat = end[0]
     endLon = end[1]
     R = 6378137
-    dn = 250
-    de = 250
+    dn = 200
+    de = 200
     dLat = dn/R
     dLon = de/(R*math.cos(math.pi*endlat/180))
     maxendLat = endlat + dLat * 180/math.pi
     maxendLon = endLon + dLon * 180/math.pi
-    dn = -250
-    de = -250
+    dn = -200
+    de = -200
     dLat = dn/R
     dLon = de/(R*math.cos(math.pi*endlat/180))
     minendLat = endlat + dLat * 180/math.pi
@@ -265,7 +266,7 @@ def bus(busGraph, start, end):
         for word, initial in words_rep.items():
             name = name.replace(word, initial)
         busStopEndName = name.title()
-    print(busStopEndName)
+    print("END STOP: ", busStopEndName)
 
     startStation = dict(
         filter(lambda item: busStopStartName in item[0], stop_desc_map.items()))
@@ -273,11 +274,21 @@ def bus(busGraph, start, end):
         filter(lambda item: busStopEndName in item[0], stop_desc_map.items()))
 
     results = []
+
     for x in startStation:
         for y in endStation:
-            # print(startStation[x]["BusStopCode"], endStation[y]["BusStopCode"])
-            results.append(
-                bfs(busGraph, startStation[x]["BusStopCode"], endStation[y]["BusStopCode"]))
+            if startStation[x]["BusStopCode"] != endStation[y]["BusStopCode"]:
+                results.append(
+                    bfs(busGraph, startStation[x]["BusStopCode"], endStation[y]["BusStopCode"]))
+            else:
+                print("same start and end stop:",
+                      startStation[x]["BusStopCode"])
+                results.clear()
+                print(start, end)
+                busflag = 1
+                start_node = ox.get_nearest_node(graph, start)
+                end_node = ox.get_nearest_node(graph, end)
+                return [astar_path(graph, start_node, end_node), busflag]
 
     cheapest = None
     cheapestCost = float("Infinity")
@@ -296,16 +307,18 @@ def bus(busGraph, start, end):
     print("cost", cost)
     print("distance", distance, "km")
     print("transfers", transfers)
-    return path
+    return [path, busflag]
     # STORE START AND END BUS STOPS THEN THROW INTO THE BUS ROUTING FUNCTION
 
 
 # ------------------------------------START OF MAIN--------------------------------------------
 
 start = ox.geocode(
-    "Greendale Secondary School, Singapore")
+    "punggol")
+# end = ox.geocode(
+#     "waterway point")
 end = ox.geocode(
-    "safra punggol")
+    "Horizon Primary School")
 print(start)
 print(end)
 # # start = (1.40525, 103.90235)
@@ -313,7 +326,7 @@ print(end)
 
 # test 1
 # start = (1.40513, 103.9028)
-#end = (1.39946, 103.91383)
+# end = (1.39946, 103.91383)
 
 # test 2
 # start = (1.40512, 103.90279)
@@ -329,80 +342,87 @@ end_node = ox.get_nearest_node(graph, end)
 nodes, edges = ox.graph_to_gdfs(graph)
 
 # TO CREATE BUS ROUTING
-path = bus(busGraph, start, end)
-indexing = 0
-line = []
-prevService = None
-prevIndex = None
-i = 0
-markers = []
-while i < len(path):
-    stopCode, service = path[i]
-    # in the case of first stop, no bus service stated, take next
-    if service is None:
-        service = path[i+1][1]
+path = bus(busGraph, graph, start, end)
+if path[1] == 0:
+    indexing = 0
+    line = []
+    prevService = None
+    prevIndex = None
+    i = 0
+    markers = []
+    while i < len(path):
+        stopCode, service = path[0][i]
+        # in the case of first stop, no bus service stated, take next
+        if service is None:
+            service = path[0][i+1][1]
 
-    if service != prevService:
-        indexing = 0
+        if service != prevService:
+            indexing = 0
 
-    qlat = stop_code_map[stopCode]["Latitude"]
-    qlon = stop_code_map[stopCode]["Longitude"]
+        qlat = stop_code_map[stopCode]["Latitude"]
+        qlon = stop_code_map[stopCode]["Longitude"]
 
-    # get routes for respective direction
-    if service[1] == 1:
-        routing = busRoute0[service[0]]["coordinates"]
-    else:
-        routing = busRoute1[service[0]]["coordinates"]
-    while indexing < len(routing):
-        clon, clat = routing[indexing]
-        u = (qlat, qlon)
-        v = (clat, clon)
-        # stop found in range of 30 meters, latlong accuracy difference from two sources
-        if geopy.distance.distance(u, v).km < 0.03:
-            # first bus stop
-            if prevService is None:
-                line.append(v)
-            else:
-                if prevService == service:
-                    for x, y in routing[prevIndex: indexing+1]:
-                        line.append((y, x))
+        # get routes for respective direction
+        if service[1] == 1:
+            routing = busRoute0[service[0]]["coordinates"]
+        else:
+            routing = busRoute1[service[0]]["coordinates"]
+        while indexing < len(routing):
+            clon, clat = routing[indexing]
+            u = (qlat, qlon)
+            v = (clat, clon)
+            # stop found in range of 30 meters, latlong accuracy difference from two sources
+            if geopy.distance.distance(u, v).km < 0.03:
+                # first bus stop
+                if prevService is None:
+                    line.append(v)
                 else:
-                    prevLatLong = line[-1]
-                    tempIndex = 0
-                    while tempIndex < len(routing):
-                        plon, plat = routing[tempIndex]
-                        p = (plat, plon)
-                        if geopy.distance.distance(prevLatLong, p).km < 0.03:
-                            for x, y in routing[tempIndex: indexing+1]:
-                                line.append((y, x))
-                            break
-                        tempIndex += 1
-            prevIndex = indexing
-            prevService = service
-            markers.append((v, stopCode))
-            break
-        indexing += 1
-    i += 1
-# print(line)
+                    if prevService == service:
+                        for x, y in routing[prevIndex: indexing+1]:
+                            line.append((y, x))
+                    else:
+                        prevLatLong = line[-1]
+                        tempIndex = 0
+                        while tempIndex < len(routing):
+                            plon, plat = routing[tempIndex]
+                            p = (plat, plon)
+                            if geopy.distance.distance(prevLatLong, p).km < 0.03:
+                                for x, y in routing[tempIndex: indexing+1]:
+                                    line.append((y, x))
+                                break
+                            tempIndex += 1
+                prevIndex = indexing
+                prevService = service
+                markers.append((v, stopCode))
+                break
+            indexing += 1
+        i += 1
+    # print(line)
+    # opacity 0 just to make the driving line disappear
+    nodepath = astar_path(graph, start_node, end_node)
+    m = ox.plot_route_folium(
+        graph, nodepath, route_color='green', route_opacity=0)
+    folium.Marker(location=(start[0], start[1]), popup='START', icon=folium.Icon(
+        color='red', icon='flag')).add_to(m)
+    folium.Marker(location=(end[0], end[1]), popup='END',
+                  icon=folium.Icon(color='blue', icon='flag')).add_to(m)
+    print(markers)
+    for loc, code in markers:
+        folium.Marker(location=loc, popup='Bus stop number:'+str(code),
+                      icon=folium.Icon(color='green', icon='bus', prefix='fa')).add_to(m)
+    folium.PolyLine(line, color="red", weight=2.5, opacity=1).add_to(m)
+    folium.PolyLine([line[0], start], color="blue", weight=2.5,
+                    opacity=1, dasharray="4").add_to(m)
+    folium.PolyLine([line[-1], end], color="blue", weight=2.5,
+                    opacity=1, dasharray="4").add_to(m)
+    m.save('index.html')
 
-# TO CREATE WALK ROUTING
-nodepath = astar_path(graph, start_node, end_node)
-# print(line)
 
-# FOLIUM
-# m = ox.plot_route_folium(graph, nodepath, route_color='green')
-# opacity 0 just to make the driving line disappear
-m = ox.plot_route_folium(graph, nodepath, route_color='green', route_opacity=0)
-folium.Marker(location=(start[0], start[1]), popup='START', icon=folium.Icon(
-    color='red', icon='flag')).add_to(m)
-folium.Marker(location=(end[0], end[1]), popup='END',
-              icon=folium.Icon(color='blue', icon='flag')).add_to(m)
-for loc, code in markers:
-    folium.Marker(location=loc, popup='Bus stop number:'+str(code),
-                  icon=folium.Icon(color='green', icon='bus', prefix='fa')).add_to(m)
-folium.PolyLine(line, color="red", weight=2.5, opacity=1).add_to(m)
-folium.PolyLine([line[0], start], color="blue", weight=2.5,
-                opacity=1, dasharray="4").add_to(m)
-folium.PolyLine([line[-1], end], color="blue", weight=2.5,
-                opacity=1, dasharray="4").add_to(m)
-m.save('index.html')
+if path[1] == 1:
+    nodepath = path[0]
+    m = ox.plot_route_folium(graph, nodepath, route_color='green')
+    folium.Marker(location=(start[0], start[1]), popup='START', icon=folium.Icon(
+        color='red', icon='flag')).add_to(m)
+    folium.Marker(location=(end[0], end[1]), popup='END',
+                  icon=folium.Icon(color='blue', icon='flag')).add_to(m)
+    m.save('index.html')
