@@ -11,6 +11,7 @@ import json
 import heapq
 import folium
 import math
+import osmapi as osm
 
 from manualPatch.pois import *
 
@@ -18,7 +19,7 @@ from manualPatch.pois import *
 # ox.config(log_console=True)
 print("Loading OSM")
 graph = ox.graph_from_file("punggol.osm",
-                           bidirectional=False, simplify=True, retain_all=False)
+                           bidirectional=True, simplify=True, retain_all=False)
 
 print("Loading JSON")
 stops = json.loads(open("punggolBusData/stops.json").read())
@@ -68,13 +69,13 @@ for service, path in routes_map.items():
 
 # ------------------------------------------------INIT END----------------
 
-
 # def weightCalc(G, weight):
 # 	if callable(weight):
 # 		return weight
 # 	if G.is_multigraph():
 # 		return lambda u, v, d: min(attr.get(weight, 1) for attr in d.values())
 # 	return lambda u, v, data: data.get(weight, 1)
+
 
 def heuristic(G, u, v):
     u = (G.nodes[u]['y'], G.nodes[u]['x'])
@@ -230,6 +231,11 @@ def bus(busGraph, graph, start, end, start_node, end_node):
     # print(bus.columns)
     busStopStartName = []
 
+   # if there is no start bus stop within 1km, person should default to walk --------------- test
+    if bus.empty:
+        busflag = 1
+        return [astar_path(graph, start_node, end_node), busflag]
+
     print("\nPossible Starting Stops:")
     for name in bus["name"]:
         name = name.lower()
@@ -289,30 +295,38 @@ def bus(busGraph, graph, start, end, start_node, end_node):
 
     cheapest = None
     cheapestCost = float("Infinity")
+
     for cost, distance, transfers, path in results:
         # print(cost, cheapestCost)
         if cost < cheapestCost:
             cheapest = (cost, distance, transfers, path)
             cheapestCost = cost
 
+    cheapestStopsArray = []
+
     print("CHEAPEST ROUTE: ", cheapest, "\n")
     print("----------------------ROUTE DESCRIPTION-----------------------")
     cost, distance, transfers, path = cheapest
     for code, service in path:
         print(service, stop_code_map[code]["Description"])
+        cheapestStopsArray.append(
+            (stop_code_map[code]["Latitude"], stop_code_map[code]["Longitude"]))
     print("--------------------------------------------------------------")
     print("Number of stops: ", len(path) - 1)
     print("cost: ", cost)
     print("distance: ", distance, "km")
     print("transfers: ", transfers)
-    return [path, busflag]
+
+    startStop = cheapestStopsArray[0]
+    endStop = cheapestStopsArray[-1]
+    return [path, busflag, startStop, endStop]
     # STORE START AND END BUS STOPS THEN THROW INTO THE BUS ROUTING FUNCTION
 
 # ------------------------------------START OF MAIN-----------------------
 
 
 start = ox.geocode("punggol, singapore")
-end = ox.geocode("a treasure trove, singapore")
+end = ox.geocode("horizon primary school, singapore")
 print("Found a starting node", start)
 print("Found a ending node", end)
 
@@ -326,6 +340,28 @@ pathcheck = bus(busGraph, graph, start, end, start_node, end_node)
 
 # IF BUS ROUTE IS AVAILABLE
 if pathcheck[1] == 0:
+    startStopCoords = pathcheck[2]
+    endStopCoords = pathcheck[3]
+
+    start_Bus = ox.get_nearest_node(graph, startStopCoords)
+    end_Bus = ox.get_nearest_node(graph, endStopCoords)
+
+    pathToBusstop = astar_path(graph, start_node, start_Bus)
+    pathFromBusstop = astar_path(graph, end_Bus, end_node)
+
+    latlontobus = []
+    latlonfrombus = []
+
+    api = osm.OsmApi()  # this instantiate the OsmApi class,
+
+    for item in pathToBusstop:
+        node = api.NodeGet(item)
+        latlontobus.append((node["lat"], node["lon"]))
+
+    for item in pathFromBusstop:
+        node = api.NodeGet(item)
+        latlonfrombus.append((node["lat"], node["lon"]))
+
     path = pathcheck[0]
     indexing = 0
     line = []
@@ -393,10 +429,30 @@ if pathcheck[1] == 0:
         folium.Marker(location=loc, popup='Bus stop number:' + str(code),
                       icon=folium.Icon(color='green', icon='bus', prefix='fa')).add_to(m)
     folium.PolyLine(line, color="red", weight=2.5, opacity=1).add_to(m)
-    folium.PolyLine([line[0], start], color="blue", weight=2.5,
+
+    # folium.PolyLine([line[0], start], color="blue", weight=2.5,
+    #                 opacity=1, dasharray="4").add_to(m)
+    # folium.PolyLine([line[-1], end], color="blue", weight=2.5,
+    #                 opacity=1, dasharray="4").add_to(m)
+
+    folium.PolyLine([start, latlontobus[0]], color="blue", weight=2.5,
                     opacity=1, dasharray="4").add_to(m)
-    folium.PolyLine([line[-1], end], color="blue", weight=2.5,
+
+    folium.PolyLine(latlontobus, color="green",
+                    weight=2.5, opacity=1).add_to(m)
+
+    folium.PolyLine([latlontobus[-1], line[0]], color="green", weight=2.5,
                     opacity=1, dasharray="4").add_to(m)
+
+    folium.PolyLine([line[-1], latlonfrombus[0]], color="green", weight=2.5,
+                    opacity=1, dasharray="4").add_to(m)
+
+    folium.PolyLine(latlonfrombus, color="green", weight=2.5,
+                    opacity=1, dasharray="4").add_to(m)
+
+    folium.PolyLine([latlonfrombus[-1], end], color="blue", weight=2.5,
+                    opacity=1, dasharray="4").add_to(m)
+
     m.save('index.html')
 
 # IF BUS ROUTE NOT FOUND, RUN WALK ROUTE
