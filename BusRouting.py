@@ -175,7 +175,7 @@ def bfs(graph, start, end):
                 queue, (new_cost, new_distance, new_transfers, new_path))
 
 
-def bus(busGraph,  graph, start, end):
+def bus(busGraph, graph, start, end, start_node, end_node):
     tags = {
         'highway': 'bus_stop',
     }
@@ -256,7 +256,6 @@ def bus(busGraph,  graph, start, end):
 
     bus = pois_from_polygon(
         box(minendLon, minendLat, maxendLon, maxendLat), tags=tags)
-    print(bus.columns)
     busStopEndName = []
 
     print("\nPossible Ending Stops:")
@@ -265,7 +264,7 @@ def bus(busGraph,  graph, start, end):
         for word, initial in words_rep.items():
             name = name.replace(word, initial)
         busStopEndName.append(name.title())
-    print(busStopEndName)
+    print(busStopEndName, "\n")
 
     startStation = {}
     for stop in busStopStartName:
@@ -286,8 +285,6 @@ def bus(busGraph,  graph, start, end):
                 print("same start and end stop:",
                       startStation[x]["BusStopCode"])
                 busflag = 1
-                start_node = ox.get_nearest_node(graph, start)
-                end_node = ox.get_nearest_node(graph, end)
                 return [astar_path(graph, start_node, end_node), busflag]
 
     cheapest = None
@@ -298,15 +295,16 @@ def bus(busGraph,  graph, start, end):
             cheapest = (cost, distance, transfers, path)
             cheapestCost = cost
 
-    print("RESULTS ", results)
-    print("CHEAPEST ", cheapest)
+    print("CHEAPEST ROUTE: ", cheapest, "\n")
+    print("----------------------ROUTE DESCRIPTION-----------------------")
     cost, distance, transfers, path = cheapest
     for code, service in path:
         print(service, stop_code_map[code]["Description"])
-    print(len(path) - 1, "stops")
-    print("cost", cost)
-    print("distance", distance, "km")
-    print("transfers", transfers)
+    print("--------------------------------------------------------------")
+    print("Number of stops: ", len(path) - 1)
+    print("cost: ", cost)
+    print("distance: ", distance, "km")
+    print("transfers: ", transfers)
     return [path, busflag]
     # STORE START AND END BUS STOPS THEN THROW INTO THE BUS ROUTING FUNCTION
 
@@ -314,9 +312,9 @@ def bus(busGraph,  graph, start, end):
 
 
 start = ox.geocode("punggol")
-end = ox.geocode("oasis primary school, singapore")
-print(start)
-print(end)
+end = ox.geocode("punggol safra, singapore")
+print("Found a starting node", start)
+print("Found a ending node", end)
 
 start_node = ox.get_nearest_node(graph, start)
 end_node = ox.get_nearest_node(graph, end)
@@ -324,7 +322,7 @@ end_node = ox.get_nearest_node(graph, end)
 nodes, edges = ox.graph_to_gdfs(graph)
 
 # TO CREATE BUS ROUTING
-pathcheck = bus(busGraph, graph, start, end)
+pathcheck = bus(busGraph, graph, start, end, start_node, end_node)
 
 # IF BUS ROUTE IS AVAILABLE
 if pathcheck[1] == 0:
