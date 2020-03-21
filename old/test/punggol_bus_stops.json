@@ -1,0 +1,583 @@
+[
+    {
+        "BusStopCode": "65009",
+        "Description": "Punggol Temp Int",
+        "Latitude": 1.40370629859822,
+        "Longitude": 103.90224337575333,
+        "RoadName": "Punggol Pl"
+    },
+    {
+        "BusStopCode": "65061",
+        "Description": "Blk 298A",
+        "Latitude": 1.39490129020977,
+        "Longitude": 103.9018594759131,
+        "RoadName": "Punggol Rd"
+    },
+    {
+        "BusStopCode": "65069",
+        "Description": "Blk 190C",
+        "Latitude": 1.39504382175966,
+        "Longitude": 103.90236824858533,
+        "RoadName": "Punggol Rd"
+    },
+    {
+        "BusStopCode": "65071",
+        "Description": "Opp Blk 103A",
+        "Latitude": 1.39845074063981,
+        "Longitude": 103.90416383740006,
+        "RoadName": "Punggol Rd"
+    },
+    {
+        "BusStopCode": "65079",
+        "Description": "Blk 102C",
+        "Latitude": 1.39893574516181,
+        "Longitude": 103.90474802293774,
+        "RoadName": "Punggol Rd"
+    },
+    {
+        "BusStopCode": "65081",
+        "Description": "Opp Blk 199C",
+        "Latitude": 1.40092158845981,
+        "Longitude": 103.90531038561681,
+        "RoadName": "Punggol Rd"
+    },
+    {
+        "BusStopCode": "65089",
+        "Description": "Opp Blk 296",
+        "Latitude": 1.4013394838038,
+        "Longitude": 103.90580511592151,
+        "RoadName": "Punggol Rd"
+    },
+    {
+        "BusStopCode": "65091",
+        "Description": "BLK 301A",
+        "Latitude": 1.4039796271467,
+        "Longitude": 103.90655641325277,
+        "RoadName": "Punggol Rd"
+    },
+    {
+        "BusStopCode": "65099",
+        "Description": "BLK 604A",
+        "Latitude": 1.40446781720997,
+        "Longitude": 103.90711426733175,
+        "RoadName": "Punggol Rd"
+    },
+    {
+        "BusStopCode": "65141",
+        "Description": "Soo Teck Stn",
+        "Latitude": 1.40454805557377,
+        "Longitude": 103.89716388800268,
+        "RoadName": "Punggol Way"
+    },
+    {
+        "BusStopCode": "65149",
+        "Description": "Soo Teck Stn",
+        "Latitude": 1.40444046572287,
+        "Longitude": 103.89692479945528,
+        "RoadName": "Punggol Way"
+    },
+    {
+        "BusStopCode": "65151",
+        "Description": "Cove Stn Exit B",
+        "Latitude": 1.39885650320272,
+        "Longitude": 103.90662105241732,
+        "RoadName": "Punggol Field"
+    },
+    {
+        "BusStopCode": "65159",
+        "Description": "Cove Stn Exit A",
+        "Latitude": 1.39856872266182,
+        "Longitude": 103.90665292741664,
+        "RoadName": "Punggol Field"
+    },
+    {
+        "BusStopCode": "65161",
+        "Description": "Meridian Stn Exit B",
+        "Latitude": 1.39735631138291,
+        "Longitude": 103.90859112878573,
+        "RoadName": "Punggol Field"
+    },
+    {
+        "BusStopCode": "65169",
+        "Description": "Meridian Stn Exit A",
+        "Latitude": 1.39645725997371,
+        "Longitude": 103.90932129998102,
+        "RoadName": "Punggol Field"
+    },
+    {
+        "BusStopCode": "65171",
+        "Description": "Coral Edge Stn Exit B",
+        "Latitude": 1.39452041732154,
+        "Longitude": 103.91205304613206,
+        "RoadName": "Punggol Field"
+    },
+    {
+        "BusStopCode": "65179",
+        "Description": "Coral Edge Stn Exit A",
+        "Latitude": 1.39429582834351,
+        "Longitude": 103.91190241454986,
+        "RoadName": "Punggol Field"
+    },
+    {
+        "BusStopCode": "65181",
+        "Description": "Atf Punggol Ctrl",
+        "Latitude": 1.39681388886675,
+        "Longitude": 103.91754694442001,
+        "RoadName": "Punggol East"
+    },
+    {
+        "BusStopCode": "65189",
+        "Description": "Bef Punggol Ctrl",
+        "Latitude": 1.39682694447407,
+        "Longitude": 103.91793305556935,
+        "RoadName": "Punggol East"
+    },
+    {
+        "BusStopCode": "65191",
+        "Description": "Bef Punggol Rd",
+        "Latitude": 1.39527356921611,
+        "Longitude": 103.90539999997036,
+        "RoadName": "TPE"
+    },
+    {
+        "BusStopCode": "65199",
+        "Description": "Aft Punggol Rd",
+        "Latitude": 1.39591721161169,
+        "Longitude": 103.90542736761212,
+        "RoadName": "TPE"
+    },
+    {
+        "BusStopCode": "65201",
+        "Description": "Opp Blk 201A",
+        "Latitude": 1.40083471013366,
+        "Longitude": 103.903580214986,
+        "RoadName": "Punggol Field"
+    },
+    {
+        "BusStopCode": "65209",
+        "Description": "Aft Punggol Rd",
+        "Latitude": 1.40040560689368,
+        "Longitude": 103.90387509832152,
+        "RoadName": "Punggol Field"
+    },
+    {
+        "BusStopCode": "65219",
+        "Description": "Aft Punggol Ctrl",
+        "Latitude": 1.40326663804865,
+        "Longitude": 103.90325880013292,
+        "RoadName": "Punggol Pl"
+    },
+    {
+        "BusStopCode": "65221",
+        "Description": "BLK 303D",
+        "Latitude": 1.40402842836975,
+        "Longitude": 103.90480763848863,
+        "RoadName": "Punggol Ctrl"
+    },
+    {
+        "BusStopCode": "65229",
+        "Description": "Blk 298",
+        "Latitude": 1.40320219454105,
+        "Longitude": 103.90556931496221,
+        "RoadName": "Punggol Ctrl"
+    },
+    {
+        "BusStopCode": "65231",
+        "Description": "Riviera Stn Exit B",
+        "Latitude": 1.3942824799683,
+        "Longitude": 103.91576531457447,
+        "RoadName": "Punggol East"
+    },
+    {
+        "BusStopCode": "65239",
+        "Description": "Riviera Stn Exit A",
+        "Latitude": 1.39410461413829,
+        "Longitude": 103.91603484855351,
+        "RoadName": "Punggol East"
+    },
+    {
+        "BusStopCode": "65241",
+        "Description": "Blk 196C",
+        "Latitude": 1.39917246521216,
+        "Longitude": 103.90767172209786,
+        "RoadName": "Edgefield Plains"
+    },
+    {
+        "BusStopCode": "65249",
+        "Description": "Blk 178",
+        "Latitude": 1.39963747797366,
+        "Longitude": 103.90824975943016,
+        "RoadName": "Edgefield Plains"
+    },
+    {
+        "BusStopCode": "65251",
+        "Description": "Punggol Stn",
+        "Latitude": 1.40502618974463,
+        "Longitude": 103.90299618971393,
+        "RoadName": "Punggol Ctrl"
+    },
+    {
+        "BusStopCode": "65259",
+        "Description": "Punggol Stn/Int",
+        "Latitude": 1.405351944,
+        "Longitude": 103.9018719,
+        "RoadName": "Punggol Ctrl"
+    },
+    {
+        "BusStopCode": "65261",
+        "Description": "Blk 649",
+        "Latitude": 1.39695155432601,
+        "Longitude": 103.91478844205221,
+        "RoadName": "Punggol Ctrl"
+    },
+    {
+        "BusStopCode": "65269",
+        "Description": "Blk 162B",
+        "Latitude": 1.39671015437474,
+        "Longitude": 103.91467219472072,
+        "RoadName": "Punggol Ctrl"
+    },
+    {
+        "BusStopCode": "65271",
+        "Description": "Opp Blk 188",
+        "Latitude": 1.39995544080394,
+        "Longitude": 103.91064287603247,
+        "RoadName": "Punggol Ctrl"
+    },
+    {
+        "BusStopCode": "65279",
+        "Description": "Bet Blks 187/188",
+        "Latitude": 1.39929726136961,
+        "Longitude": 103.91103404530959,
+        "RoadName": "Punggol Ctrl"
+    },
+    {
+        "BusStopCode": "65281",
+        "Description": "Punggol Sec/Blk 601B",
+        "Latitude": 1.40201165055481,
+        "Longitude": 103.90783309940194,
+        "RoadName": "Punggol Ctrl"
+    },
+    {
+        "BusStopCode": "65289",
+        "Description": "Opp Punggol Sec/Blk 195E",
+        "Latitude": 1.40173746082241,
+        "Longitude": 103.90762981656073,
+        "RoadName": "Punggol Ctrl"
+    },
+    {
+        "BusStopCode": "65301",
+        "Description": "Damai Stn Exit B",
+        "Latitude": 1.404378889,
+        "Longitude": 103.9096331,
+        "RoadName": "Punggol Dr"
+    },
+    {
+        "BusStopCode": "65309",
+        "Description": "Damai Stn Exit A",
+        "Latitude": 1.40494388890828,
+        "Longitude": 103.90913500001737,
+        "RoadName": "Punggol Dr"
+    },
+    {
+        "BusStopCode": "65311",
+        "Description": "Oasis Stn Exit B/Blk 617D",
+        "Latitude": 1.40201500002599,
+        "Longitude": 103.91285694443438,
+        "RoadName": "Punggol Dr"
+    },
+    {
+        "BusStopCode": "65319",
+        "Description": "Oasis Stn Exit A",
+        "Latitude": 1.40257805553795,
+        "Longitude": 103.91244500001986,
+        "RoadName": "Punggol Dr"
+    },
+    {
+        "BusStopCode": "65321",
+        "Description": "Kadaloor Stn Exit B",
+        "Latitude": 1.39942700000453,
+        "Longitude": 103.91659300001999,
+        "RoadName": "Punggol Dr"
+    },
+    {
+        "BusStopCode": "65329",
+        "Description": "Kadaloor Stn Exit A",
+        "Latitude": 1.39988799999567,
+        "Longitude": 103.91612399998853,
+        "RoadName": "Punggol Dr"
+    },
+    {
+        "BusStopCode": "65331",
+        "Description": "Opp Blk 268D",
+        "Latitude": 1.4028650002354,
+        "Longitude": 103.89851804993967,
+        "RoadName": "Punggol Field"
+    },
+    {
+        "BusStopCode": "65339",
+        "Description": "Blk 268C",
+        "Latitude": 1.4031330662473,
+        "Longitude": 103.8980438895579,
+        "RoadName": "Punggol Field"
+    },
+    {
+        "BusStopCode": "65341",
+        "Description": "Opp Blk 272C",
+        "Latitude": 1.40194694990354,
+        "Longitude": 103.9009230492748,
+        "RoadName": "Punggol Field"
+    },
+    {
+        "BusStopCode": "65349",
+        "Description": "Blk 272C",
+        "Latitude": 1.40222088604884,
+        "Longitude": 103.90077963354756,
+        "RoadName": "Punggol Field"
+    },
+    {
+        "BusStopCode": "65351",
+        "Description": "Punggol View Pr Sch",
+        "Latitude": 1.40589404110743,
+        "Longitude": 103.90472620505594,
+        "RoadName": "Punggol Pl"
+    },
+    {
+        "BusStopCode": "65359",
+        "Description": "Opp Punggol View Pr Sch",
+        "Latitude": 1.40552300002668,
+        "Longitude": 103.90435300000112,
+        "RoadName": "Punggol Pl"
+    },
+    {
+        "BusStopCode": "65371",
+        "Description": "Blk 682A",
+        "Latitude": 1.40288670334271,
+        "Longitude": 103.91626762051331,
+        "RoadName": "Edgedale Plains"
+    },
+    {
+        "BusStopCode": "65379",
+        "Description": "Blk 661A",
+        "Latitude": 1.40280775893278,
+        "Longitude": 103.91633762054916,
+        "RoadName": "Edgedale Plains"
+    },
+    {
+        "BusStopCode": "65381",
+        "Description": "Punggol Sec Sch",
+        "Latitude": 1.40206799999564,
+        "Longitude": 103.90976700000783,
+        "RoadName": "Edgefield Plains"
+    },
+    {
+        "BusStopCode": "65389",
+        "Description": "Opp Punggol Sec Sch",
+        "Latitude": 1.40225699999819,
+        "Longitude": 103.91007199999862,
+        "RoadName": "Edgefield Plains"
+    },
+    {
+        "BusStopCode": "65391",
+        "Description": "Blk 672A",
+        "Latitude": 1.40587968028504,
+        "Longitude": 103.91251694444946,
+        "RoadName": "Edgefield Plains"
+    },
+    {
+        "BusStopCode": "65399",
+        "Description": "Blk 670A",
+        "Latitude": 1.40580472725369,
+        "Longitude": 103.91259546667418,
+        "RoadName": "Edgefield Plains"
+    },
+    {
+        "BusStopCode": "65401",
+        "Description": "Opp Blk 264A",
+        "Latitude": 1.40653182138609,
+        "Longitude": 103.89871180015278,
+        "RoadName": "Punggol Ctrl"
+    },
+    {
+        "BusStopCode": "65409",
+        "Description": "Bef Blk 264",
+        "Latitude": 1.40624496856359,
+        "Longitude": 103.89957451783918,
+        "RoadName": "Punggol Ctrl"
+    },
+    {
+        "BusStopCode": "65411",
+        "Description": "Horizon Pr Sch",
+        "Latitude": 1.39944781445392,
+        "Longitude": 103.91384912994876,
+        "RoadName": "Edgefield Plains"
+    },
+    {
+        "BusStopCode": "65419",
+        "Description": "Opp Horizon Pr Sch",
+        "Latitude": 1.39946209125417,
+        "Longitude": 103.91395382625832,
+        "RoadName": "Edgefield Plains"
+    },
+    {
+        "BusStopCode": "65429",
+        "Description": "Greendale Pr Sch",
+        "Latitude": 1.39678724110144,
+        "Longitude": 103.912022758935,
+        "RoadName": "Edgefield Plains"
+    },
+    {
+        "BusStopCode": "65431",
+        "Description": "Twin Waterfalls",
+        "Latitude": 1.40238938083661,
+        "Longitude": 103.89673562171807,
+        "RoadName": "Punggol Way"
+    },
+    {
+        "BusStopCode": "65439",
+        "Description": "Aft TPE",
+        "Latitude": 1.40172529138051,
+        "Longitude": 103.89631809709375,
+        "RoadName": "Punggol Way"
+    },
+    {
+        "BusStopCode": "65441",
+        "Description": "Opp Blk 315B",
+        "Latitude": 1.40817769231202,
+        "Longitude": 103.89579264867245,
+        "RoadName": "Sumang Walk"
+    },
+    {
+        "BusStopCode": "65449",
+        "Description": "Blk 315B",
+        "Latitude": 1.40804081420589,
+        "Longitude": 103.89593121183572,
+        "RoadName": "Sumang Walk"
+    },
+    {
+        "BusStopCode": "65451",
+        "Description": "Blk 322 CP",
+        "Latitude": 1.41068999997892,
+        "Longitude": 103.89759188105812,
+        "RoadName": "Sumang Walk"
+    },
+    {
+        "BusStopCode": "65459",
+        "Description": "Opp Blk 322 CP",
+        "Latitude": 1.41060953055987,
+        "Longitude": 103.8977216527095,
+        "RoadName": "Sumang Walk"
+    },
+    {
+        "BusStopCode": "65461",
+        "Description": "Blk 312 CP",
+        "Latitude": 1.40985888889928,
+        "Longitude": 103.90129988103229,
+        "RoadName": "Sumang Link"
+    },
+    {
+        "BusStopCode": "65469",
+        "Description": "Blk 310B",
+        "Latitude": 1.40982305558831,
+        "Longitude": 103.90097793657458,
+        "RoadName": "Sumang Link"
+    },
+    {
+        "BusStopCode": "65481",
+        "Description": "Bef Punggol Dr",
+        "Latitude": 1.40886523796853,
+        "Longitude": 103.90603964310132,
+        "RoadName": "Sentul Cres"
+    },
+    {
+        "BusStopCode": "65489",
+        "Description": "Aft Punggol Dr",
+        "Latitude": 1.40819500002156,
+        "Longitude": 103.90566900789092,
+        "RoadName": "Sentul Cres"
+    },
+    {
+        "BusStopCode": "65561",
+        "Description": "WATERWAY PR SCH",
+        "Latitude": 1.398808889,
+        "Longitude": 103.919085,
+        "RoadName": "Punggol East"
+    },
+    {
+        "BusStopCode": "65569",
+        "Description": "OPP WATERWAY PR SCH",
+        "Latitude": 1.398633889,
+        "Longitude": 103.9191989,
+        "RoadName": "Punggol East"
+    },
+    {
+        "BusStopCode": "65571",
+        "Description": "BLK 218",
+        "Latitude": 1.403478611,
+        "Longitude": 103.895535,
+        "RoadName": "Punggol Field"
+    },
+    {
+        "BusStopCode": "65579",
+        "Description": "BLK 258A",
+        "Latitude": 1.403556111,
+        "Longitude": 103.8960314,
+        "RoadName": "Punggol Field"
+    },
+    {
+        "BusStopCode": "65611",
+        "Description": "Nibong Stn Exit B",
+        "Latitude": 1.41138059190012,
+        "Longitude": 103.9003025582472,
+        "RoadName": "Punggol Way"
+    },
+    {
+        "BusStopCode": "65619",
+        "Description": "Nibong Stn Exit A",
+        "Latitude": 1.4115376363476,
+        "Longitude": 103.9000027461105,
+        "RoadName": "Punggol Way"
+    },
+    {
+        "BusStopCode": "65671",
+        "Description": "Punggol cove pr sch",
+        "Latitude": 1.411223,
+        "Longitude": 103.898788,
+        "RoadName": "Sumang Link"
+    },
+    {
+        "BusStopCode": "65679",
+        "Description": "Opp punggol cove pr sch",
+        "Latitude": 1.410983,
+        "Longitude": 103.898983,
+        "RoadName": "Sumang Link"
+    },
+    {
+        "BusStopCode": "67251",
+        "Description": "Compassvale Stn Exit A",
+        "Latitude": 1.39442862205324,
+        "Longitude": 103.9003121852631,
+        "RoadName": "Compassvale St"
+    },
+    {
+        "BusStopCode": "67259",
+        "Description": "Compassvale Stn Exit B",
+        "Latitude": 1.39465386086721,
+        "Longitude": 103.90046238900585,
+        "RoadName": "Compassvale St"
+    },
+    {
+        "BusStopCode": "67431",
+        "Description": "Opp Blk 291A",
+        "Latitude": 1.39521359607395,
+        "Longitude": 103.89739500115256,
+        "RoadName": "Compassvale St"
+    },
+    {
+        "BusStopCode": "67439",
+        "Description": "Blk 291A",
+        "Latitude": 1.39549374900087,
+        "Longitude": 103.89737027918684,
+        "RoadName": "Compassvale St"
+    }
+]
