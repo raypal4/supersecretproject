@@ -14,20 +14,20 @@ import math
 
 from manualPatch.pois import *
 
-# ------------------------------------------INIT START-----------------------------------------------------------------
+# ------------------------------------------INIT START--------------------
 # ox.config(log_console=True)
 print("Loading OSM")
-graph = ox.graph_from_file(
-    "nictesting\punggol.osm", bidirectional=False, simplify=True, retain_all=False)
+graph = ox.graph_from_file("punggol.osm",
+                           bidirectional=False, simplify=True, retain_all=False)
 
 print("Loading JSON")
-stops = json.loads(open("nictesting/stops.json").read())
-services = json.loads(open("nictesting/services.json").read())
-routes = json.loads(open("nictesting/routes.json").read())
+stops = json.loads(open("stops.json").read())
+services = json.loads(open("services.json").read())
+routes = json.loads(open("routes.json").read())
 busRoute0 = json.loads(
-    open("nictesting/punggolBusData/busroute0.json").read())
+    open("punggolBusData/busroute0.json").read())
 busRoute1 = json.loads(
-    open("nictesting/punggolBusData/busroute1.json").read())
+    open("punggolBusData/busroute1.json").read())
 
 print("Initializing tables")
 stop_desc_map = {stop["Description"]: stop for stop in stops}
@@ -66,7 +66,7 @@ for service, path in routes_map.items():
         next_code = next_route_stop["BusStopCode"]
         busGraph[curr_code][(next_code, service)] = distance
 
-# ------------------------------------------------INIT END-----------------------------------------
+# ------------------------------------------------INIT END----------------
 
 
 # def weightCalc(G, weight):
@@ -91,6 +91,7 @@ def astar_path(G, source, target):
     push = heapq.heappush
     pop = heapq.heappop
     # weight = weightCalc(G, weight)
+
     def weight(u, v, d): return min(attr.get(weight, 1) for attr in d.values())
 
     c = count()
@@ -151,13 +152,14 @@ def bfs(graph, start, end):
 
         # path found
         if node == end:
-            return (curr_cost, curr_distance, curr_transfers-1, path)
+            return (curr_cost, curr_distance, curr_transfers - 1, path)
 
         if (node, curr_service) in seen:
             continue
 
         seen.add((node, curr_service))
-        # enumerate all adjacent nodes, construct a new path and push it into the queue
+        # enumerate all adjacent nodes, construct a new path and push it into
+        # the queue
         for (adjacent, service), distance in graph.get(node, {}).items():
             new_path = list(path)
             new_path.append((adjacent, service))
@@ -210,16 +212,16 @@ def bus(busGraph, start, end):
     R = 6378137
     dn = 250
     de = 250
-    dLat = dn/R
-    dLon = de/(R*math.cos(math.pi*startlat/180))
-    maxstartLat = startlat + dLat * 180/math.pi
-    maxstartLon = startLon + dLon * 180/math.pi
+    dLat = dn / R
+    dLon = de / (R * math.cos(math.pi * startlat / 180))
+    maxstartLat = startlat + dLat * 180 / math.pi
+    maxstartLon = startLon + dLon * 180 / math.pi
     dn = -250
     de = -250
-    dLat = dn/R
-    dLon = de/(R*math.cos(math.pi*startlat/180))
-    minstartLat = startlat + dLat * 180/math.pi
-    minstartLon = startLon + dLon * 180/math.pi
+    dLat = dn / R
+    dLon = de / (R * math.cos(math.pi * startlat / 180))
+    minstartLat = startlat + dLat * 180 / math.pi
+    minstartLon = startLon + dLon * 180 / math.pi
 
     bus = pois_from_polygon(
         box(minstartLon, minstartLat, maxstartLon, maxstartLat), tags=tags)
@@ -241,16 +243,16 @@ def bus(busGraph, start, end):
     R = 6378137
     dn = 250
     de = 250
-    dLat = dn/R
-    dLon = de/(R*math.cos(math.pi*endlat/180))
-    maxendLat = endlat + dLat * 180/math.pi
-    maxendLon = endLon + dLon * 180/math.pi
+    dLat = dn / R
+    dLon = de / (R * math.cos(math.pi * endlat / 180))
+    maxendLat = endlat + dLat * 180 / math.pi
+    maxendLon = endLon + dLon * 180 / math.pi
     dn = -250
     de = -250
-    dLat = dn/R
-    dLon = de/(R*math.cos(math.pi*endlat/180))
-    minendLat = endlat + dLat * 180/math.pi
-    minendLon = endLon + dLon * 180/math.pi
+    dLat = dn / R
+    dLon = de / (R * math.cos(math.pi * endlat / 180))
+    minendLat = endlat + dLat * 180 / math.pi
+    minendLon = endLon + dLon * 180 / math.pi
 
     bus = pois_from_polygon(
         box(minendLon, minendLat, maxendLon, maxendLat), tags=tags)
@@ -292,7 +294,7 @@ def bus(busGraph, start, end):
     cost, distance, transfers, path = cheapest
     for code, service in path:
         print(service, stop_code_map[code]["Description"])
-    print(len(path)-1, "stops")
+    print(len(path) - 1, "stops")
     print("cost", cost)
     print("distance", distance, "km")
     print("transfers", transfers)
@@ -300,7 +302,7 @@ def bus(busGraph, start, end):
     # STORE START AND END BUS STOPS THEN THROW INTO THE BUS ROUTING FUNCTION
 
 
-# ------------------------------------START OF MAIN--------------------------------------------
+# ------------------------------------START OF MAIN-----------------------
 
 start = ox.geocode("Horizon Primary school")
 end = ox.geocode("punggol safra")
@@ -337,7 +339,7 @@ while i < len(path):
     stopCode, service = path[i]
     # in the case of first stop, no bus service stated, take next
     if service is None:
-        service = path[i+1][1]
+        service = path[i + 1][1]
 
     if service != prevService:
         indexing = 0
@@ -354,14 +356,15 @@ while i < len(path):
         clon, clat = routing[indexing]
         u = (qlat, qlon)
         v = (clat, clon)
-        # stop found in range of 30 meters, latlong accuracy difference from two sources
+        # stop found in range of 30 meters, latlong accuracy difference from
+        # two sources
         if geopy.distance.distance(u, v).km < 0.03:
             # first bus stop
             if prevService is None:
                 line.append(v)
             else:
                 if prevService == service:
-                    for x, y in routing[prevIndex: indexing+1]:
+                    for x, y in routing[prevIndex: indexing + 1]:
                         line.append((y, x))
                 else:
                     prevLatLong = line[-1]
@@ -370,7 +373,7 @@ while i < len(path):
                         plon, plat = routing[tempIndex]
                         p = (plat, plon)
                         if geopy.distance.distance(prevLatLong, p).km < 0.03:
-                            for x, y in routing[tempIndex: indexing+1]:
+                            for x, y in routing[tempIndex: indexing + 1]:
                                 line.append((y, x))
                             break
                         tempIndex += 1
@@ -395,7 +398,7 @@ folium.Marker(location=(start[0], start[1]), popup='START', icon=folium.Icon(
 folium.Marker(location=(end[0], end[1]), popup='END',
               icon=folium.Icon(color='blue', icon='flag')).add_to(m)
 for loc, code in markers:
-    folium.Marker(location=loc, popup='Bus stop number:'+str(code),
+    folium.Marker(location=loc, popup='Bus stop number:' + str(code),
                   icon=folium.Icon(color='green', icon='bus', prefix='fa')).add_to(m)
 folium.PolyLine(line, color="red", weight=2.5, opacity=1).add_to(m)
 folium.PolyLine([line[0], start], color="blue", weight=2.5,
