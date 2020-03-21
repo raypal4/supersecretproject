@@ -21,9 +21,9 @@ graph = ox.graph_from_file("punggol.osm",
                            bidirectional=False, simplify=True, retain_all=False)
 
 print("Loading JSON")
-stops = json.loads(open("stops.json").read())
-services = json.loads(open("services.json").read())
-routes = json.loads(open("routes.json").read())
+stops = json.loads(open("punggolBusData/stops.json").read())
+services = json.loads(open("punggolBusData/services.json").read())
+routes = json.loads(open("punggolBusData/routes.json").read())
 busRoute0 = json.loads(
     open("punggolBusData/busroute0.json").read())
 busRoute1 = json.loads(
