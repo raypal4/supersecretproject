@@ -314,7 +314,7 @@ def bus(busGraph,  graph, start, end):
 
 
 start = ox.geocode("punggol")
-end = ox.geocode("horizon primary school")
+end = ox.geocode("oasis primary school, singapore")
 print(start)
 print(end)
 
