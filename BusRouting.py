@@ -311,8 +311,8 @@ def bus(busGraph, graph, start, end, start_node, end_node):
 # ------------------------------------START OF MAIN-----------------------
 
 
-start = ox.geocode("punggol")
-end = ox.geocode("punggol safra, singapore")
+start = ox.geocode("punggol, singapore")
+end = ox.geocode("a treasure trove, singapore")
 print("Found a starting node", start)
 print("Found a ending node", end)
 
