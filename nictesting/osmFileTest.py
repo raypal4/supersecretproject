@@ -226,17 +226,15 @@ def bus(busGraph, start, end):
     bus = pois_from_polygon(
         box(minstartLon, minstartLat, maxstartLon, maxstartLat), tags=tags)
     # print(bus.columns)
-    busStopStart = None
-    busStopStartName = None
+    busStopStartName = []
 
     print("\nPossible Starting Stops:")
     for name in bus["name"]:
-        print(name)
         name = name.lower()
         for word, initial in words_rep.items():
             name = name.replace(word, initial)
-        busStopStartName = name.title()
-    print(busStopStartName)
+        busStopStartName.append(name.title())
+        print(busStopStartName)
 
     endlat = end[0]
     endLon = end[1]
@@ -257,29 +255,31 @@ def bus(busGraph, start, end):
     bus = pois_from_polygon(
         box(minendLon, minendLat, maxendLon, maxendLat), tags=tags)
     print(bus.columns)
-    busStopEnd = None
-    busStopEndName = None
+    busStopEndName = []
 
     print("\nPossible Ending Stops:")
     for name in bus["name"]:
-        print(name)
         name = name.lower()
         for word, initial in words_rep.items():
             name = name.replace(word, initial)
-        busStopEndName = name.title()
-    print(busStopEndName)
+        busStopEndName.append(name.title())
+        print(busStopEndName)
 
-    startStation = dict(
-        filter(lambda item: busStopStartName in item[0], stop_desc_map.items()))
-    endStation = dict(
-        filter(lambda item: busStopEndName in item[0], stop_desc_map.items()))
+    startStation = {}
+    for stop in busStopStartName:
+        startStation.update(dict(filter(lambda item: stop in item[0], stop_desc_map.items())))
+    endStation = {}
+    for stop in busStopEndName:
+        endStation.update(dict(filter(lambda item: stop in item[0], stop_desc_map.items())))
 
     results = []
     for x in startStation:
         for y in endStation:
-            # print(startStation[x]["BusStopCode"], endStation[y]["BusStopCode"])
-            results.append(
-                bfs(busGraph, startStation[x]["BusStopCode"], endStation[y]["BusStopCode"]))
+            if startStation[x]["BusStopCode"] != endStation[y]["BusStopCode"]:
+                results.append(
+                    bfs(busGraph, startStation[x]["BusStopCode"], endStation[y]["BusStopCode"]))
+            else:
+                print("same start and end stop:", startStation[x]["BusStopCode"])
 
     cheapest = None
     cheapestCost = float("Infinity")
@@ -304,11 +304,11 @@ def bus(busGraph, start, end):
 
 # ------------------------------------START OF MAIN-----------------------
 
-start = ox.geocode("Horizon Primary school")
-end = ox.geocode("punggol safra")
-print(end)
-# # start = (1.40525, 103.90235)
-# end = (1.39960, 103.91646)
+# start = ox.geocode("Horizon Primary school")
+# end = ox.geocode("punggol safra")
+# print(end)
+start = (1.399461, 103.905827)
+end = (1.394477, 103.916076)
 
 # test 1
 # start = (1.40513, 103.9028)
