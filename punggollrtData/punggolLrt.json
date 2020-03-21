@@ -865,7 +865,7 @@
         "marker-color": "#7e7e7e",
         "marker-size": "medium",
         "marker-symbol": "",
-        "Name ": "Punggol Point Station"
+        "Name": "Punggol Point Station"
       },
       "geometry": {
         "type": "Point",
@@ -886,8 +886,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          103.90663146972656,
-          1.4127613826792913
+          103.90491485595702,
+          1.4097045918680227
         ]
       }
     },
