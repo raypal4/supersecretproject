@@ -17,27 +17,26 @@ routes_map = {}
 
 for route in routes:
    key = (route["Loop"], route["Direction"])
-if key not in routes_map:
-   routes_map[key] = []
-routes_map[key] += [route]
+   if key not in routes_map:
+       routes_map[key] = []
+   routes_map[key] += [route]
 
 print("Initializing Graph")
 lrtGraph = {}
 for loop, path in routes_map.items():
-    path.sort(key=lambda r: r["Distance"])
-for route_index in range(len(path) - 1):
-    key = path[route_index]["Description"]
-    if key not in lrtGraph:
-        lrtGraph[key] = {}
-    curr_route_stop = path[route_index]
-    next_route_stop = path[route_index + 1]
-    curr_distance = curr_route_stop["Distance"] or 0
-    next_distance = next_route_stop["Distance"] or curr_distance
-    distance = next_distance - curr_distance
-    assert distance >= 0, (curr_route_stop, next_route_stop)
-    curr_code = curr_route_stop["Description"]
-    next_code = next_route_stop["Description"]
-    lrtGraph[curr_code][(next_code, loop)] = distance
+    for route_index in range(len(path) - 1):
+        key = path[route_index]["Description"]
+        if key not in lrtGraph:
+            lrtGraph[key] = {}
+        curr_route_stop = path[route_index]
+        next_route_stop = path[route_index + 1]
+        curr_distance = curr_route_stop["Distance"] or 0
+        next_distance = next_route_stop["Distance"] or curr_distance
+        distance = next_distance - curr_distance
+        assert distance >= 0, (curr_route_stop, next_route_stop)
+        curr_code = curr_route_stop["Description"]
+        next_code = next_route_stop["Description"]
+        lrtGraph[curr_code][(next_code, loop)] = distance
 
 
 def bfs(graph, start, end):
