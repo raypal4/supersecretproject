@@ -1,6 +1,7 @@
 import folium
 import osmapi as osm
 import osmnx as ox
+from shapely import geometry, ops
 
 from bus_functions import *
 
@@ -12,7 +13,8 @@ graph = ox.graph_from_point(
     (1.4049570, 103.9022079), distance=5000, network_type="walk")
 
 start = ox.geocode("punggol, singapore")
-end = ox.geocode("Punggol ParcVista, Punggol, singapore")
+end = ox.geocode(
+    "Blk 612B, Punggol Drive, Punggol, Northeast, 823612, Singapore")
 print("Found a starting node", start)
 print("Found a ending node", end)
 
@@ -38,15 +40,33 @@ if pathcheck[1] == 0:
     latlontobus = []
     latlonfrombus = []
 
-    api = osm.OsmApi()  # this instantiate the OsmApi class,
-
+    prev = None
     for item in pathToBusstop:
-        node = api.NodeGet(item)
-        latlontobus.append((node["lat"], node["lon"]))
+        if prev is None:
+            prev = item
+        else:
+            try:
+                line = graph[prev][item][0]["geometry"]
+                for point in list(line.coords):
+                    latlontobus.append((point[1], point[0]))
+            except:
+                pass
+            finally:
+                prev = item
 
+    prev = None
     for item in pathFromBusstop:
-        node = api.NodeGet(item)
-        latlonfrombus.append((node["lat"], node["lon"]))
+        if prev is None:
+            prev = item
+        else:
+            try:
+                line = graph[prev][item][0]["geometry"]
+                for point in list(line.coords):
+                    latlonfrombus.append((point[1], point[0]))
+            except:
+                pass
+            finally:
+                prev = item
 
     path = pathcheck[0]
     indexing = 0
@@ -106,7 +126,7 @@ if pathcheck[1] == 0:
     # TO CREATE ROUTING WITH BUS
     nodepath = astar_path(graph, start_node, end_node)
     m = ox.plot_route_folium(
-        graph, pathFromBusstop, route_color='purple', route_opacity=0)
+        graph, nodepath, route_color='green', route_opacity=0)
     folium.Marker(location=(start[0], start[1]), popup='START', icon=folium.Icon(
         color='red', icon='flag')).add_to(m)
     folium.Marker(location=(end[0], end[1]), popup='END', icon=folium.Icon(
@@ -123,11 +143,11 @@ if pathcheck[1] == 0:
     folium.PolyLine(latlontobus, color="green",
                     weight=2.5, opacity=1).add_to(m)
 
-    folium.PolyLine([latlontobus[-1], line[0]], color="green",
+    folium.PolyLine([latlontobus[-1], line[0]], color="blue",
                     weight=2.5, opacity=1, dasharray="4").add_to(m)
 
     # End  bus stop to end point
-    folium.PolyLine([line[-1], latlonfrombus[0]], color="green",
+    folium.PolyLine([line[-1], latlonfrombus[0]], color="blue",
                     weight=2.5, opacity=1, dasharray="4").add_to(m)
 
     folium.PolyLine(latlonfrombus, color="green", weight=2.5,
