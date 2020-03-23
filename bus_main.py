@@ -5,16 +5,16 @@ import osmnx as ox
 from bus_functions import *
 
 print("Loading OSM")
-graph = ox.graph_from_file(
-    "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
+# graph = ox.graph_from_file(
+#     "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
+
+graph = ox.graph_from_point(
+    (1.4049570, 103.9022079), distance=5000, network_type="walk")
 
 start = ox.geocode("punggol, singapore")
-end = ox.geocode("horizon primary school, singapore")
+end = ox.geocode("Punggol ParcVista, Punggol, singapore")
 print("Found a starting node", start)
 print("Found a ending node", end)
-
-G = ox.graph_from_point(start, distance=2000, network_type='walk')
-
 
 start_node = ox.get_nearest_node(graph, start)
 end_node = ox.get_nearest_node(graph, end)
@@ -32,8 +32,8 @@ if pathcheck[1] == 0:
     start_Bus = ox.get_nearest_node(graph, startStopCoords)
     end_Bus = ox.get_nearest_node(graph, endStopCoords)
 
-    pathToBusstop = astar_path(G, start_node, start_Bus)
-    pathFromBusstop = astar_path(G, end_Bus, end_node)
+    pathToBusstop = astar_path(graph, start_node, start_Bus)
+    pathFromBusstop = astar_path(graph, end_Bus, end_node)
 
     latlontobus = []
     latlonfrombus = []
@@ -106,8 +106,7 @@ if pathcheck[1] == 0:
     # TO CREATE ROUTING WITH BUS
     nodepath = astar_path(graph, start_node, end_node)
     m = ox.plot_route_folium(
-        graph, nodepath, route_color='green', route_opacity=0)
-
+        graph, pathFromBusstop, route_color='purple', route_opacity=0)
     folium.Marker(location=(start[0], start[1]), popup='START', icon=folium.Icon(
         color='red', icon='flag')).add_to(m)
     folium.Marker(location=(end[0], end[1]), popup='END', icon=folium.Icon(
@@ -148,4 +147,5 @@ if pathcheck[1] == 1:
         color='red', icon='flag')).add_to(m)
     folium.Marker(location=(end[0], end[1]), popup='END', icon=folium.Icon(
         color='blue', icon='flag')).add_to(m)
+
     m.save('index.html')
