@@ -4,17 +4,18 @@ import osmnx as ox
 from shapely import geometry, ops
 
 from bus_functions import *
+from astar import astar_path
 
 print("Loading OSM")
-graph = ox.graph_from_file(
-    "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
+# graph = ox.graph_from_file(
+#     "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
 
-# graph = ox.graph_from_point(
-#     (1.4049570, 103.9022079), distance=5000, network_type="walk")
+graph = ox.graph_from_point(
+    (1.4049570, 103.9022079), distance=5000, network_type="walk")
 
 start = ox.geocode("punggol, singapore")
 end = ox.geocode(
-    "Punggol Ripples, punggol ,Singapore")
+    "punggol arcadia, punggol ,Singapore")
 print("Found a starting node", start)
 print("Found a ending node", end)
 
@@ -136,15 +137,19 @@ if pathcheck[1] == 0:
                       icon=folium.Icon(color='green', icon='bus', prefix='fa')).add_to(m)
     folium.PolyLine(line, color="red", weight=2.5, opacity=1).add_to(m)
 
-    # start point to start busstop
-    folium.PolyLine([start, latlontobus[0]], color="blue",
-                    weight=2.5, opacity=1, dasharray="4").add_to(m)
+    if len(latlontobus) != 0:
+        # start point to start busstop
+        folium.PolyLine([start, latlontobus[0]], color="blue",
+                        weight=2.5, opacity=1, dasharray="4").add_to(m)
 
-    folium.PolyLine(latlontobus, color="green",
-                    weight=2.5, opacity=1).add_to(m)
+        folium.PolyLine(latlontobus, color="green",
+                        weight=2.5, opacity=1).add_to(m)
 
-    folium.PolyLine([latlontobus[-1], line[0]], color="blue",
-                    weight=2.5, opacity=1, dasharray="4").add_to(m)
+        folium.PolyLine([latlontobus[-1], line[0]], color="blue",
+                        weight=2.5, opacity=1, dasharray="4").add_to(m)
+    else:
+        folium.PolyLine([start, line[0]], color="blue",
+                        weight=2.5, opacity=1, dasharray="4").add_to(m)
 
     # End  bus stop to end point
     folium.PolyLine([line[-1], latlonfrombus[0]], color="blue",
