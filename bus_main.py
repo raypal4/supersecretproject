@@ -6,15 +6,15 @@ from shapely import geometry, ops
 from bus_functions import *
 
 print("Loading OSM")
-# graph = ox.graph_from_file(
-#     "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
+graph = ox.graph_from_file(
+    "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
 
-graph = ox.graph_from_point(
-    (1.4049570, 103.9022079), distance=5000, network_type="walk")
+# graph = ox.graph_from_point(
+#     (1.4049570, 103.9022079), distance=5000, network_type="walk")
 
 start = ox.geocode("punggol, singapore")
 end = ox.geocode(
-    "The Periwinkle, Singapore")
+    "Punggol Ripples, punggol ,Singapore")
 print("Found a starting node", start)
 print("Found a ending node", end)
 
