@@ -35,15 +35,64 @@ for item in routes_map:
         key = (loop, direction)
         if key not in lrtGraph:
             lrtGraph[key] = []
-        lrtGraph[(loop, direction)] += [(order, stationName, lat, lon)]
+        lrtGraph[(loop, direction)] += [(order,
+                                         stationName, lat, lon, direction)]
 
 
-def LrtBFS(graph, start, end):
-    for item in graph:
-        print(item, graph[item], "\n")
+def LrtNotBFS(graph, start, end):
+    print(start, "GO TO", end)
+    endResult = {}
+    shortestNumberOfStops = 999999
+    secondloopFlag = 0
+
+    for loop in graph:
+        storeArray = []
+        print(loop, "-----------------------------\n")
+        for index in range(len(graph[loop])):
+            StartName = graph[loop][index][1]
+            if StartName == start:
+                startNumber = graph[loop][index][0]
+                storeArray.append((graph[loop][index]))
+                print("Start Stop: ", StartName, startNumber, "\n")
+                break
+        for index in range(len(graph[loop])):
+            EndName = graph[loop][index][1]
+            if EndName == end:
+                secondloopFlag = 0
+                endNumber = graph[loop][index][0]
+                storeArray.append((graph[loop][index]))
+                print("End Stop: ", EndName, endNumber, "\n")
+                break
+            else:
+                secondloopFlag = 1
+                storeArray.append((graph[loop][0]))
+                endNumber = len(graph[loop])
+
+        newShortestNumberOfStops = endNumber - startNumber
+        if abs(newShortestNumberOfStops) < shortestNumberOfStops:
+            shortestNumberOfStops = abs(newShortestNumberOfStops)
+            key = (storeArray[0], storeArray[1])
+            endResult.clear()
+            if key not in endResult:
+                endResult[key] = 0
+            endResult[key] += shortestNumberOfStops
+
+        # if secondloopFlag == 1:
+        #     storeArray = []
+        #     StartName = (graph[loop][0])
+        #     for index in range(len(graph[loop])):
+        #         EndName = graph[loop][index][1]
+        #         if EndName == end:
+        #             endNumber = graph[loop][index][0]
+        #             storeArray.append((graph[loop][index]))
+        #             print("End Stop: ", EndName, endNumber, "\n")
+        #             break
+
+    for item in endResult:
+        print(item, endResult[item], "\n")
 
 
-LrtBFS(lrtGraph, "Cove Station", 6)
+LrtNotBFS(lrtGraph, "Cove Station", "Nibong Station")
 
 
 def lrt(lrtGraph, graph, start, end, start_node, end_node):
