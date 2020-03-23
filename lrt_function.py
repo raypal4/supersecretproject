@@ -36,35 +36,36 @@ for item in routes_map:
         if key not in lrtGraph:
             lrtGraph[key] = []
         lrtGraph[(loop, direction)] += [(order,
-                                         stationName, lat, lon, direction)]
+                                         stationName, lat, lon, direction, loop)]
 
 
 def LrtNotBFS(graph, start, end):
     print(start, "GO TO", end)
     endResult = {}
+    endResult2 = {}
+    finalResult = {}
     shortestNumberOfStops = 999999
-    secondloopFlag = 0
+    loopCheck = 0
 
     for loop in graph:
         storeArray = []
-        print(loop, "-----------------------------\n")
+        # print(loop, "-----------------------------\n")
         for index in range(len(graph[loop])):
             StartName = graph[loop][index][1]
             if StartName == start:
                 startNumber = graph[loop][index][0]
                 storeArray.append((graph[loop][index]))
-                print("Start Stop: ", StartName, startNumber, "\n")
+                # print("Start Stop: ", StartName, startNumber, "\n")
                 break
         for index in range(len(graph[loop])):
             EndName = graph[loop][index][1]
             if EndName == end:
-                secondloopFlag = 0
+                loopCheck += 1
                 endNumber = graph[loop][index][0]
                 storeArray.append((graph[loop][index]))
-                print("End Stop: ", EndName, endNumber, "\n")
+                # print("End Stop: ", EndName, endNumber, "\n")
                 break
             else:
-                secondloopFlag = 1
                 storeArray.append((graph[loop][0]))
                 endNumber = len(graph[loop])
 
@@ -77,19 +78,38 @@ def LrtNotBFS(graph, start, end):
                 endResult[key] = 0
             endResult[key] += shortestNumberOfStops
 
-        # if secondloopFlag == 1:
-        #     storeArray = []
-        #     StartName = (graph[loop][0])
-        #     for index in range(len(graph[loop])):
-        #         EndName = graph[loop][index][1]
-        #         if EndName == end:
-        #             endNumber = graph[loop][index][0]
-        #             storeArray.append((graph[loop][index]))
-        #             print("End Stop: ", EndName, endNumber, "\n")
-        #             break
+    # if 2 means 2 routes in one loop dont have the station and need to traverse the second loop. potato code ps
+    if loopCheck > 1:
+        shortestNumberOfStops = 999999  # reset
+        secondArray = []
+        for loop in graph:
+            secondArray.append((graph[loop][0]))
+            startNumber = graph[loop][0][0]
+            for index in range(len(graph[loop])):
+                EndName = graph[loop][index][1]
+                if EndName == end:
+                    loopCheck += 1
+                    endNumber = graph[loop][index][0]
+                    secondArray.append((graph[loop][index]))
+                    break
+                else:
+                    secondArray.append((graph[loop][0]))
+                    endNumber = len(graph[loop])
+
+            newShortestNumberOfStops = endNumber - startNumber
+            if abs(newShortestNumberOfStops) < shortestNumberOfStops:
+                shortestNumberOfStops = abs(newShortestNumberOfStops)
+                key = (secondArray[-2], secondArray[-1])
+                endResult2.clear()
+                if key not in endResult2:
+                    endResult2[key] = 0
+                endResult2[key] += shortestNumberOfStops
 
     for item in endResult:
         print(item, endResult[item], "\n")
+
+    for item in endResult2:
+        print(item, endResult2[item], "\n")
 
 
 LrtNotBFS(lrtGraph, "Cove Station", "Nibong Station")
