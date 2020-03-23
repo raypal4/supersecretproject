@@ -1,9 +1,9 @@
 [
     {
-      "Loop": "East",
-      "Description": "Cove Station",
-      "Latitude": 1.3994053224600558,
-      "Longitude": 103.90585899353027
+        "Loop": "East",
+        "Description": "Cove Station",
+        "Latitude": 1.3994053224600558,
+        "Longitude": 103.90585899353027
     },
     {
         "Loop": "East",
@@ -43,6 +43,12 @@
     },
     {
         "Loop": "East",
+        "Description": "Punggol Station",
+        "Latitude": 1.4052722380653662,
+        "Longitude": 103.9023506641388
+    },
+    {
+        "Loop": "West",
         "Description": "Punggol Station",
         "Latitude": 1.4052722380653662,
         "Longitude": 103.9023506641388
