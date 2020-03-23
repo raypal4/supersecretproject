@@ -14,7 +14,7 @@ graph = ox.graph_from_point(
 
 start = ox.geocode("punggol, singapore")
 end = ox.geocode(
-    "Blk 612B, Punggol Drive, Punggol, Northeast, 823612, Singapore")
+    "The Periwinkle, Singapore")
 print("Found a starting node", start)
 print("Found a ending node", end)
 
