@@ -62,50 +62,53 @@ def shortestLrt(graph, start, end):
     shortestNumberOfStops = 999999
 
     for loop in graph:
-        storeArray = []
         startNumber = None
         endNumber = None
-        # print(loop, "-----------------------------\n")
+        stopsArray = []
+        storeArray = []
         for index in range(len(graph[loop])):
+            # print(graph[loop][index])
+            stopsArray.append(graph[loop][index])
             StartName = graph[loop][index][1]
-            if StartName == start:
-                startNumber = graph[loop][index][0]
-                storeArray.append((graph[loop][index]))
-                # print("Start Stop: ", StartName, startNumber, "\n")
-                break
-        for index in range(len(graph[loop])):
             EndName = graph[loop][index][1]
+            if StartName == start:
+                startNumber = index
             if EndName == end:
-                endNumber = graph[loop][index][0]
-                storeArray.append((graph[loop][index]))
-                # print("End Stop: ", EndName, endNumber, "\n")
-                break
+                endNumber = index
 
-        if (endNumber == None) or (startNumber == None):
-            return None
+        loopLength = len(stopsArray)
+        # print(startNumber, endNumber)
+        # max range is the length of the loop - one round
+        for i in range(1, loopLength):
+            nextIndex = startNumber+i
+            if nextIndex <= loopLength:
+                storeArray.append(stopsArray[nextIndex-1])
+                if nextIndex-1 == endNumber:
+                    break
+            if nextIndex >= loopLength:
+                startNumber = 0
+                storeArray.append(stopsArray[startNumber])
+                if startNumber == endNumber:
+                    break
 
-        newShortestNumberOfStops = endNumber - startNumber
-        if newShortestNumberOfStops < shortestNumberOfStops:
-            shortestNumberOfStops = newShortestNumberOfStops
-            endResult.clear()
-            key = (storeArray[0], storeArray[1])
-            if key not in endResult:
-                endResult[key] = 0
-            endResult[key] += storeArray[0][4]
+        # print(storeArray, "\n")
+        newnumberofstops = len(storeArray)
+        if newnumberofstops != loopLength:
+            if newnumberofstops < shortestNumberOfStops:
+                shortestNumberOfStops = newnumberofstops
+                endResult.clear()
+                key = (storeArray[0], storeArray[-1])
+                if key not in endResult:
+                    endResult[key] = []
+                endResult[key] = storeArray
 
-    # for item in endResult:
-    #     print(item, endResult[item])
-    if len(endResult) > 0:
-        return endResult
+    print("\n------------------------------------------------\n")
+    # print(endResult, "\n")
+    return endResult
 
 
-# for item in EastLoopGraph:
-#     print(item, EastLoopGraph[item], "\n")
+# shortestLrt(EastLoopGraph, "Cove Station", "Nibong Station")
 
-# print("-----------------------------------------------------\n")
-
-# for item in WestLoopGraph:
-#     print(item, WestLoopGraph[item], "\n")
 
 def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
     words_rep = {
@@ -154,26 +157,32 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
         # print(end, "found in West")
 
     if (startInEastLoop == True and endInEastLoop == True) or (start == "Punggol Station" and endInEastLoop == True):
-        # print("Do east loop only")
+        print("Do east loop only")
         finalRoute.append(shortestLrt(EastLoopGraph, start, end))
     elif (startInWestLoop == True and endInWestLoop == True) or (start == "Punggol Station" and endInWestLoop == True):
-        # print("Do west loop only")
+        print("Do west loop only")
         finalRoute.append((shortestLrt(WestLoopGraph, start, end)))
     elif startInWestLoop == True and endInEastLoop == True:
-        # print("Do west then east loops")
+        print("Do west then east loops")
         finalRoute.append(shortestLrt(
             WestLoopGraph, start, "Punggol Station"))
         finalRoute.append(
             (shortestLrt(EastLoopGraph, "Punggol Station", end)))
     elif (startInEastLoop == True and endInWestLoop == True):
-        # print("Do east then west loops")
+        print("Do east then west loops")
         finalRoute.append(
             (shortestLrt(EastLoopGraph, start, "Punggol Station")))
         finalRoute.append(
             (shortestLrt(WestLoopGraph, "Punggol Station", end)))
 
+    for item in finalRoute:
+        print(item, "\n")
+
     if finalRoute[0] == None:
-        # lrtflag = 1
         print("No routes found for station", start, "to station", end)
     else:
         return [finalRoute, lrtflag]
+
+
+pathcheck = lrtRouting(EastLoopGraph, WestLoopGraph,
+                       "Cove Station", "Sumang Station")

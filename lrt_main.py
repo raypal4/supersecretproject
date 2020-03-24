@@ -14,24 +14,24 @@ end = "Sam Kee Station"
 nodes, edges = ox.graph_to_gdfs(graph)
 
 # TO CREATE LRT ROUTING
-pathcheck = lrtRouting(EastLoopGraph, WestLoopGraph, start, end)
+# pathcheck = lrtRouting(EastLoopGraph, WestLoopGraph, start, end)
 
-Line = []
+# Line = []
+# markers = []
 
-if pathcheck is not None:
-    if pathcheck[1] == 0:
-        path = pathcheck[0]
-        print(path)
-        for data in path:
-            for item in data:
-                print("SHOULD ONLY BE TWICE?")
-                direction = data[item]
-                service = item[0][-1]
-            print(direction, service)
-            if direction == 1:
-                routing = LrtRoute0[service]["coordinates"]
-            else:
-                routing = LrtRoute1[service]["coordinates"]
+# if pathcheck is not None:
+#     if pathcheck[1] == 0:
+#         path = pathcheck[0]
+#         print(path)
+#         for data in path:
+#             for item in data:
+#                 direction = data[item]
+#                 service = item[0][-1]
+#             print(direction, service)
+#             if direction == 1:
+#                 routing = LrtRoute0[service]["coordinates"]
+#             else:
+#                 routing = LrtRoute1[service]["coordinates"]
 
 
 # 				while indexing < len(routing):
