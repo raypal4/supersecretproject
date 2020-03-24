@@ -14,7 +14,7 @@ end = "Sam Kee Station"
 nodes, edges = ox.graph_to_gdfs(graph)
 
 # TO CREATE LRT ROUTING
-# pathcheck = lrtRouting(EastLoopGraph, WestLoopGraph, start, end)
+pathcheck = lrtRouting(EastLoopGraph, WestLoopGraph, start, end)
 
 # Line = []
 # markers = []

@@ -102,12 +102,9 @@ def shortestLrt(graph, start, end):
                     endResult[key] = []
                 endResult[key] = storeArray
 
-    print("\n------------------------------------------------\n")
+    # print("\n------------------------------------------------\n")
     # print(endResult, "\n")
     return endResult
-
-
-# shortestLrt(EastLoopGraph, "Cove Station", "Nibong Station")
 
 
 def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
@@ -182,7 +179,3 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
         print("No routes found for station", start, "to station", end)
     else:
         return [finalRoute, lrtflag]
-
-
-pathcheck = lrtRouting(EastLoopGraph, WestLoopGraph,
-                       "Cove Station", "Sumang Station")
