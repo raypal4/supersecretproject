@@ -56,7 +56,7 @@ def isStationInLoop(LoopGraph, station):
     return False
 
 
-def keepingItSimple(graph, start, end):
+def shortestLrt(graph, start, end):
     # print(start, "GO TO", end, "\n")
     endResult = {}
     shortestNumberOfStops = 999999
@@ -102,7 +102,7 @@ def keepingItSimple(graph, start, end):
 # for item in WestLoopGraph:
 #     print(item, WestLoopGraph[item], "\n")
 
-# keepingItSimple(WestLoopGraph, "Punggol Station", "Nibong Station")
+# shortestLrt(WestLoopGraph, "Punggol Station", "Nibong Station")
 
 def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
     words_rep = {
@@ -151,22 +151,22 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
 
     if (startInEastLoop == True and endInEastLoop == True) or (start == "Punggol Station" and endInEastLoop == True):
         print("Do east loop only")
-        finalRoute.append(keepingItSimple(EastLoopGraph, start, end))
+        finalRoute.append(shortestLrt(EastLoopGraph, start, end))
     elif (startInWestLoop == True and endInWestLoop == True) or (start == "Punggol Station" and endInWestLoop == True):
         print("Do west loop only")
-        finalRoute.append((keepingItSimple(WestLoopGraph, start, end)))
+        finalRoute.append((shortestLrt(WestLoopGraph, start, end)))
     elif startInWestLoop == True and endInEastLoop == True:
         print("Do west then east loops")
-        finalRoute.append(keepingItSimple(
+        finalRoute.append(shortestLrt(
             WestLoopGraph, start, "Punggol Station"))
         finalRoute.append(
-            (keepingItSimple(EastLoopGraph, "Punggol Station", end)))
+            (shortestLrt(EastLoopGraph, "Punggol Station", end)))
     elif (startInEastLoop == True and endInWestLoop == True):
         print("Do east then west loops")
         finalRoute.append(
-            (keepingItSimple(EastLoopGraph, start, "Punggol Station")))
+            (shortestLrt(EastLoopGraph, start, "Punggol Station")))
         finalRoute.append(
-            (keepingItSimple(WestLoopGraph, "Punggol Station", end)))
+            (shortestLrt(WestLoopGraph, "Punggol Station", end)))
 
     print(finalRoute)
 
