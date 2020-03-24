@@ -132,6 +132,8 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
         "after": "aft"
     }
 
+    finalRoute = []
+
     startInEastLoop = False
     startInWestLoop = False
     endInEastLoop = False
@@ -149,18 +151,24 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
 
     if (startInEastLoop == True and endInEastLoop == True) or (start == "Punggol Station" and endInEastLoop == True):
         print("Do east loop only")
-        print(keepingItSimple(EastLoopGraph, start, end))
+        finalRoute.append(keepingItSimple(EastLoopGraph, start, end))
     elif (startInWestLoop == True and endInWestLoop == True) or (start == "Punggol Station" and endInWestLoop == True):
         print("Do west loop only")
-        print(keepingItSimple(WestLoopGraph, start, end))
+        finalRoute.append((keepingItSimple(WestLoopGraph, start, end)))
     elif startInWestLoop == True and endInEastLoop == True:
         print("Do west then east loops")
-        print(keepingItSimple(WestLoopGraph, start, "Punggol Station"))
-        print(keepingItSimple(EastLoopGraph, "Punggol Station", end))
+        finalRoute.append(keepingItSimple(
+            WestLoopGraph, start, "Punggol Station"))
+        finalRoute.append(
+            (keepingItSimple(EastLoopGraph, "Punggol Station", end)))
     elif (startInEastLoop == True and endInWestLoop == True):
         print("Do east then west loops")
-        print(keepingItSimple(EastLoopGraph, start, "Punggol Station"))
-        print(keepingItSimple(WestLoopGraph, "Punggol Station", end))
+        finalRoute.append(
+            (keepingItSimple(EastLoopGraph, start, "Punggol Station")))
+        finalRoute.append(
+            (keepingItSimple(WestLoopGraph, "Punggol Station", end)))
+
+    print(finalRoute)
 
 
-lrtRouting(EastLoopGraph, WestLoopGraph, "Nibong Station", "Oasis Station")
+lrtRouting(EastLoopGraph, WestLoopGraph, "Punggol Station", "Oasis Station")
