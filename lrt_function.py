@@ -102,8 +102,6 @@ def shortestLrt(graph, start, end):
 # for item in WestLoopGraph:
 #     print(item, WestLoopGraph[item], "\n")
 
-# shortestLrt(WestLoopGraph, "Punggol Station", "Nibong Station")
-
 def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
     words_rep = {
         "avenue": "ave",
