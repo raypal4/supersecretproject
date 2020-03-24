@@ -175,4 +175,4 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
     if finalRoute[0] == None:
         print("No routes found for station", start, "to station", end)
     else:
-        return [lrtflag, finalRoute]
+        return [finalRoute, lrtflag]

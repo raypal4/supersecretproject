@@ -4,26 +4,23 @@ import osmnx as ox
 
 from lrt_function import *
 
-# print("Loading OSM")
-# graph = ox.graph_from_file(
-#     "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
+print("Loading OSM")
+graph = ox.graph_from_file(
+    "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
 
-# start = ox.geocode("punggol, singapore")
-# end = ox.geocode("horizon primary school, singapore")
-# print("Found a starting node", start)
-# print("Found a ending node", end)
+start = "Punggol Station"
+end = "Nibong Station"
 
-# start_node = ox.get_nearest_node(graph, start)
-# end_node = ox.get_nearest_node(graph, end)
-
-# nodes, edges = ox.graph_to_gdfs(graph)
+nodes, edges = ox.graph_to_gdfs(graph)
 
 # TO CREATE LRT ROUTING
-# pathcheck = lrt(lrtGraph, graph, start, end, start_node, end_node)
-pathcheck = lrtRouting(EastLoopGraph, WestLoopGraph,
-                       "Punggol Station", "Nibong Station")
+pathcheck = lrtRouting(EastLoopGraph, WestLoopGraph, start, end)
 
-print(pathcheck)
+if pathcheck is not None:
+    if pathcheck[1] == 0:
+        path = pathcheck[0]
+        print(path)
+
 # if pathcheck is not None:
 # 		# IF BUS ROUTE IS AVAILABLE
 # 		if pathcheck[1] == 0:
