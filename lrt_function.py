@@ -91,7 +91,7 @@ def shortestLrt(graph, start, end):
             key = (storeArray[0], storeArray[1])
             if key not in endResult:
                 endResult[key] = 0
-            endResult[key] += shortestNumberOfStops
+            endResult[key] += storeArray[0][4]
 
     # for item in endResult:
     #     print(item, endResult[item])
@@ -173,6 +173,7 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
             (shortestLrt(WestLoopGraph, "Punggol Station", end)))
 
     if finalRoute[0] == None:
+        # lrtflag = 1
         print("No routes found for station", start, "to station", end)
     else:
         return [finalRoute, lrtflag]

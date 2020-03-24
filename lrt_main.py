@@ -8,46 +8,32 @@ print("Loading OSM")
 graph = ox.graph_from_file(
     "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
 
-start = "Punggol Station"
-end = "Nibong Station"
+start = "Oasis Station"
+end = "Sam Kee Station"
 
 nodes, edges = ox.graph_to_gdfs(graph)
 
 # TO CREATE LRT ROUTING
 pathcheck = lrtRouting(EastLoopGraph, WestLoopGraph, start, end)
 
+Line = []
+
 if pathcheck is not None:
     if pathcheck[1] == 0:
         path = pathcheck[0]
         print(path)
+        for data in path:
+            for item in data:
+                print("SHOULD ONLY BE TWICE?")
+                direction = data[item]
+                service = item[0][-1]
+            print(direction, service)
+            if direction == 1:
+                routing = LrtRoute0[service]["coordinates"]
+            else:
+                routing = LrtRoute1[service]["coordinates"]
 
-# if pathcheck is not None:
-# 		# IF BUS ROUTE IS AVAILABLE
-# 		if pathcheck[1] == 0:
-# 			path = pathcheck[0]
-# 			indexing = 0
-# 			line = []
-# 			prevService = None
-# 			prevIndex = None
-# 			i = 0
-# 			markers = []
-# 			while i < len(path):
-# 				stopCode, service = path[i]
-# 				# in the case of first stop, no bus service stated, take next
-# 				if service is None:
-# 					service = path[i + 1][1]
 
-# 				if service != prevService:
-# 					indexing = 0
-
-# 				qlat = stop_desc_map[stopCode]["Latitude"]
-# 				qlon = stop_desc_map[stopCode]["Longitude"]
-
-# 				# get routes for respective direction
-# 				if service[1] == 1:
-# 					routing = LrtRoute0[service[0]]["coordinates"]
-# 				else:
-# 					routing = LrtRoute1[service[0]]["coordinates"]
 # 				while indexing < len(routing):
 # 					clon, clat = routing[indexing]
 # 					u = (qlat, qlon)
