@@ -51,7 +51,7 @@ def isStationInLoop(LoopGraph, station):
         for index in range(len(LoopGraph[loop])):
             stationX = LoopGraph[loop][index][1]
             if station == stationX:
-                print(station, "found in", loop[0])
+                # print(station, "found in", loop[0])
                 return True
     return False
 
@@ -177,4 +177,4 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
         print(finalRoute)
 
 
-lrtRouting(EastLoopGraph, WestLoopGraph, "Punggol Station", "Cove Station")
+lrtRouting(EastLoopGraph, WestLoopGraph, "Punggol Station", "Nibong Station")
