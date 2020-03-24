@@ -137,6 +137,11 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
         "after": "aft"
     }
 
+    startInEastLoop = False
+    startInWestLoop = False
+    endInEastLoop = False
+    endInWestLoop = False
+
     startInEastLoop = isStationInLoop(EastLoopGraph, start)
     if startInEastLoop == False:
         startInWestLoop = True
@@ -146,6 +151,13 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
     if endInEastLoop == False:
         endInWestLoop = True
         print(end, "found in West")
+
+    if startInEastLoop == True and endInEastLoop == True:
+        print("Do east loop only")
+    elif startInWestLoop == True and endInWestLoop == True:
+        print("Do west loop only")
+    elif(startInWestLoop == True and endInEastLoop == True) or (startInEastLoop == True and endInWestLoop == True):
+        print("Do both east and west loops")
 
 
 lrtRouting(EastLoopGraph, WestLoopGraph, "Punggol Station", "Nibong Station")
