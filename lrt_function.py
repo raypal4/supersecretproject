@@ -57,32 +57,32 @@ def isStationInLoop(LoopGraph, station):
 
 
 def keepingItSimple(graph, start, end):
-    print(start, "GO TO", end, "\n")
+    # print(start, "GO TO", end, "\n")
     endResult = {}
     shortestNumberOfStops = 999999
 
     for loop in graph:
         storeArray = []
-        print(loop, "-----------------------------\n")
+        # print(loop, "-----------------------------\n")
         for index in range(len(graph[loop])):
             StartName = graph[loop][index][1]
             if StartName == start:
                 startNumber = graph[loop][index][0]
                 storeArray.append((graph[loop][index]))
-                print("Start Stop: ", StartName, startNumber, "\n")
+                # print("Start Stop: ", StartName, startNumber, "\n")
                 break
         for index in range(len(graph[loop])):
             EndName = graph[loop][index][1]
             if EndName == end:
                 endNumber = graph[loop][index][0]
                 storeArray.append((graph[loop][index]))
-                print("End Stop: ", EndName, endNumber, "\n")
+                # print("End Stop: ", EndName, endNumber, "\n")
                 break
 
         newShortestNumberOfStops = endNumber - startNumber
         if newShortestNumberOfStops < shortestNumberOfStops:
             shortestNumberOfStops = newShortestNumberOfStops
-            # endResult.clear()
+            endResult.clear()
             key = (storeArray[0], storeArray[1])
             if key not in endResult:
                 endResult[key] = 0
@@ -149,12 +149,18 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
 
     if (startInEastLoop == True and endInEastLoop == True) or (start == "Punggol Station" and endInEastLoop == True):
         print("Do east loop only")
+        print(keepingItSimple(EastLoopGraph, start, end))
     elif (startInWestLoop == True and endInWestLoop == True) or (start == "Punggol Station" and endInWestLoop == True):
         print("Do west loop only")
+        print(keepingItSimple(WestLoopGraph, start, end))
     elif startInWestLoop == True and endInEastLoop == True:
         print("Do west then east loops")
+        print(keepingItSimple(WestLoopGraph, start, "Punggol Station"))
+        print(keepingItSimple(EastLoopGraph, "Punggol Station", end))
     elif (startInEastLoop == True and endInWestLoop == True):
         print("Do east then west loops")
+        print(keepingItSimple(EastLoopGraph, start, "Punggol Station"))
+        print(keepingItSimple(WestLoopGraph, "Punggol Station", end))
 
 
 lrtRouting(EastLoopGraph, WestLoopGraph, "Nibong Station", "Oasis Station")
