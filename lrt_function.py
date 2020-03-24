@@ -105,11 +105,6 @@ def keepingItSimple(graph, start, end):
 # keepingItSimple(WestLoopGraph, "Punggol Station", "Nibong Station")
 
 def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
-    tags = {
-        'highway': 'bus_stop',
-        'building': 'train_station'
-    }
-
     words_rep = {
         "avenue": "ave",
         "block": "blk",
@@ -152,9 +147,9 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
         endInWestLoop = True
         print(end, "found in West")
 
-    if startInEastLoop == True and endInEastLoop == True:
+    if (startInEastLoop == True and endInEastLoop == True) or (start == "Punggol Station" and endInEastLoop == True):
         print("Do east loop only")
-    elif startInWestLoop == True and endInWestLoop == True:
+    elif (startInWestLoop == True and endInWestLoop == True) or (start == "Punggol Station" and endInWestLoop == True):
         print("Do west loop only")
     elif startInWestLoop == True and endInEastLoop == True:
         print("Do west then east loops")
@@ -162,4 +157,4 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
         print("Do east then west loops")
 
 
-lrtRouting(EastLoopGraph, WestLoopGraph, "Punggol Station", "Nibong Station")
+lrtRouting(EastLoopGraph, WestLoopGraph, "Nibong Station", "Oasis Station")
