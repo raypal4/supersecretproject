@@ -136,6 +136,7 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
     }
 
     finalRoute = []
+    lrtflag = 0
 
     startInEastLoop = False
     startInWestLoop = False
@@ -174,7 +175,4 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
     if finalRoute[0] == None:
         print("No routes found for station", start, "to station", end)
     else:
-        print(finalRoute)
-
-
-lrtRouting(EastLoopGraph, WestLoopGraph, "Punggol Station", "Nibong Station")
+        return [lrtflag, finalRoute]

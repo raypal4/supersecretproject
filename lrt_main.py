@@ -4,48 +4,29 @@ import osmnx as ox
 
 from lrt_function import *
 
-print("Loading OSM")
-graph = ox.graph_from_file(
-    "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
+# print("Loading OSM")
+# graph = ox.graph_from_file(
+#     "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
 
-start = ox.geocode("punggol, singapore")
-end = ox.geocode("horizon primary school, singapore")
-print("Found a starting node", start)
-print("Found a ending node", end)
+# start = ox.geocode("punggol, singapore")
+# end = ox.geocode("horizon primary school, singapore")
+# print("Found a starting node", start)
+# print("Found a ending node", end)
 
-start_node = ox.get_nearest_node(graph, start)
-end_node = ox.get_nearest_node(graph, end)
+# start_node = ox.get_nearest_node(graph, start)
+# end_node = ox.get_nearest_node(graph, end)
 
-nodes, edges = ox.graph_to_gdfs(graph)
+# nodes, edges = ox.graph_to_gdfs(graph)
 
-# TO CREATE BUS ROUTING
-pathcheck = lrt(lrtGraph, graph, start, end, start_node, end_node)
+# TO CREATE LRT ROUTING
+# pathcheck = lrt(lrtGraph, graph, start, end, start_node, end_node)
+pathcheck = lrtRouting(EastLoopGraph, WestLoopGraph,
+                       "Punggol Station", "Nibong Station")
 
+print(pathcheck)
 # if pathcheck is not None:
 # 		# IF BUS ROUTE IS AVAILABLE
 # 		if pathcheck[1] == 0:
-# 			startStopCoords = pathcheck[2]
-# 			endStopCoords = pathcheck[3]
-
-# 			start_Lrt = ox.get_nearest_node(graph, startStopCoords)
-# 			end_Lrt = ox.get_nearest_node(graph, endStopCoords)
-
-# 			pathToLrt = astar_path(graph, start_node, start_Lrt)
-# 			pathFromLrt = astar_path(graph, end_Lrt, end_node)
-
-# 			latlontoLrt = []
-# 			latlonfromLrt = []
-
-# 			api = osm.OsmApi()  # this instantiate the OsmApi class,
-
-# 			for item in pathToLrt:
-# 				node = api.NodeGet(item)
-# 				latlontoLrt.append((node["lat"], node["lon"]))
-
-# 			for item in pathFromLrt:
-# 				node = api.NodeGet(item)
-# 				latlonfromLrt.append((node["lat"], node["lon"]))
-
 # 			path = pathcheck[0]
 # 			indexing = 0
 # 			line = []
