@@ -56,58 +56,11 @@ def isStationInLoop(LoopGraph, station):
     return False
 
 
-def shortestLrt(graph, start, end):
-    # print(start, "GO TO", end, "\n")
-    endResult = {}
-    shortestNumberOfStops = 999999
+def findNearestBusStopFromLRT(graph, start, end, start_node, end_node):
+    tags = {
+        'highway': 'bus_stop',
+    }
 
-    for loop in graph:
-        startNumber = None
-        endNumber = None
-        stopsArray = []
-        storeArray = []
-        for index in range(len(graph[loop])):
-            # print(graph[loop][index])
-            stopsArray.append(graph[loop][index])
-            StartName = graph[loop][index][1]
-            EndName = graph[loop][index][1]
-            if StartName == start:
-                startNumber = index
-            if EndName == end:
-                endNumber = index
-
-        loopLength = len(stopsArray)
-        # print(startNumber, endNumber)
-        # max range is the length of the loop - one round
-        for i in range(1, loopLength):
-            nextIndex = startNumber+i
-            if nextIndex <= loopLength:
-                storeArray.append(stopsArray[nextIndex-1])
-                if nextIndex-1 == endNumber:
-                    break
-            if nextIndex >= loopLength:
-                startNumber = 0
-                storeArray.append(stopsArray[startNumber])
-                if startNumber == endNumber:
-                    break
-
-        # print(storeArray, "\n")
-        newnumberofstops = len(storeArray)
-        if newnumberofstops != loopLength:
-            if newnumberofstops < shortestNumberOfStops:
-                shortestNumberOfStops = newnumberofstops
-                endResult.clear()
-                key = (storeArray[0], storeArray[-1])
-                if key not in endResult:
-                    endResult[key] = []
-                endResult[key] = storeArray
-
-    # print("\n------------------------------------------------\n")
-    # print(endResult, "\n")
-    return endResult
-
-
-def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
     words_rep = {
         "avenue": "ave",
         "block": "blk",
@@ -134,7 +87,147 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
         "before": "bef",
         "after": "aft"
     }
+    # flag to check if there is a possible bus route (0 if have, 1 if loc is walkable)
+    busflag = 0
 
+    startlat = start[0]
+    startLon = start[1]
+    R = 6378137
+    dn = 250
+    de = 250
+    dLat = dn / R
+    dLon = de / (R * math.cos(math.pi * startlat / 180))
+    maxstartLat = startlat + dLat * 180 / math.pi
+    maxstartLon = startLon + dLon * 180 / math.pi
+    dn = -250
+    de = -250
+    dLat = dn / R
+    dLon = de / (R * math.cos(math.pi * startlat / 180))
+    minstartLat = startlat + dLat * 180 / math.pi
+    minstartLon = startLon + dLon * 180 / math.pi
+
+    bus = pois_from_polygon(
+        box(minstartLon, minstartLat, maxstartLon, maxstartLat), tags=tags)
+    # print(bus.columns)
+    busStopStartName = []
+    startStationName = ""
+    # if there is no start bus stop within 1km, person should default to walk --------------- test
+    if bus.empty:
+        busflag = 1
+        return [astar_path(graph, start_node, end_node), busflag]
+
+    print("\nPossible Starting LRT:")
+    for name in bus["name"]:
+        if isinstance(name, str) and ("Stn" in name):
+            name = name.lower()
+            for word, initial in words_rep.items():
+                name = name.replace(word, initial)
+            busStopStartName.append(name.title())
+    for name in busStopStartName:
+        namesplit = name.split(" ")
+        for ind in range(len(namesplit)):
+            if namesplit[ind].__eq__("Stn"):
+                for dex in range(ind + 1):
+                    if dex == ind and (namesplit[dex] not in startStationName) and ("Station" not in startStationName):
+                        startStationName += "Station"
+                    elif dex != ind and namesplit[dex] not in startStationName:
+                        startStationName += namesplit[dex] + " "
+    print(startStationName, "\n")
+
+    endlat = end[0]
+    endLon = end[1]
+    R = 6378137
+    dn = 400
+    de = 400
+    dLat = dn / R
+    dLon = de / (R * math.cos(math.pi * endlat / 180))
+    maxendLat = endlat + dLat * 180 / math.pi
+    maxendLon = endLon + dLon * 180 / math.pi
+    dn = -250
+    de = -250
+    dLat = dn / R
+    dLon = de / (R * math.cos(math.pi * endlat / 180))
+    minendLat = endlat + dLat * 180 / math.pi
+    minendLon = endLon + dLon * 180 / math.pi
+
+    bus = pois_from_polygon(
+        box(minendLon, minendLat, maxendLon, maxendLat), tags=tags)
+    busStopEndName = []
+    endStationName = ""
+
+    print("\nPossible Ending LRT:")
+    for name in bus["name"]:
+        if isinstance(name, str) and ("Stn" in name):
+            name = name.lower()
+            for word, initial in words_rep.items():
+                name = name.replace(word, initial)
+            busStopEndName.append(name.title())
+    for name in busStopEndName:
+        namesplit = name.split(" ")
+        for ind in range(len(namesplit)):
+            if namesplit[ind].__eq__("Stn"):
+                for dex in range(ind + 1):
+                    if dex == ind and (namesplit[dex] not in endStationName) and ("Station" not in endStationName):
+                        endStationName += "Station"
+                    elif dex != ind and namesplit[dex] not in endStationName:
+                        endStationName += namesplit[dex] + " "
+    print(endStationName, "\n")
+    # TO CREATE LRT ROUTING
+    pathcheck = lrtRouting(EastLoopGraph, WestLoopGraph, startStationName, endStationName)
+    return pathcheck
+
+def shortestLrt(graph, start, end):
+    # print(start, "GO TO", end, "\n")
+    endResult = {}
+    shortestNumberOfStops = 999999
+
+    for loop in graph:
+        startNumber = None
+        endNumber = None
+        stopsArray = []
+        storeArray = []
+        for index in range(len(graph[loop])):
+            # print(graph[loop][index])
+            stopsArray.append(graph[loop][index])
+            StartName = graph[loop][index][1]
+            EndName = graph[loop][index][1]
+            if StartName == start:
+                startNumber = index
+            if EndName == end:
+                endNumber = index
+
+        loopLength = len(stopsArray)
+        # print(startNumber, endNumber)
+        # max range is the length of the loop - one round
+        for i in range(1, loopLength):
+            nextIndex = startNumber + i
+            if nextIndex <= loopLength:
+                storeArray.append(stopsArray[nextIndex - 1])
+                if nextIndex - 1 == endNumber:
+                    break
+            if nextIndex >= loopLength:
+                startNumber = 0
+                storeArray.append(stopsArray[startNumber])
+                if startNumber == endNumber:
+                    break
+
+        # print(storeArray, "\n")
+        newnumberofstops = len(storeArray)
+        if newnumberofstops != loopLength:
+            if newnumberofstops < shortestNumberOfStops:
+                shortestNumberOfStops = newnumberofstops
+                endResult.clear()
+                key = (storeArray[0], storeArray[-1])
+                if key not in endResult:
+                    endResult[key] = []
+                endResult[key] = storeArray
+
+    # print("\n------------------------------------------------\n")
+    # print(endResult, "\n")
+    return endResult
+
+
+def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
     finalRoute = []
     lrtflag = 0
 
