@@ -9,7 +9,7 @@ print("Loading OSM")
 graph = ox.graph_from_file(
     "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
 
-start = ox.geocode("punggol, singapore")
+start = ox.geocode("nibong,punggol,singapore")
 end = ox.geocode("horizon primary school, singapore")
 print("Found a starting node", start)
 print("Found a ending node", end)
@@ -109,8 +109,8 @@ for loc, code in markers:
                   icon=folium.Icon(color='black', icon='train', prefix='fa')).add_to(m)
 
 
-m.save('index.html')
-
+m.save('LRT_Routing.html')
+print("LRT_Routing.Html created!")
 # # TO CREATE BUS ROUTING IF NON WALKABLE DISTANCE
 # start_Lrt_node = ox.get_nearest_node(graph, (startLrtLat, startLrtLong))
 # end_Lrt_node = ox.get_nearest_node(graph, (endLrtLat, endLrtLong))
