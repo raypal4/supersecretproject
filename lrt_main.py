@@ -9,7 +9,7 @@ print("Loading OSM")
 graph = ox.graph_from_file(
     "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
 
-start = ox.geocode("damai, punggol, singapore")
+start = ox.geocode("nibong, punggol, singapore")
 end = ox.geocode("horizon primary school, singapore")
 print("Found a starting node", start)
 print("Found a ending node", end)
