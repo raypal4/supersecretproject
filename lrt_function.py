@@ -4,15 +4,15 @@ import math
 from astar import *
 from manualPatch.pois import *
 
-print("Loading JSON")
+print("Loading LRT JSON")
 stops = json.loads(open("punggollrtData/stops.json").read())
 routes = json.loads(open("punggollrtData/routes.json").read())
 LrtRoute0 = json.loads(open("punggollrtData/LrtRoute0.json").read())
 LrtRoute1 = json.loads(open("punggollrtData/LrtRoute1.json").read())
-print("Initializing tables")
+# print("Initializing tables")
 stop_desc_map = {stop["Description"]: stop for stop in stops}
 
-print("Creating lrt route map")
+# print("Creating lrt route map")
 routes_map = {}
 
 for route in routes:
@@ -21,7 +21,7 @@ for route in routes:
         routes_map[key] = []
     routes_map[key] += [route]
 
-print("Initializing Graph")
+# print("Initializing Graph")
 EastLoopGraph = {}
 WestLoopGraph = {}
 
@@ -132,7 +132,7 @@ def findNearestBusStopFromLRT(graph, start, end, start_node, end_node):
                         startStationName += "Station"
                     elif dex != ind and namesplit[dex] not in startStationName:
                         startStationName += namesplit[dex] + " "
-    print(startStationName, "\n")
+    print(startStationName)
 
     endlat = end[0]
     endLon = end[1]
@@ -173,8 +173,10 @@ def findNearestBusStopFromLRT(graph, start, end, start_node, end_node):
                         endStationName += namesplit[dex] + " "
     print(endStationName, "\n")
     # TO CREATE LRT ROUTING
-    pathcheck = lrtRouting(EastLoopGraph, WestLoopGraph, startStationName, endStationName)
+    pathcheck = lrtRouting(EastLoopGraph, WestLoopGraph,
+                           startStationName, endStationName)
     return pathcheck
+
 
 def shortestLrt(graph, start, end):
     # print(start, "GO TO", end, "\n")
@@ -265,8 +267,8 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
         finalRoute.append(
             (shortestLrt(WestLoopGraph, "Punggol Station", end)))
 
-    for item in finalRoute:
-        print(item, "\n")
+    # for item in finalRoute:
+    #     print(item, "\n")
 
     if finalRoute[0] == None:
         print("No routes found for station", start, "to station", end)

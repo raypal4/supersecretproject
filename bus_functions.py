@@ -4,18 +4,18 @@ import math
 from astar import *
 from manualPatch.pois import *
 
-print("Loading JSON")
+print("Loading BUS JSON")
 stops = json.loads(open("punggolBusData/stops.json").read())
 services = json.loads(open("punggolBusData/services.json").read())
 routes = json.loads(open("punggolBusData/routes.json").read())
 busRoute0 = json.loads(open("punggolBusData/busroute0.json").read())
 busRoute1 = json.loads(open("punggolBusData/busroute1.json").read())
 
-print("Initializing tables")
+# print("Initializing tables")
 stop_desc_map = {stop["Description"]: stop for stop in stops}
 stop_code_map = {stop["BusStopCode"]: stop for stop in stops}
 
-print("Creating bus route map")
+# print("Creating bus route map")
 routes_map = {}
 
 for route in routes:
@@ -27,7 +27,7 @@ for route in routes:
         route["StopSequence"] = 14
     routes_map[key] += [route]
 
-print("Initializing Graph")
+# print("Initializing Graph")
 busGraph = {}
 for service, path in routes_map.items():
     # hack around broken data
