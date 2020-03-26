@@ -108,8 +108,9 @@ for loc, station in lrtMarkers:
                   icon=folium.Icon(color='black', icon='train', prefix='fa')).add_to(m)
 
 
-m.save('index.html')
+m.save('LRT_Routing.html')
 
+print("LRT_Routing.html created!")
 # # TO CREATE BUS ROUTING IF NON WALKABLE DISTANCE
 # start_Lrt_node = ox.get_nearest_node(graph, (startLrtLat, startLrtLong))
 # end_Lrt_node = ox.get_nearest_node(graph, (endLrtLat, endLrtLong))
