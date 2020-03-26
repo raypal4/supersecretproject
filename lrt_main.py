@@ -99,13 +99,15 @@ if path_to_Lrt is not None:
                     indexing += 1
                 i += 1
 
-print(lrtline)
-
 nodepath = astar_path(graph, start_node, end_node)
 m = ox.plot_route_folium(
     graph, nodepath, route_color='green', route_opacity=0)
 
-folium.PolyLine(lrtline, color="red", weight=2.5, opacity=1).add_to(m)
+folium.PolyLine(lrtline, color="black", weight=2.5, opacity=1).add_to(m)
+for loc, code in markers:
+    folium.Marker(location=loc, popup='Station Name:' + str(code),
+                  icon=folium.Icon(color='black', icon='train', prefix='fa')).add_to(m)
+
 
 m.save('index.html')
 
