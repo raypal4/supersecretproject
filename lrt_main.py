@@ -9,7 +9,7 @@ print("Loading OSM")
 graph = ox.graph_from_file(
     "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
 
-start = ox.geocode("punggol, singapore")
+start = ox.geocode("damai, punggol, singapore")
 end = ox.geocode("horizon primary school, singapore")
 print("Found a starting node", start)
 print("Found a ending node", end)
@@ -38,13 +38,8 @@ for items in path_to_Lrt[0]:
         endLrtLong = value[3]
 
 # LRT ROUTING
-indexing = 0
 lrtline = []
-prevService = None
-prevIndex = None
-i = 0
-markers = []
-
+lrtMarkers = []
 
 if path_to_Lrt is not None:
     # if LRT path is found
@@ -52,6 +47,10 @@ if path_to_Lrt is not None:
         pathDict = path_to_Lrt[0]
         # print(path)
         for path in pathDict:
+            indexing = 0
+            prevService = None
+            prevIndex = None
+            i = 0
             for item in path:
                 # print(path[item])
                 direction = item[0][4]
@@ -94,7 +93,7 @@ if path_to_Lrt is not None:
                                     tempIndex += 1
                         prevIndex = indexing
                         prevService = service
-                        markers.append((v, path[item][i][1]))
+                        lrtMarkers.append((v, path[item][i][1]))
                         break
                     indexing += 1
                 i += 1
@@ -104,8 +103,8 @@ m = ox.plot_route_folium(
     graph, nodepath, route_color='green', route_opacity=0)
 
 folium.PolyLine(lrtline, color="black", weight=2.5, opacity=1).add_to(m)
-for loc, code in markers:
-    folium.Marker(location=loc, popup='Station Name:' + str(code),
+for loc, station in lrtMarkers:
+    folium.Marker(location=loc, popup='Station Name:' + str(station),
                   icon=folium.Icon(color='black', icon='train', prefix='fa')).add_to(m)
 
 

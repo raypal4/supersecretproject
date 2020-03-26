@@ -93,8 +93,8 @@ def findNearestBusStopFromLRT(graph, start, end, start_node, end_node):
     startlat = start[0]
     startLon = start[1]
     R = 6378137
-    dn = 250
-    de = 250
+    dn = 400
+    de = 400
     dLat = dn / R
     dLon = de / (R * math.cos(math.pi * startlat / 180))
     maxstartLat = startlat + dLat * 180 / math.pi
