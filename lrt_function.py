@@ -1,5 +1,6 @@
 import json
 import math
+import osmnx as ox
 
 from astar import *
 from manualPatch.pois import *
@@ -96,14 +97,14 @@ def findNearestLrt(graph, start, end, start_node, end_node):
     startlat = start[0]
     startLon = start[1]
     R = 6378137
-    dn = 250
-    de = 250
+    dn = 3000
+    de = 3000
     dLat = dn / R
     dLon = de / (R * math.cos(math.pi * startlat / 180))
     maxstartLat = startlat + dLat * 180 / math.pi
     maxstartLon = startLon + dLon * 180 / math.pi
-    dn = -250
-    de = -250
+    dn = -3000
+    de = -3000
     dLat = dn / R
     dLon = de / (R * math.cos(math.pi * startlat / 180))
     minstartLat = startlat + dLat * 180 / math.pi
@@ -131,34 +132,32 @@ def findNearestLrt(graph, start, end, start_node, end_node):
 
     print("\nPossible Starting LRT:")
     print(startStationName)
-    # for name in lrt["name"]:
-    #     if isinstance(name, str) and ("Stn" in name):
-    #         name = name.lower()
-    #         for word, initial in words_rep.items():
-    #             name = name.replace(word, initial)
-    #         lrtStopStartName.append(name.title())
-    # for name in lrtStopStartName:
-    #     namesplit = name.split(" ")
-    #     for ind in range(len(namesplit)):
-    #         if namesplit[ind].__eq__("Stn"):
-    #             for dex in range(ind + 1):
-    #                 if dex == ind and (namesplit[dex] not in startStationName) and ("Station" not in startStationName):
-    #                     startStationName += "Station"
-    #                 elif dex != ind and namesplit[dex] not in startStationName:
-    #                     startStationName += namesplit[dex] + " "
-    # print(startStationName)
+
+    shortestStartDistance = float("Infinity")
+    nearestStartStop = None
+    for s in startStationName:
+        try:
+            temp = stop_desc_map[s]
+        except KeyError:
+            continue
+        # print(temp)
+        distance = geopy.distance.distance(
+            start, (temp["Latitude"], temp["Longitude"])).km
+        if distance < shortestStartDistance:
+            shortestStartDistance = distance
+            nearestStartStop = s
 
     endlat = end[0]
     endLon = end[1]
     R = 6378137
-    dn = 250
-    de = 250
+    dn = 3000
+    de = 3000
     dLat = dn / R
     dLon = de / (R * math.cos(math.pi * endlat / 180))
     maxendLat = endlat + dLat * 180 / math.pi
     maxendLon = endLon + dLon * 180 / math.pi
-    dn = -250
-    de = -250
+    dn = -3000
+    de = -3000
     dLat = dn / R
     dLon = de / (R * math.cos(math.pi * endlat / 180))
     minendLat = endlat + dLat * 180 / math.pi
@@ -186,27 +185,24 @@ def findNearestLrt(graph, start, end, start_node, end_node):
     print("\nPossible Ending LRT:")
     print(endStationName)
 
-    # print("\nPossible Ending LRT:")
-    # for name in lrt["name"]:
-    #     if isinstance(name, str) and ("Stn" in name):
-    #         name = name.lower()
-    #         for word, initial in words_rep.items():
-    #             name = name.replace(word, initial)
-    #         lrtStopEndName.append(name.title())
-    # for name in lrtStopEndName:
-    #     namesplit = name.split(" ")
-    #     for ind in range(len(namesplit)):
-    #         if namesplit[ind].__eq__("Stn"):
-    #             for dex in range(ind + 1):
-    #                 if dex == ind and (namesplit[dex] not in endStationName) and ("Station" not in endStationName):
-    #                     endStationName += "Station"
-    #                 elif dex != ind and namesplit[dex] not in endStationName:
-    #                     endStationName += namesplit[dex] + " "
-    # print(endStationName, "\n")
+    shortestEndDistance = float("Infinity")
+    nearestEndStop = None
+    for s in endStationName:
+        try:
+            temp = stop_desc_map[s]
+        except KeyError:
+            continue
+            # print(temp)
+        distance = geopy.distance.distance(
+            end, (temp["Latitude"], temp["Longitude"])).km
+        if distance < shortestEndDistance:
+            shortestEndDistance = distance
+            nearestEndStop = s
+
     # TO CREATE LRT ROUTING
-    pathcheck = lrtRouting(EastLoopGraph, WestLoopGraph,
-                           startStationName[0], endStationName[0])
-    return pathcheck
+    path = lrtRouting(EastLoopGraph, WestLoopGraph,
+                      nearestStartStop, nearestEndStop)
+    return [path, lrtflag, nearestStartStop, nearestEndStop]
 
 
 def shortestLrt(graph, start, end):
@@ -230,7 +226,7 @@ def shortestLrt(graph, start, end):
                 endNumber = index
 
         loopLength = len(stopsArray)
-        print(startNumber, endNumber)
+        # print(startNumber, endNumber)
         # max range is the length of the loop - one round
         for i in range(1, loopLength):
             nextIndex = startNumber + i
@@ -262,22 +258,12 @@ def shortestLrt(graph, start, end):
 
 def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
     finalRoute = []
-    lrtflag = 0
 
     startInEastLoop = False
     endInEastLoop = False
 
     startInEastLoop = isStationInLoop(EastLoopGraph, start)
-    # if (startInEastLoop == False):
-    #     startInWestLoop = True
-    #     # print(start, "found in West")
-
     endInEastLoop = isStationInLoop(EastLoopGraph, end)
-    # if endInEastLoop == False:
-    #     endInWestLoop = True
-    # print(end, "found in West")
-
-    # east only:
 
     if (startInEastLoop and endInEastLoop) or (start == "Punggol Mrt/Lrt Stn" and endInEastLoop)or (end == "Punggol Mrt/Lrt Stn" and startInEastLoop):
         print("Do east loop only")
@@ -300,9 +286,9 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
     else:
         print("No routes found for station", start, "to station", end)
 
-    for item in finalRoute:
-        print(item, "\n")
+    # for item in finalRoute:
+    #     print(item, "\n")
 
     if finalRoute[0] != None:
-        return [finalRoute, lrtflag]
+        return finalRoute
         # print("No routes found for station", start, "to station", end)

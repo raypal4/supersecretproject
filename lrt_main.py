@@ -9,7 +9,7 @@ print("Loading OSM")
 graph = ox.graph_from_file(
     "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
 
-start = ox.geocode("punggol point, punggol, singapore")
+start = ox.geocode("Nibong point, punggol, singapore")
 end = ox.geocode("Meridian, punggol, singapore")
 print("Found a starting node", start)
 print("Found a ending node", end)
@@ -30,16 +30,21 @@ endLrtLong = 0
 # TO CREATE ROUTE TO AND FROM LRT
 path_to_Lrt = findNearestLrt(
     graph, start, end, start_node, end_node)
-for items in path_to_Lrt[0]:
-    for key, value in items:
-        startLrtLat = key[2]
-        startLrtLong = key[3]
-        endLrtLat = value[2]
-        endLrtLong = value[3]
+# for items in path_to_Lrt[0]:
+#     for key, value in items:
+#         startLrtLat = key[2]
+#         startLrtLong = key[3]
+#         endLrtLat = value[2]
+#         endLrtLong = value[3]
 
 # LRT ROUTING
 lrtline = []
 lrtMarkers = []
+# lrtFull = []
+
+# toLrt = path_to_Lrt[2]
+
+# print(toLrt)
 
 if path_to_Lrt is not None:
     # if LRT path is found
@@ -53,6 +58,7 @@ if path_to_Lrt is not None:
             i = 0
             for item in path:
                 # print(path[item])
+                # lrtFull = lrtFull + path[item]
                 direction = item[0][4]
                 stationName = item[0][1]
                 loop = item[0][-1]
@@ -97,6 +103,12 @@ if path_to_Lrt is not None:
                         break
                     indexing += 1
                 i += 1
+
+
+# startingLrtStop = lrtFull[0]
+# endingLrtStop = lrtFull[-1]
+# print(startingLrtStop)
+# print(endingLrtStop)
 
 nodepath = astar_path(graph, start_node, end_node)
 m = ox.plot_route_folium(
