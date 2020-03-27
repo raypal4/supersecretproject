@@ -8,42 +8,28 @@ print("Loading OSM")
 graph = ox.graph_from_file(
     "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
 
-start = ox.geocode("Nibong point, punggol, singapore")
-end = ox.geocode("Meridian, punggol, singapore")
+start = ox.geocode("Safra Punggol, punggol, singapore")
+end = ox.geocode("Horizon Primary School, punggol, singapore")
 print("Found a starting node", start)
 print("Found a ending node", end)
-
-# start = "Oasis Station"
-# end = "Sam Kee Station"
 
 start_node = ox.get_nearest_node(graph, start)
 end_node = ox.get_nearest_node(graph, end)
 
 nodes, edges = ox.graph_to_gdfs(graph)
 
-startLrtLat = 0
-startLrtLong = 0
-endLrtLat = 0
-endLrtLong = 0
-
 # TO CREATE ROUTE TO AND FROM LRT
 path_to_Lrt = findNearestLrt(
     graph, start, end, start_node, end_node)
-# for items in path_to_Lrt[0]:
-#     for key, value in items:
-#         startLrtLat = key[2]
-#         startLrtLong = key[3]
-#         endLrtLat = value[2]
-#         endLrtLong = value[3]
 
 # LRT ROUTING
 lrtline = []
 lrtMarkers = []
+
 # lrtFull = []
-
-# toLrt = path_to_Lrt[2]
-
-# print(toLrt)
+nearestStartStop = path_to_Lrt[2]
+nearestEndStop = path_to_Lrt[3]
+print(nearestStartStop, nearestEndStop)
 
 if path_to_Lrt is not None:
     # if LRT path is found
@@ -87,13 +73,13 @@ if path_to_Lrt is not None:
                             while tempIndex < len(routing):
                                 plon, plat = routing[tempIndex]
                                 p = (plat, plon)
-                                if geopy.distance.distance(prevLatLong, p).km < 0.03:
-                                    for x, y in routing[tempIndex: indexing]:
+                                if geopy.distance.distance(prevLatLong, p).km < 0.01:
+                                    for x, y in routing[tempIndex: indexing+1]:
                                         lrtline.append((y, x))
                                     break
                                 tempIndex += 1
                         prevIndex = indexing
-                        prevService = item
+                        prevService = path[item]
                         lrtMarkers.append((v, path[item][i][1]))
                         break
                     indexing += 1
