@@ -1,91 +1,91 @@
 [
     {
         "Loop": "East",
-        "Description": "Cove Station",
+        "Description": "Cove Lrt Stn",
         "Latitude": 1.3994053224600558,
         "Longitude": 103.90585899353027
     },
     {
         "Loop": "East",
-        "Description": "Meridian Station",
+        "Description": "Meridian Lrt Stn",
         "Latitude": 1.3969384248576102,
         "Longitude": 103.90889525413513
     },
     {
         "Loop": "East",
-        "Description": "Coral Edge Station",
+        "Description": "Coral Edge Lrt Stn",
         "Latitude": 1.3938494363819933,
         "Longitude": 103.91265034675597
     },
     {
         "Loop": "East",
-        "Description": "Riviera Station",
+        "Description": "Riviera Lrt Stn",
         "Latitude": 1.3945251529576015,
         "Longitude": 103.91612648963928
     },
     {
         "Loop": "East",
-        "Description": "Kadaloor Station",
+        "Description": "Kadaloor Lrt Stn",
         "Latitude": 1.399652012077673,
         "Longitude": 103.91649127006531
     },
     {
         "Loop": "East",
-        "Description": "Oasis Station",
+        "Description": "Oasis Lrt Stn",
         "Latitude": 1.4023548705350137,
         "Longitude": 103.91271471977234
     },
     {
         "Loop": "East",
-        "Description": "Damai Station",
+        "Description": "Damai Lrt Stn",
         "Latitude": 1.4053258661108796,
         "Longitude": 103.90857338905334
     },
     {
         "Loop": "East",
-        "Description": "Punggol Station",
+        "Description": "Punggol Mrt/Lrt Stn",
         "Latitude": 1.4052722380653662,
         "Longitude": 103.9023506641388
     },
     {
         "Loop": "West",
-        "Description": "Punggol Station",
+        "Description": "Punggol Mrt/Lrt Stn",
         "Latitude": 1.4052722380653662,
         "Longitude": 103.9023506641388
     },
     {
         "Loop": "West",
-        "Description": "Soo Teck Station",
+        "Description": "Soo Teck Lrt Stn",
         "Latitude": 1.4053955825682178,
         "Longitude": 103.89723300933838
     },
     {
         "Loop": "West",
-        "Description": "Sumang Station",
+        "Description": "Sumang Lrt Stn",
         "Latitude": 1.4085167326010761,
         "Longitude": 103.89853656291962
     },
     {
         "Loop": "West",
-        "Description": "Nibong Station",
+        "Description": "Nibong Lrt Stn",
         "Latitude": 1.4118175319102377,
         "Longitude": 103.90030682086945
     },
     {
         "Loop": "West",
-        "Description": "Samudera Station",
+        "Description": "Samudera Lrt Stn",
         "Latitude": 1.4159361506323163,
         "Longitude": 103.9021548628807
     },
     {
         "Loop": "West",
-        "Description": "Sam Kee Station",
+        "Description": "Sam Kee Lrt Stn",
         "Latitude": 1.4097045918680227,
         "Longitude": 103.90491485595702
     },
     {
         "Loop": "West",
-        "Description": "Punggol Point Station",
+        "Description": "Punggol Pt Lrt Stn",
         "Latitude": 1.4168934066708159,
         "Longitude": 103.90663146972656
     }

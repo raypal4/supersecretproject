@@ -9,8 +9,8 @@ print("Loading OSM")
 graph = ox.graph_from_file(
     "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
 
-start = ox.geocode("nibong, punggol, singapore")
-end = ox.geocode("horizon primary school, singapore")
+start = ox.geocode("punggol point, punggol, singapore")
+end = ox.geocode("Meridian, punggol, singapore")
 print("Found a starting node", start)
 print("Found a ending node", end)
 
@@ -28,7 +28,7 @@ endLrtLat = 0
 endLrtLong = 0
 
 # TO CREATE ROUTE TO AND FROM LRT
-path_to_Lrt = findNearestBusStopFromLRT(
+path_to_Lrt = findNearestLrt(
     graph, start, end, start_node, end_node)
 for items in path_to_Lrt[0]:
     for key, value in items:
