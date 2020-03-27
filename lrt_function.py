@@ -1,22 +1,21 @@
 import json
 import math
-import osmnx as ox
 
 from astar import *
 from manualPatch.pois import *
 
 print("Loading LRT JSON")
-stops = json.loads(open("punggollrtData/stops.json").read())
-routes = json.loads(open("punggollrtData/routes.json").read())
+lrtStops = json.loads(open("punggollrtData/stops.json").read())
+lrtRoutes = json.loads(open("punggollrtData/routes.json").read())
 LrtRoute0 = json.loads(open("punggollrtData/LrtRoute0.json").read())
 LrtRoute1 = json.loads(open("punggollrtData/LrtRoute1.json").read())
 # print("Initializing tables")
-stop_desc_map = {stop["Description"]: stop for stop in stops}
+lrt_stop_desc_map = {stop["Description"]: stop for stop in lrtStops}
 
 # print("Creating lrt route map")
 routes_map = {}
 
-for route in routes:
+for route in lrtRoutes:
     key = (route["Loop"], route["Direction"])
     if key not in routes_map:
         routes_map[key] = []
@@ -137,7 +136,7 @@ def findNearestLrt(graph, start, end, start_node, end_node):
     nearestStartStop = None
     for s in startStationName:
         try:
-            temp = stop_desc_map[s]
+            temp = lrt_stop_desc_map[s]
         except KeyError:
             continue
         # print(temp)
@@ -189,7 +188,7 @@ def findNearestLrt(graph, start, end, start_node, end_node):
     nearestEndStop = None
     for s in endStationName:
         try:
-            temp = stop_desc_map[s]
+            temp = lrt_stop_desc_map[s]
         except KeyError:
             continue
             # print(temp)

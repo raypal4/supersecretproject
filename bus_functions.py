@@ -5,20 +5,20 @@ from astar import *
 from manualPatch.pois import *
 
 print("Loading BUS JSON")
-stops = json.loads(open("punggolBusData/stops.json").read())
-services = json.loads(open("punggolBusData/services.json").read())
-routes = json.loads(open("punggolBusData/routes.json").read())
+busStops = json.loads(open("punggolBusData/stops.json").read())
+busServices = json.loads(open("punggolBusData/services.json").read())
+busRoutes = json.loads(open("punggolBusData/routes.json").read())
 busRoute0 = json.loads(open("punggolBusData/busroute0.json").read())
 busRoute1 = json.loads(open("punggolBusData/busroute1.json").read())
 
 # print("Initializing tables")
-stop_desc_map = {stop["Description"]: stop for stop in stops}
-stop_code_map = {stop["BusStopCode"]: stop for stop in stops}
+bus_stop_desc_map = {stop["Description"]: stop for stop in busStops}
+bus_stop_code_map = {stop["BusStopCode"]: stop for stop in busStops}
 
 # print("Creating bus route map")
 routes_map = {}
 
-for route in routes:
+for route in busRoutes:
     key = (route["ServiceNo"], route["Direction"])
     if key not in routes_map:
         routes_map[key] = []
@@ -186,11 +186,11 @@ def bus(busGraph, graph, start, end, start_node, end_node):
     startStation = {}
     for stop in busStopStartName:
         startStation.update(
-            dict(filter(lambda item: stop in item[0], stop_desc_map.items())))
+            dict(filter(lambda item: stop in item[0], bus_stop_desc_map.items())))
     endStation = {}
     for stop in busStopEndName:
         endStation.update(
-            dict(filter(lambda item: stop in item[0], stop_desc_map.items())))
+            dict(filter(lambda item: stop in item[0], bus_stop_desc_map.items())))
 
     results = []
     for x in startStation:
@@ -219,9 +219,9 @@ def bus(busGraph, graph, start, end, start_node, end_node):
     print("----------------------ROUTE DESCRIPTION-----------------------")
     cost, distance, transfers, path = cheapest
     for code, service in path:
-        print(service, stop_code_map[code]["Description"])
+        print(service, bus_stop_code_map[code]["Description"])
         cheapestStopsArray.append(
-            (stop_code_map[code]["Latitude"], stop_code_map[code]["Longitude"]))
+            (bus_stop_code_map[code]["Latitude"], bus_stop_code_map[code]["Longitude"]))
     print("--------------------------------------------------------------")
     print("Number of stops: ", len(path) - 1)
     print("cost: ", cost)

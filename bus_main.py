@@ -130,8 +130,8 @@ if pathcheck[1] == 0:
         if service != prevService:
             indexing = 0
 
-        qlat = stop_code_map[stopCode]["Latitude"]
-        qlon = stop_code_map[stopCode]["Longitude"]
+        qlat = bus_stop_code_map[stopCode]["Latitude"]
+        qlon = bus_stop_code_map[stopCode]["Longitude"]
 
         # get routes for respective direction
         if service[1] == 1:

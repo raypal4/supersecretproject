@@ -3,7 +3,6 @@ import osmapi as osm
 import osmnx as ox
 
 from lrt_function import *
-from bus_functions import *
 
 print("Loading OSM")
 graph = ox.graph_from_file(
@@ -83,22 +82,18 @@ if path_to_Lrt is not None:
                         if prevService is None:
                             lrtline.append(v)
                         else:
-                            if prevService == service:
-                                for x, y in routing[prevIndex: indexing+1]:
-                                    lrtline.append((y, x))
-                            else:
-                                prevLatLong = lrtline[-1]
-                                tempIndex = 0
-                                while tempIndex < len(routing):
-                                    plon, plat = routing[tempIndex]
-                                    p = (plat, plon)
-                                    if geopy.distance.distance(prevLatLong, p).km < 0.03:
-                                        for x, y in routing[tempIndex: indexing]:
-                                            lrtline.append((y, x))
-                                        break
-                                    tempIndex += 1
+                            prevLatLong = lrtline[-1]
+                            tempIndex = 0
+                            while tempIndex < len(routing):
+                                plon, plat = routing[tempIndex]
+                                p = (plat, plon)
+                                if geopy.distance.distance(prevLatLong, p).km < 0.03:
+                                    for x, y in routing[tempIndex: indexing]:
+                                        lrtline.append((y, x))
+                                    break
+                                tempIndex += 1
                         prevIndex = indexing
-                        prevService = service
+                        prevService = item
                         lrtMarkers.append((v, path[item][i][1]))
                         break
                     indexing += 1
@@ -123,6 +118,7 @@ for loc, station in lrtMarkers:
 m.save('LRT_Routing.html')
 
 print("LRT_Routing.html created!")
+
 # # TO CREATE BUS ROUTING IF NON WALKABLE DISTANCE
 # start_Lrt_node = ox.get_nearest_node(graph, (startLrtLat, startLrtLong))
 # end_Lrt_node = ox.get_nearest_node(graph, (endLrtLat, endLrtLong))
