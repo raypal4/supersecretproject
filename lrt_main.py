@@ -27,9 +27,6 @@ lrtline = []
 lrtMarkers = []
 
 # lrtFull = []
-nearestStartStop = path_to_Lrt[2]
-nearestEndStop = path_to_Lrt[3]
-print(nearestStartStop, nearestEndStop)
 
 if path_to_Lrt is not None:
     # if LRT path is found
@@ -85,20 +82,115 @@ if path_to_Lrt is not None:
                     indexing += 1
                 i += 1
 
+    nearestStartStop = path_to_Lrt[2]
+    nearestEndStop = path_to_Lrt[3]
 
-# startingLrtStop = lrtFull[0]
-# endingLrtStop = lrtFull[-1]
-# print(startingLrtStop)
-# print(endingLrtStop)
+    start_Lrt = ox.get_nearest_node(graph, nearestStartStop)
+    end_Lrt = ox.get_nearest_node(graph, nearestEndStop)
+
+    pathToLrtStop = astar_path(graph, start_node, start_Lrt)
+    pathFromLrtStop = astar_path(graph, end_Lrt, end_node)
+
+    latlontolrt = []
+    latlonfromlrt = []
+
+    # walk from start to lrt start
+    startlrtcoord = (graph.nodes[start_Lrt]['y'], graph.nodes[start_Lrt]['x'])
+    prev = None
+    splice = None
+    ptr = 0
+    temp = float("Infinity")
+    for item in pathToLrtStop:
+        if prev is None:
+            prev = item
+        else:
+            try:
+                line = graph[prev][item][0]["geometry"]
+                for point in list(line.coords):
+                    if splice is None:
+                        splice = ptr
+                        temp = geopy.distance.distance(
+                            startlrtcoord, (point[1], point[0])).km
+                    elif geopy.distance.distance(startlrtcoord, (point[1], point[0])).km < temp:
+                        splice = ptr
+                        temp = geopy.distance.distance(
+                            startlrtcoord, (point[1], point[0])).km
+                    latlontolrt.append((point[1], point[0]))
+                    ptr += 1
+            except:
+                pass
+            finally:
+                prev = item
+    latlontolrt = latlontolrt[:splice+1]
+
+    # walk from lrt end to end
+    endlrtcoord = (graph.nodes[end_Lrt]['y'], graph.nodes[end_Lrt]['x'])
+    prev = None
+    splice = None
+    ptr = 0
+    temp = float("Infinity")
+    for item in pathFromLrtStop:
+        if prev is None:
+            prev = item
+        else:
+            try:
+                line = graph[prev][item][0]["geometry"]
+                for point in list(line.coords):
+                    if splice is None:
+                        splice = ptr
+                        temp = geopy.distance.distance(
+                            endlrtcoord, (point[1], point[0])).km
+                    elif geopy.distance.distance(endlrtcoord, (point[1], point[0])).km < temp:
+                        splice = ptr
+                        temp = geopy.distance.distance(
+                            endlrtcoord, (point[1], point[0])).km
+                    latlonfromlrt.append((point[1], point[0]))
+                    ptr += 1
+            except:
+                pass
+            finally:
+                prev = item
+    latlonfromlrt = latlonfromlrt[:splice+1]
+
 
 nodepath = astar_path(graph, start_node, end_node)
 m = ox.plot_route_folium(
     graph, nodepath, route_color='green', route_opacity=0)
 
+
+# LRT LINE
 folium.PolyLine(lrtline, color="black", weight=2.5, opacity=1).add_to(m)
+
+# LRT Markers
 for loc, station in lrtMarkers:
     folium.Marker(location=loc, popup='Station Name:' + str(station),
                   icon=folium.Icon(color='black', icon='train', prefix='fa')).add_to(m)
+
+# START AND END MARKERS
+folium.Marker(location=(start[0], start[1]), popup='START', icon=folium.Icon(
+    color='red', icon='flag')).add_to(m)
+folium.Marker(location=(end[0], end[1]), popup='END', icon=folium.Icon(
+    color='blue', icon='flag')).add_to(m)
+
+# start point to start lRT
+folium.PolyLine([start, latlontolrt[0]], color="blue",
+                weight=2.5, opacity=1, dasharray="4").add_to(m)
+
+folium.PolyLine(latlontolrt, color="green",
+                weight=2.5, opacity=1).add_to(m)
+
+folium.PolyLine([latlontolrt[-1], lrtline[0]], color="blue",
+                weight=2.5, opacity=1, dasharray="4").add_to(m)
+
+# End LRT stop to end point
+folium.PolyLine([lrtline[-1], latlonfromlrt[0]], color="blue",
+                weight=2.5, opacity=1, dasharray="4").add_to(m)
+
+folium.PolyLine(latlonfromlrt, color="green", weight=2.5,
+                opacity=1, dasharray="4").add_to(m)
+
+folium.PolyLine([latlonfromlrt[-1], end], color="blue",
+                weight=2.5, opacity=1, dasharray="4").add_to(m)
 
 
 m.save('LRT_Routing.html')

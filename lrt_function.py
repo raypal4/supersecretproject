@@ -198,10 +198,12 @@ def findNearestLrt(graph, start, end, start_node, end_node):
             shortestEndDistance = distance
             nearestEndStop = s
 
+    nearestStartCords = lrt_stop_desc_map[nearestStartStop]
+    nearestEndCords = lrt_stop_desc_map[nearestEndStop]
     # TO CREATE LRT ROUTING
     path = lrtRouting(EastLoopGraph, WestLoopGraph,
                       nearestStartStop, nearestEndStop)
-    return [path, lrtflag, nearestStartStop, nearestEndStop]
+    return [path, lrtflag, (nearestStartCords["Latitude"], nearestStartCords["Longitude"]), (nearestEndCords["Latitude"], nearestEndCords["Longitude"])]
 
 
 def shortestLrt(graph, start, end):
