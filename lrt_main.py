@@ -196,11 +196,3 @@ folium.PolyLine([latlonfromlrt[-1], end], color="blue",
 m.save('LRT_Routing.html')
 
 print("LRT_Routing.html created!")
-
-# # TO CREATE BUS ROUTING IF NON WALKABLE DISTANCE
-# start_Lrt_node = ox.get_nearest_node(graph, (startLrtLat, startLrtLong))
-# end_Lrt_node = ox.get_nearest_node(graph, (endLrtLat, endLrtLong))
-# pathcheckToLrtBus = bus(busGraph, graph, start,
-#                         (startLrtLat, startLrtLong), start_node, start_Lrt_node)
-# pathcheckFromLrtBus = bus(
-#     busGraph, graph, (endLrtLat, endLrtLong), end, end_Lrt_node, end_node)
