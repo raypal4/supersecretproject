@@ -7,7 +7,8 @@ import geopy.distance
 from bus_functions import *
 
 print("Loading OSM")
-graph = ox.graph_from_file("punggol.osm", bidirectional=True, simplify=True, retain_all=False)
+graph = ox.graph_from_file(
+    "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
 
 
 start = ox.geocode("punggol, singapore")
@@ -224,10 +225,13 @@ if pathcheck[1] == 0:
 
 # IF BUS ROUTE NOT FOUND, RUN WALK ROUTE
 if pathcheck[1] == 1:
-	nodepath = pathcheck[0]
-	m = ox.plot_route_folium(
-		graph, nodepath, route_color='green')
-	folium.Marker(location=(start[0], start[1]), popup='START', icon=folium.Icon(
-		color='red', icon='flag')).add_to(m)
-	folium.Marker(location=(end[0], end[1]), popup='END', icon=folium.Icon(color='blue', icon='flag')).add_to(m)
-	m.save('index.html')
+    nodepath = pathcheck[0]
+    m = ox.plot_route_folium(
+        graph, nodepath, route_color='green')
+    folium.Marker(location=(start[0], start[1]), popup='START', icon=folium.Icon(
+        color='red', icon='flag')).add_to(m)
+    folium.Marker(location=(end[0], end[1]), popup='END', icon=folium.Icon(
+        color='blue', icon='flag')).add_to(m)
+    m.save('Bus_routing.html')
+
+print("Bus_routing.html created!")
