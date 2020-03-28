@@ -9,9 +9,12 @@ from bus_functions import *
 print("Loading OSM")
 graph = ox.graph_from_file("punggol.osm", bidirectional=True, simplify=True, retain_all=False)
 
+
 start = ox.geocode("punggol, singapore")
+end = ox.geocode("Waterway View, punggol, singapore")
+# start = ox.geocode("punggol, singapore")
 # end = ox.geocode("Punggol Blk 178A, singapore")
-end = (1.39702,103.91041)
+# end = (1.39702,103.91041)
 print("Found a starting node", start)
 print("Found a ending node", end)
 
@@ -118,6 +121,7 @@ if pathcheck[1] == 0:
 	prevIndex = None
 	i = 0
 	markers = []
+	routing = None
 	while i < len(path):
 		stopCode, service = path[i]
 		# in the case of first stop, no bus service stated, take next
@@ -126,6 +130,29 @@ if pathcheck[1] == 0:
 
 		if service != prevService:
 			indexing = 0
+			prevIndex = 0
+			if prevService is not None:
+				print(prevService, service)
+				if service[1] == 1:
+					routing = busRoute0[service[0]]["coordinates"]
+				else:
+					routing = busRoute1[service[0]]["coordinates"]
+				# print(routing)
+				prevStopCode, a = path[i-1]
+				print("HERE", prevStopCode)
+				while prevIndex < len(routing): # find prev bus stop on new service route
+					clon, clat = routing[prevIndex]
+					qlat = stop_code_map[prevStopCode]["Latitude"]
+					qlon = stop_code_map[prevStopCode]["Longitude"]
+					u = (qlat, qlon)
+					v = (clat, clon)
+					print(u,v)
+					if geopy.distance.distance(u, v).km < 0.03:
+						print("FOUND", u, v)
+						break
+					prevIndex += 1
+				indexing = prevIndex
+
 
 		qlat = stop_code_map[stopCode]["Latitude"]
 		qlon = stop_code_map[stopCode]["Longitude"]
