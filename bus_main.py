@@ -10,10 +10,12 @@ print("Loading OSM")
 graph = ox.graph_from_file(
     "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
 
-start = ox.geocode("Waterway Sundew, punggol, singapore")
-end = ox.geocode("soo teck, punggol, singapore")
 
-# end = (1.39702, 103.91041)
+start = ox.geocode("punggol, singapore")
+end = ox.geocode("Waterway View, punggol, singapore")
+# start = ox.geocode("punggol, singapore")
+# end = ox.geocode("Punggol Blk 178A, singapore")
+# end = (1.39702,103.91041)
 print("Found a starting node", start)
 print("Found a ending node", end)
 
@@ -31,6 +33,9 @@ pathcheck = bus(busGraph, graph, start, end, start_node, end_node)
 if pathcheck[1] == 0:
     startStopCoords = pathcheck[2]
     endStopCoords = pathcheck[3]
+
+    print(startStopCoords)
+    print(endStopCoords)
 
     # start_Bus = ox.get_nearest_nodes(graph, [startStopCoords[1]], [startStopCoords[0]])
     # end_Bus = ox.get_nearest_nodes(graph, [endStopCoords[1]], [endStopCoords[0]])
@@ -119,7 +124,7 @@ if pathcheck[1] == 0:
     prevIndex = None
     i = 0
     markers = []
-
+    routing = None
     while i < len(path):
         stopCode, service = path[i]
         # in the case of first stop, no bus service stated, take next
@@ -128,9 +133,32 @@ if pathcheck[1] == 0:
 
         if service != prevService:
             indexing = 0
+            prevIndex = 0
+            if prevService is not None:
+                print(prevService, service)
+                if service[1] == 1:
+                    routing = busRoute0[service[0]]["coordinates"]
+                else:
+                    routing = busRoute1[service[0]]["coordinates"]
+                # print(routing)
+                prevStopCode, a = path[i-1]
+                print("HERE", prevStopCode)
+                # find prev bus stop on new service route
+                while prevIndex < len(routing):
+                    clon, clat = routing[prevIndex]
+                    qlat = stop_code_map[prevStopCode]["Latitude"]
+                    qlon = stop_code_map[prevStopCode]["Longitude"]
+                    u = (qlat, qlon)
+                    v = (clat, clon)
+                    print(u, v)
+                    if geopy.distance.distance(u, v).km < 0.03:
+                        print("FOUND", u, v)
+                        break
+                    prevIndex += 1
+                indexing = prevIndex
 
-        qlat = bus_stop_code_map[stopCode]["Latitude"]
-        qlon = bus_stop_code_map[stopCode]["Longitude"]
+        qlat = stop_code_map[stopCode]["Latitude"]
+        qlon = stop_code_map[stopCode]["Longitude"]
 
         # get routes for respective direction
         if service[1] == 1:
@@ -168,23 +196,17 @@ if pathcheck[1] == 0:
                 break
             indexing += 1
         i += 1
-
-    # INIT
+    # TO CREATE ROUTING WITH BUS
     nodepath = astar_path(graph, start_node, end_node)
     m = ox.plot_route_folium(
         graph, nodepath, route_color='green', route_opacity=0)
-
-    # START AND END MARKERS
     folium.Marker(location=(start[0], start[1]), popup='START', icon=folium.Icon(
         color='red', icon='flag')).add_to(m)
     folium.Marker(location=(end[0], end[1]), popup='END', icon=folium.Icon(
         color='blue', icon='flag')).add_to(m)
-
-    # BUS Markers
     for loc, code in markers:
         folium.Marker(location=loc, popup='Bus stop number:' + str(code),
                       icon=folium.Icon(color='green', icon='bus', prefix='fa')).add_to(m)
-    # BUS LINE
     folium.PolyLine(line, color="red", weight=2.5, opacity=1).add_to(m)
 
     # start point to start busstop
@@ -207,7 +229,7 @@ if pathcheck[1] == 0:
     folium.PolyLine([latlonfrombus[-1], end], color="blue",
                     weight=2.5, opacity=1, dasharray="4").add_to(m)
 
-    m.save('Bus_routing.html')
+    m.save('index.html')
 
 # IF BUS ROUTE NOT FOUND, RUN WALK ROUTE
 if pathcheck[1] == 1:
