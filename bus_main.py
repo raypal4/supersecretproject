@@ -146,19 +146,21 @@ if pathcheck[1] == 0:
                 # find prev bus stop on new service route
                 while prevIndex < len(routing):
                     clon, clat = routing[prevIndex]
-                    qlat = stop_code_map[prevStopCode]["Latitude"]
-                    qlon = stop_code_map[prevStopCode]["Longitude"]
+                    qlat = bus_stop_code_map[prevStopCode]["Latitude"]
+                    qlon = bus_stop_code_map[prevStopCode]["Longitude"]
                     u = (qlat, qlon)
                     v = (clat, clon)
-                    print(u, v)
+                    # print(u, v)
                     if geopy.distance.distance(u, v).km < 0.03:
                         print("FOUND", u, v)
+                        for x, y in routing[prevIndex: indexing + 1]:
+                            line.append((y, x))
                         break
                     prevIndex += 1
                 indexing = prevIndex
 
-        qlat = stop_code_map[stopCode]["Latitude"]
-        qlon = stop_code_map[stopCode]["Longitude"]
+        qlat = bus_stop_code_map[stopCode]["Latitude"]
+        qlon = bus_stop_code_map[stopCode]["Longitude"]
 
         # get routes for respective direction
         if service[1] == 1:
