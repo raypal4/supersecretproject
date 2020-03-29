@@ -77,7 +77,8 @@ if path_to_Lrt is not None:
                                 tempIndex += 1
                         prevIndex = indexing
                         prevService = path[item]
-                        lrtMarkers.append((v, path[item][i][1]))
+                        lrtMarkers.append(
+                            (v, path[item][i][1], path[item][i][-1], path[item][i][-2]))
                         break
                     indexing += 1
                 i += 1
@@ -171,8 +172,8 @@ if path_to_Lrt[1] == 0:
     folium.PolyLine(lrtline, color="black", weight=2.5, opacity=1).add_to(m)
 
     # LRT Markers
-    for loc, station in lrtMarkers:
-        folium.Marker(location=loc, popup='Station Name:' + str(station),
+    for loc, station, loop, direction in lrtMarkers:
+        folium.Marker(location=loc, popup='<b>Station Name:</b> ' + str(station) + '<br><b>Lat:</b> ' + str(loc[0]) + '<br><b>Lon:</b> ' + str(loc[1]) + '<br><b>Loop:</b> ' + str(loop) + '<br><b>Direction: </b>' + str(direction),
                       icon=folium.Icon(color='black', icon='train', prefix='fa')).add_to(m)
 
     # START AND END MARKERS
@@ -206,7 +207,7 @@ if path_to_Lrt[1] == 0:
     print("LRT_Routing.html created!")
 
 
-# IF LRT PATH NOT ESTABLISHED. DO WALK
+# IF LRT ROUTE NOT FOUND, RUN WALK ROUTE
 if path_to_Lrt[1] == 1:
     # INIT
     m = ox.plot_route_folium(

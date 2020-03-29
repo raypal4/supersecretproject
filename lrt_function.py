@@ -198,11 +198,28 @@ def findNearestLrt(graph, start, end, start_node, end_node):
             shortestEndDistance = distance
             nearestEndStop = s
 
-    nearestStartCords = lrt_stop_desc_map[nearestStartStop]
-    nearestEndCords = lrt_stop_desc_map[nearestEndStop]
+    try:
+        nearestStartCords = lrt_stop_desc_map[nearestStartStop]
+        nearestEndCords = lrt_stop_desc_map[nearestEndStop]
+    except:
+        lrtflag = 1
+        return [astar_path(graph, start_node, end_node), lrtflag]
+
     # TO CREATE LRT ROUTING
     path = lrtRouting(EastLoopGraph, WestLoopGraph,
                       nearestStartStop, nearestEndStop)
+    print("----------------------ROUTE DESCRIPTION-----------------------")
+    pathLength = 0
+    transfers = len(path)-1
+    for item in path:
+        for key in item:
+            print(item[key])
+            pathLength += len(item[key])-1
+        # pathLength += len(path[item])
+    print("--------------------------------------------------------------")
+    print("Number of stops: ", pathLength)
+    print("Transfers: ", transfers)
+    print("--------------------------------------------------------------")
     return [path, lrtflag, (nearestStartCords["Latitude"], nearestStartCords["Longitude"]), (nearestEndCords["Latitude"], nearestEndCords["Longitude"])]
 
 
@@ -271,19 +288,19 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
         finalRoute.append(shortestLrt(EastLoopGraph, start, end))
     elif (not startInEastLoop and not endInEastLoop) or (start == "Punggol Mrt/Lrt Stn" and not endInEastLoop) or (end == "Punggol Mrt/Lrt Stn" and not startInEastLoop):
         print("Do west loop only")
-        finalRoute.append((shortestLrt(WestLoopGraph, start, end)))
+        finalRoute.append(shortestLrt(WestLoopGraph, start, end))
     elif not startInEastLoop and endInEastLoop:
         print("Do west then east loops")
         finalRoute.append(shortestLrt(
             WestLoopGraph, start, "Punggol Mrt/Lrt Stn"))
         finalRoute.append(
-            (shortestLrt(EastLoopGraph, "Punggol Mrt/Lrt Stn", end)))
+            shortestLrt(EastLoopGraph, "Punggol Mrt/Lrt Stn", end))
     elif startInEastLoop and not endInEastLoop:
         print("Do east then west loops")
         finalRoute.append(
-            (shortestLrt(EastLoopGraph, start, "Punggol Mrt/Lrt Stn")))
+            shortestLrt(EastLoopGraph, start, "Punggol Mrt/Lrt Stn"))
         finalRoute.append(
-            (shortestLrt(WestLoopGraph, "Punggol Mrt/Lrt Stn", end)))
+            shortestLrt(WestLoopGraph, "Punggol Mrt/Lrt Stn", end))
     else:
         print("No routes found for station", start, "to station", end)
 

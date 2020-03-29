@@ -12,7 +12,7 @@ graph = ox.graph_from_file(
 
 
 start = ox.geocode("punggol, singapore")
-end = ox.geocode("Waterway View, punggol, singapore")
+end = ox.geocode("blk 128B, punggol, singapore")
 # start = ox.geocode("punggol, singapore")
 # end = ox.geocode("Punggol Blk 178A, singapore")
 # end = (1.39702,103.91041)
@@ -134,28 +134,34 @@ if pathcheck[1] == 0:
         if service != prevService:
             indexing = 0
             prevIndex = 0
-            if prevService is not None:
-                print(prevService, service)
-                if service[1] == 1:
-                    routing = busRoute0[service[0]]["coordinates"]
-                else:
-                    routing = busRoute1[service[0]]["coordinates"]
-                # print(routing)
-                prevStopCode, a = path[i-1]
-                print("HERE", prevStopCode)
-                # find prev bus stop on new service route
-                while prevIndex < len(routing):
-                    clon, clat = routing[prevIndex]
-                    qlat = stop_code_map[prevStopCode]["Latitude"]
-                    qlon = stop_code_map[prevStopCode]["Longitude"]
-                    u = (qlat, qlon)
-                    v = (clat, clon)
-                    print(u, v)
-                    if geopy.distance.distance(u, v).km < 0.03:
-                        print("FOUND", u, v)
-                        break
-                    prevIndex += 1
-                indexing = prevIndex
+            # if prevService is not None:
+            #     # print(prevService, service)
+            #     if service[1] == 1:
+            #         routing = busRoute0[service[0]]["coordinates"]
+            #     else:
+            #         routing = busRoute1[service[0]]["coordinates"]
+            #     print(path[i])
+            #     prevStopCode, a = path[i-1]
+            #     print("HERE", prevStopCode)
+            #     # find prev bus stop on new service route
+            #     while indexing < len(routing):
+            #         clon, clat = routing[indexing]
+            #         qlat = bus_stop_code_map[prevStopCode]["Latitude"]
+            #         qlon = bus_stop_code_map[prevStopCode]["Longitude"]
+            #         u = (qlat, qlon)
+            #         v = (clat, clon)
+            #         if geopy.distance.distance(u, v).km < 0.03:
+            #             print(u, v)
+            #             print("FOUND INDEX: ", prevIndex, indexing)
+            #             for x, y in routing[prevIndex: indexing + 1]:
+            #                 print("ENTER APPENDED?")
+            #                 line.append((y, x))
+            #             break
+            #         prevIndex = indexing
+            #         indexing += 1
+            #     markers.append((v, stopCode))
+            #     prevService = service
+            #     break
 
         qlat = bus_stop_code_map[stopCode]["Latitude"]
         qlon = bus_stop_code_map[stopCode]["Longitude"]
@@ -177,14 +183,17 @@ if pathcheck[1] == 0:
                     line.append(v)
                 else:
                     if prevService == service:
+                        print("ALWAYS COME HERE?", prevIndex, indexing)
                         for x, y in routing[prevIndex: indexing + 1]:
                             line.append((y, x))
                     else:
+                        print("ENTER ELSE ---------------------------------")
                         prevLatLong = line[-1]
                         tempIndex = 0
                         while tempIndex < len(routing):
                             plon, plat = routing[tempIndex]
                             p = (plat, plon)
+                            # print("ELSE COME HERE?", tempIndex, indexing)
                             if geopy.distance.distance(prevLatLong, p).km < 0.03:
                                 for x, y in routing[tempIndex: indexing + 1]:
                                     line.append((y, x))
