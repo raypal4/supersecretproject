@@ -11,11 +11,9 @@ graph = ox.graph_from_file(
     "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
 
 
-start = ox.geocode("punggol, singapore")
-end = ox.geocode("blk 128B, punggol, singapore")
-# start = ox.geocode("punggol, singapore")
-# end = ox.geocode("Punggol Blk 178A, singapore")
-# end = (1.39702,103.91041)
+start = ox.geocode("safra punggol, singapore")
+end = ox.geocode("blk 288B, punggol, singapore")
+
 print("Found a starting node", start)
 print("Found a ending node", end)
 
@@ -56,6 +54,9 @@ if pathcheck[1] == 0:
     pathToBusstop = astar_path(graph, start_node, start_Bus)
     pathFromBusstop = astar_path(graph, end_Bus, end_node)
 
+    print(pathToBusstop)
+    print(pathFromBusstop)
+
     latlontobus = []
     latlonfrombus = []
 
@@ -83,10 +84,12 @@ if pathcheck[1] == 0:
                     latlontobus.append((point[1], point[0]))
                     ptr += 1
             except:
+                print("you shall not pass to")
                 pass
             finally:
                 prev = item
-    latlontobus = latlontobus[:splice+1]
+    if splice is not None:
+        latlontobus = latlontobus[:splice+1]
 
     # walk for bus end to dst
     endbuscoord = (graph.nodes[end_Bus]['y'], graph.nodes[end_Bus]['x'])
@@ -112,10 +115,12 @@ if pathcheck[1] == 0:
                     latlonfrombus.append((point[1], point[0]))
                     ptr += 1
             except:
+                print("you shall not pass from")
                 pass
             finally:
                 prev = item
-    latlonfrombus = latlonfrombus[:splice+1]
+    if splice is not None:
+        latlonfrombus = latlonfrombus[:splice+1]
 
     path = pathcheck[0]
     indexing = 0
@@ -183,11 +188,11 @@ if pathcheck[1] == 0:
                     line.append(v)
                 else:
                     if prevService == service:
-                        print("ALWAYS COME HERE?", prevIndex, indexing)
+                        # print("ALWAYS COME HERE?", prevIndex, indexing)
                         for x, y in routing[prevIndex: indexing + 1]:
                             line.append((y, x))
                     else:
-                        print("ENTER ELSE ---------------------------------")
+                        # print("ENTER ELSE ---------------------------------")
                         prevLatLong = line[-1]
                         tempIndex = 0
                         while tempIndex < len(routing):
@@ -219,6 +224,7 @@ if pathcheck[1] == 0:
                       icon=folium.Icon(color='green', icon='bus', prefix='fa')).add_to(m)
     folium.PolyLine(line, color="red", weight=2.5, opacity=1).add_to(m)
 
+    print(latlontobus)
     # start point to start busstop
     folium.PolyLine([start, latlontobus[0]], color="blue",
                     weight=2.5, opacity=1, dasharray="4").add_to(m)
