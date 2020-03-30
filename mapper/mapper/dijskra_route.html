@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.5.1/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.5.1/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://rawcdn.githack.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css"/>
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_4a118f5d41da40f083a879bcdbde381a {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+</head>
+<body>    
+    
+            <div class="folium-map" id="map_4a118f5d41da40f083a879bcdbde381a" ></div>
+        
+</body>
+<script>    
+    
+            var map_4a118f5d41da40f083a879bcdbde381a = L.map(
+                "map_4a118f5d41da40f083a879bcdbde381a",
+                {
+                    center: [1.401523753253459, 103.9096672966168],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 1,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_f218b78f748c4915bce2d2ee49a34930 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+            var poly_line_5349cb3524164f439f9bad8d092f995f = L.polyline(
+                [[1.4057898, 103.901183], [1.4059675, 103.9009087]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_3ef1e6aee9254cb3b01bffd381113203 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_b07e0daed39e428daa032913e31e4797 = $(`<div id="html_b07e0daed39e428daa032913e31e4797" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_3ef1e6aee9254cb3b01bffd381113203.setContent(html_b07e0daed39e428daa032913e31e4797);
+        
+
+        poly_line_5349cb3524164f439f9bad8d092f995f.bindPopup(popup_3ef1e6aee9254cb3b01bffd381113203)
+        ;
+
+        
+    
+    
+            var poly_line_0a7fd323bfa246559c0a93bee368d1a8 = L.polyline(
+                [[1.4059675, 103.9009087], [1.4060179, 103.9007804]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_5561890969a24fc89694623c1f2dfa87 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_feb3b47a71734dcab21e2d1fc32d609f = $(`<div id="html_feb3b47a71734dcab21e2d1fc32d609f" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_5561890969a24fc89694623c1f2dfa87.setContent(html_feb3b47a71734dcab21e2d1fc32d609f);
+        
+
+        poly_line_0a7fd323bfa246559c0a93bee368d1a8.bindPopup(popup_5561890969a24fc89694623c1f2dfa87)
+        ;
+
+        
+    
+    
+            var poly_line_c8d57ef41615487797f262e415d11e5c = L.polyline(
+                [[1.4060179, 103.9007804], [1.4061432, 103.900832]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_c31a9d261eab41f9998f25e9181b6bef = L.popup({"maxWidth": "100%"});
+
+        
+            var html_53623365575041dda8a6db2caf0f8859 = $(`<div id="html_53623365575041dda8a6db2caf0f8859" style="width: 100.0%; height: 100.0%;">"Punggol Walk"</div>`)[0];
+            popup_c31a9d261eab41f9998f25e9181b6bef.setContent(html_53623365575041dda8a6db2caf0f8859);
+        
+
+        poly_line_c8d57ef41615487797f262e415d11e5c.bindPopup(popup_c31a9d261eab41f9998f25e9181b6bef)
+        ;
+
+        
+    
+    
+            var poly_line_828017fcce0a4d9caebf870ce034e657 = L.polyline(
+                [[1.4061432, 103.900832], [1.4060895, 103.9009545]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_08013db769a64adabad14578b5edd3ea = L.popup({"maxWidth": "100%"});
+
+        
+            var html_b323c5afb01c4fda945d250a5278c43c = $(`<div id="html_b323c5afb01c4fda945d250a5278c43c" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_08013db769a64adabad14578b5edd3ea.setContent(html_b323c5afb01c4fda945d250a5278c43c);
+        
+
+        poly_line_828017fcce0a4d9caebf870ce034e657.bindPopup(popup_08013db769a64adabad14578b5edd3ea)
+        ;
+
+        
+    
+    
+            var poly_line_742c9ba7be6c4a2e8f12309320118e9b = L.polyline(
+                [[1.4060895, 103.9009545], [1.4059966, 103.9011352]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_6967666a017542e0a291fd60a6ce1d6b = L.popup({"maxWidth": "100%"});
+
+        
+            var html_80b8f20f82584b18947ea8da03c571e2 = $(`<div id="html_80b8f20f82584b18947ea8da03c571e2" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_6967666a017542e0a291fd60a6ce1d6b.setContent(html_80b8f20f82584b18947ea8da03c571e2);
+        
+
+        poly_line_742c9ba7be6c4a2e8f12309320118e9b.bindPopup(popup_6967666a017542e0a291fd60a6ce1d6b)
+        ;
+
+        
+    
+    
+            var poly_line_e1d355c3f43f43d385bc9322c594701a = L.polyline(
+                [[1.4059966, 103.9011352], [1.4058354, 103.9014307], [1.4056765, 103.9017089], [1.4055832, 103.9018724], [1.4055673, 103.9018993], [1.4053828, 103.9022239], [1.405362, 103.9022599], [1.4052852, 103.9024], [1.4052122, 103.9025283], [1.4048879, 103.9031052], [1.4046355, 103.9035531]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_d6e0e87c7fff4fb6b4b445134a54e410 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_7db798cd0f22477391887c7b2558c662 = $(`<div id="html_7db798cd0f22477391887c7b2558c662" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_d6e0e87c7fff4fb6b4b445134a54e410.setContent(html_7db798cd0f22477391887c7b2558c662);
+        
+
+        poly_line_e1d355c3f43f43d385bc9322c594701a.bindPopup(popup_d6e0e87c7fff4fb6b4b445134a54e410)
+        ;
+
+        
+    
+    
+            var poly_line_6bff365c4fa84f4c88eaa51322be86f1 = L.polyline(
+                [[1.4046355, 103.9035531], [1.4044809, 103.9038275]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_227e4caacdf44375be5210eb1ce5d504 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_68376dcea34c4b96a7a3f75dc6139be5 = $(`<div id="html_68376dcea34c4b96a7a3f75dc6139be5" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_227e4caacdf44375be5210eb1ce5d504.setContent(html_68376dcea34c4b96a7a3f75dc6139be5);
+        
+
+        poly_line_6bff365c4fa84f4c88eaa51322be86f1.bindPopup(popup_227e4caacdf44375be5210eb1ce5d504)
+        ;
+
+        
+    
+    
+            var poly_line_a790980a36a942f4a26a512b86b53887 = L.polyline(
+                [[1.4044809, 103.9038275], [1.4044437, 103.9039067]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_8ed1ab7dd31f41f2a91cf28e87f45afd = L.popup({"maxWidth": "100%"});
+
+        
+            var html_acf8dad12c9d41269cb5bc0420d9db08 = $(`<div id="html_acf8dad12c9d41269cb5bc0420d9db08" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_8ed1ab7dd31f41f2a91cf28e87f45afd.setContent(html_acf8dad12c9d41269cb5bc0420d9db08);
+        
+
+        poly_line_a790980a36a942f4a26a512b86b53887.bindPopup(popup_8ed1ab7dd31f41f2a91cf28e87f45afd)
+        ;
+
+        
+    
+    
+            var poly_line_9cc59c0f1c3a407c984955913671b5bb = L.polyline(
+                [[1.4044437, 103.9039067], [1.4043433, 103.904112]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_bd2a479d29d5497685e4398c5b5be323 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_1f0a6e860fd1408cae44d7872312ec38 = $(`<div id="html_1f0a6e860fd1408cae44d7872312ec38" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_bd2a479d29d5497685e4398c5b5be323.setContent(html_1f0a6e860fd1408cae44d7872312ec38);
+        
+
+        poly_line_9cc59c0f1c3a407c984955913671b5bb.bindPopup(popup_bd2a479d29d5497685e4398c5b5be323)
+        ;
+
+        
+    
+    
+            var poly_line_2212211b9dd9403ab5c9d81f407897bd = L.polyline(
+                [[1.4043433, 103.904112], [1.4040091, 103.9047004], [1.4038705, 103.9049444], [1.4036879, 103.9052092], [1.4034604, 103.9055394], [1.4033926, 103.9056471], [1.4032213, 103.9059194]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_229b6eb676cd4ec2b4e6f1e12d7634a6 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_b4500daf163d4305850e9f3417792848 = $(`<div id="html_b4500daf163d4305850e9f3417792848" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_229b6eb676cd4ec2b4e6f1e12d7634a6.setContent(html_b4500daf163d4305850e9f3417792848);
+        
+
+        poly_line_2212211b9dd9403ab5c9d81f407897bd.bindPopup(popup_229b6eb676cd4ec2b4e6f1e12d7634a6)
+        ;
+
+        
+    
+    
+            var poly_line_a8069f72eac04769b7c20239e40fc808 = L.polyline(
+                [[1.4032213, 103.9059194], [1.4029677, 103.9062514]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_2fec26b05fba4625a48006ef989de3cb = L.popup({"maxWidth": "100%"});
+
+        
+            var html_8e4b3f4454dd4e2a84027feab1336e5d = $(`<div id="html_8e4b3f4454dd4e2a84027feab1336e5d" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_2fec26b05fba4625a48006ef989de3cb.setContent(html_8e4b3f4454dd4e2a84027feab1336e5d);
+        
+
+        poly_line_a8069f72eac04769b7c20239e40fc808.bindPopup(popup_2fec26b05fba4625a48006ef989de3cb)
+        ;
+
+        
+    
+    
+            var poly_line_b7d80a51bf564fdf83d7810cbd45dd05 = L.polyline(
+                [[1.4029677, 103.9062514], [1.4028932, 103.9063671]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_2af45db375d64207a6466b5bbbac8e87 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_24f98c2828c24ae0b422db034f928f47 = $(`<div id="html_24f98c2828c24ae0b422db034f928f47" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_2af45db375d64207a6466b5bbbac8e87.setContent(html_24f98c2828c24ae0b422db034f928f47);
+        
+
+        poly_line_b7d80a51bf564fdf83d7810cbd45dd05.bindPopup(popup_2af45db375d64207a6466b5bbbac8e87)
+        ;
+
+        
+    
+    
+            var poly_line_7fd97fcd049c493ab367bce03c0240b0 = L.polyline(
+                [[1.4028932, 103.9063671], [1.4027593, 103.9065893]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_4385cd4a5adc4093a1c1df4fb02386c7 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_337dc2e513f24cd294c1a92343483908 = $(`<div id="html_337dc2e513f24cd294c1a92343483908" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_4385cd4a5adc4093a1c1df4fb02386c7.setContent(html_337dc2e513f24cd294c1a92343483908);
+        
+
+        poly_line_7fd97fcd049c493ab367bce03c0240b0.bindPopup(popup_4385cd4a5adc4093a1c1df4fb02386c7)
+        ;
+
+        
+    
+    
+            var poly_line_71581d00759445a8a2647de97fa6eb9a = L.polyline(
+                [[1.4027593, 103.9065893], [1.4023613, 103.9071575], [1.4023108, 103.9072297], [1.40193, 103.9077716], [1.4014838, 103.9083671], [1.4013343, 103.9085667], [1.4011585, 103.9088331]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_dc3333c7bf484560a759d7f6e6954e98 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_0196695957924fdcb37e43d7109db32d = $(`<div id="html_0196695957924fdcb37e43d7109db32d" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_dc3333c7bf484560a759d7f6e6954e98.setContent(html_0196695957924fdcb37e43d7109db32d);
+        
+
+        poly_line_71581d00759445a8a2647de97fa6eb9a.bindPopup(popup_dc3333c7bf484560a759d7f6e6954e98)
+        ;
+
+        
+    
+    
+            var poly_line_ab79b9950f9b4ff691d9c1dcf67320a9 = L.polyline(
+                [[1.4011585, 103.9088331], [1.4010187, 103.9090336]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_1628e28d2dcf4beea0106d0a7c6bc588 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_aa17e1f58e104c8f9547b5e9209adb00 = $(`<div id="html_aa17e1f58e104c8f9547b5e9209adb00" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_1628e28d2dcf4beea0106d0a7c6bc588.setContent(html_aa17e1f58e104c8f9547b5e9209adb00);
+        
+
+        poly_line_ab79b9950f9b4ff691d9c1dcf67320a9.bindPopup(popup_1628e28d2dcf4beea0106d0a7c6bc588)
+        ;
+
+        
+    
+    
+            var poly_line_3f51c1081bc14ffa96a190e8d6290547 = L.polyline(
+                [[1.4010187, 103.9090336], [1.4009476, 103.909135]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_b9a955abe9794998acd8d73451e137ae = L.popup({"maxWidth": "100%"});
+
+        
+            var html_3edef339460c4128a9b65d4d1ffd7733 = $(`<div id="html_3edef339460c4128a9b65d4d1ffd7733" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_b9a955abe9794998acd8d73451e137ae.setContent(html_3edef339460c4128a9b65d4d1ffd7733);
+        
+
+        poly_line_3f51c1081bc14ffa96a190e8d6290547.bindPopup(popup_b9a955abe9794998acd8d73451e137ae)
+        ;
+
+        
+    
+    
+            var poly_line_2a1393c2780842a19ce7d121d8186c8a = L.polyline(
+                [[1.4009476, 103.909135], [1.4007812, 103.9093751]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_42e0f56f75284ed29206e79aeceb457e = L.popup({"maxWidth": "100%"});
+
+        
+            var html_130d600f6b584955a827ad0d55511511 = $(`<div id="html_130d600f6b584955a827ad0d55511511" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_42e0f56f75284ed29206e79aeceb457e.setContent(html_130d600f6b584955a827ad0d55511511);
+        
+
+        poly_line_2a1393c2780842a19ce7d121d8186c8a.bindPopup(popup_42e0f56f75284ed29206e79aeceb457e)
+        ;
+
+        
+    
+    
+            var poly_line_be0dadae7fcc49bfa0d71a2473db4e9f = L.polyline(
+                [[1.4007812, 103.9093751], [1.4004414, 103.9098412]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_c8787d66e6524550b983a55633a7e072 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_076f380ef88a42fcb52eb6779f53ce01 = $(`<div id="html_076f380ef88a42fcb52eb6779f53ce01" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_c8787d66e6524550b983a55633a7e072.setContent(html_076f380ef88a42fcb52eb6779f53ce01);
+        
+
+        poly_line_be0dadae7fcc49bfa0d71a2473db4e9f.bindPopup(popup_c8787d66e6524550b983a55633a7e072)
+        ;
+
+        
+    
+    
+            var poly_line_65bc1d04998b4cadb2142c91f1508696 = L.polyline(
+                [[1.4004414, 103.9098412], [1.4003442, 103.9099745], [1.3999102, 103.9105697], [1.3998332, 103.9106753], [1.3996086, 103.9109904], [1.3992994, 103.9114242], [1.398794, 103.9121032], [1.3985878, 103.912406]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_b19da3825c1c4dbfb5b8a26a2a14aa40 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_f5706d718319478698b528af49353c51 = $(`<div id="html_f5706d718319478698b528af49353c51" style="width: 100.0%; height: 100.0%;">"Punggol Central"</div>`)[0];
+            popup_b19da3825c1c4dbfb5b8a26a2a14aa40.setContent(html_f5706d718319478698b528af49353c51);
+        
+
+        poly_line_65bc1d04998b4cadb2142c91f1508696.bindPopup(popup_b19da3825c1c4dbfb5b8a26a2a14aa40)
+        ;
+
+        
+    
+    
+            var poly_line_cd3f2581a65f4f12b5893ce73c6999fb = L.polyline(
+                [[1.3985878, 103.912406], [1.3983776, 103.9128263], [1.3983559, 103.9129284], [1.3983651, 103.9129861], [1.3983892, 103.9130221], [1.3984936, 103.9131396]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_5352bc84a3294d7482b16873ba1b1140 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_9c1ad6f49140462aae886704fe2845d2 = $(`<div id="html_9c1ad6f49140462aae886704fe2845d2" style="width: 100.0%; height: 100.0%;">NaN</div>`)[0];
+            popup_5352bc84a3294d7482b16873ba1b1140.setContent(html_9c1ad6f49140462aae886704fe2845d2);
+        
+
+        poly_line_cd3f2581a65f4f12b5893ce73c6999fb.bindPopup(popup_5352bc84a3294d7482b16873ba1b1140)
+        ;
+
+        
+    
+    
+            var poly_line_03ad3b3d7c30469d8b57b3248e2dc3d2 = L.polyline(
+                [[1.3984936, 103.9131396], [1.3988623, 103.9134027], [1.3989307, 103.9134516], [1.3993241, 103.9137324], [1.3997277, 103.9140204], [1.3999769, 103.9141983], [1.4000696, 103.9142694], [1.4001487, 103.9143287], [1.4005488, 103.9146219]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_c3e685ee73be4b3d9c4cb4f08e0946eb = L.popup({"maxWidth": "100%"});
+
+        
+            var html_abc7372d21c547bca1baf4c2c763c79e = $(`<div id="html_abc7372d21c547bca1baf4c2c763c79e" style="width: 100.0%; height: 100.0%;">"Edgedale Plains"</div>`)[0];
+            popup_c3e685ee73be4b3d9c4cb4f08e0946eb.setContent(html_abc7372d21c547bca1baf4c2c763c79e);
+        
+
+        poly_line_03ad3b3d7c30469d8b57b3248e2dc3d2.bindPopup(popup_c3e685ee73be4b3d9c4cb4f08e0946eb)
+        ;
+
+        
+    
+    
+            var poly_line_1ad1eaf5c56b4a6495793cefaf4862c4 = L.polyline(
+                [[1.4005488, 103.9146219], [1.4007321, 103.9147505]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_f6643d86a3e248f398d31dcddb281788 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_52756f20acf343db81ca7e31a5a79833 = $(`<div id="html_52756f20acf343db81ca7e31a5a79833" style="width: 100.0%; height: 100.0%;">"Edgedale Plains"</div>`)[0];
+            popup_f6643d86a3e248f398d31dcddb281788.setContent(html_52756f20acf343db81ca7e31a5a79833);
+        
+
+        poly_line_1ad1eaf5c56b4a6495793cefaf4862c4.bindPopup(popup_f6643d86a3e248f398d31dcddb281788)
+        ;
+
+        
+    
+    
+            var poly_line_41d809b64a4b45af80525e963f610756 = L.polyline(
+                [[1.4007321, 103.9147505], [1.4008685, 103.9148496]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_475f3a26830b4f26a8ef444161432132 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_98efa3bbc03b48ef983d540636f1d93b = $(`<div id="html_98efa3bbc03b48ef983d540636f1d93b" style="width: 100.0%; height: 100.0%;">"Edgedale Plains"</div>`)[0];
+            popup_475f3a26830b4f26a8ef444161432132.setContent(html_98efa3bbc03b48ef983d540636f1d93b);
+        
+
+        poly_line_41d809b64a4b45af80525e963f610756.bindPopup(popup_475f3a26830b4f26a8ef444161432132)
+        ;
+
+        
+    
+    
+            var poly_line_e65a3495170c44099095191a8999062b = L.polyline(
+                [[1.4008685, 103.9148496], [1.4008083, 103.9149326]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_c53d0d1de4674244a42abf237d019e54 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_edb57916dffb4da8bc9ba466353c2bc7 = $(`<div id="html_edb57916dffb4da8bc9ba466353c2bc7" style="width: 100.0%; height: 100.0%;">"Punggol Drive"</div>`)[0];
+            popup_c53d0d1de4674244a42abf237d019e54.setContent(html_edb57916dffb4da8bc9ba466353c2bc7);
+        
+
+        poly_line_e65a3495170c44099095191a8999062b.bindPopup(popup_c53d0d1de4674244a42abf237d019e54)
+        ;
+
+        
+    
+    
+            var poly_line_ff1fab6954ff4bb69967c68256b79773 = L.polyline(
+                [[1.4008083, 103.9149326], [1.4006262, 103.9151658]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_36723408e6884614b4c9228660a8b1bb = L.popup({"maxWidth": "100%"});
+
+        
+            var html_902e438f58f44772b7d7a25d22177cae = $(`<div id="html_902e438f58f44772b7d7a25d22177cae" style="width: 100.0%; height: 100.0%;">"Punggol Drive"</div>`)[0];
+            popup_36723408e6884614b4c9228660a8b1bb.setContent(html_902e438f58f44772b7d7a25d22177cae);
+        
+
+        poly_line_ff1fab6954ff4bb69967c68256b79773.bindPopup(popup_36723408e6884614b4c9228660a8b1bb)
+        ;
+
+        
+    
+    
+            var poly_line_332b5efd3c8040b58396a5bffe7f5faf = L.polyline(
+                [[1.4006262, 103.9151658], [1.399652, 103.9165476], [1.3993815, 103.9169179], [1.3989467, 103.9175168], [1.3986116, 103.9179685], [1.3982663, 103.9184148]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+        var popup_a7e33a0b5a5b4f82aec29865e5abac10 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_633c202bdcb04a4cbe627f6053e0a79a = $(`<div id="html_633c202bdcb04a4cbe627f6053e0a79a" style="width: 100.0%; height: 100.0%;">"Punggol Drive"</div>`)[0];
+            popup_a7e33a0b5a5b4f82aec29865e5abac10.setContent(html_633c202bdcb04a4cbe627f6053e0a79a);
+        
+
+        poly_line_332b5efd3c8040b58396a5bffe7f5faf.bindPopup(popup_a7e33a0b5a5b4f82aec29865e5abac10)
+        ;
+
+        
+    
+    
+            map_4a118f5d41da40f083a879bcdbde381a.fitBounds(
+                [[1.3982663, 103.9007804], [1.4061432, 103.9184148]],
+                {}
+            );
+        
+    
+            var marker_47c2aa26caf245e893e44caf9f930095 = L.marker(
+                [1.4052286, 103.9023505],
+                {}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+            var icon_a97a7fb589344d37ad8027210ca749d5 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_47c2aa26caf245e893e44caf9f930095.setIcon(icon_a97a7fb589344d37ad8027210ca749d5);
+        
+    
+        var popup_dda960c2feb440308c89f49fab058425 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_6aaa8f53ce5947dcbda380a8243da472 = $(`<div id="html_6aaa8f53ce5947dcbda380a8243da472" style="width: 100.0%; height: 100.0%;">Punggol, Punggol Central, Punggol, Northeast, 828868, Singapore</div>`)[0];
+            popup_dda960c2feb440308c89f49fab058425.setContent(html_6aaa8f53ce5947dcbda380a8243da472);
+        
+
+        marker_47c2aa26caf245e893e44caf9f930095.bindPopup(popup_dda960c2feb440308c89f49fab058425)
+        ;
+
+        
+    
+    
+            var marker_6caeda1dac894b80bb85b64caaa37527 = L.marker(
+                [1.3992087999999998, 103.91839414052309],
+                {}
+            ).addTo(map_4a118f5d41da40f083a879bcdbde381a);
+        
+    
+            var icon_08acdedac1cc43ddbf8c78287b03e8b1 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_6caeda1dac894b80bb85b64caaa37527.setIcon(icon_08acdedac1cc43ddbf8c78287b03e8b1);
+        
+    
+        var popup_2b21992b3e3746b983d78a853752ef56 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_59eaef97acbf4df98a0527ace05300b4 = $(`<div id="html_59eaef97acbf4df98a0527ace05300b4" style="width: 100.0%; height: 100.0%;">Waterway Primary School, 70, Punggol Drive, Punggol, Northeast, 828802, Singapore</div>`)[0];
+            popup_2b21992b3e3746b983d78a853752ef56.setContent(html_59eaef97acbf4df98a0527ace05300b4);
+        
+
+        marker_6caeda1dac894b80bb85b64caaa37527.bindPopup(popup_2b21992b3e3746b983d78a853752ef56)
+        ;
+
+        
+    
+</script>

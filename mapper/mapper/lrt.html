@@ -1,0 +1,18 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>Punggol Mapper</title>  
+</head>  
+<body>  
+<h1>Route Information</h1>
+<p>from {{ org_addr }} to {{ dst_addr }}</p>
+<p>Mode of Transport: {{ mode_var }}</p>
+<ul>
+  <li>Number of Trasnfer: {{ transfer }}</li>
+  <li>Number of Stops: {{ count }}</li>
+</ul>
+<p>Station Information: {{ route }}</p>
+<iframe src="../lrt/" width="500" height="500"></iframe>
+</body>  
+</html>  
