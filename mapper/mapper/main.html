@@ -1,33 +1,43 @@
-<!DOCTYPE html>  
-<html lang="en">  
-<head>  
-    <meta charset="UTF-8">  
-    <title>Punggol Mapper</title>  
-</head>  
-<body>  
-<h1>Route Information</h1>
-<p>from {{ org_addr }} to {{ dst_addr }}</p>
-<p>Mode of Transport: {{ mode_var }}</p>
-<h2>Algorithm: Dijkstra</h2>
-<ul>
-  <li>Itterations: {{ itterations_dijkstra }}</li>
-  <li>Number of Nodes: {{ node_dijkstra }}</li>
-  <li>Distance Covered: {{ dist_dijkstra }}</li>
-</ul>
-<iframe src="../dijskra/" width="500" height="500"></iframe>
-<h2>Algorithm: Priority Dijkstra</h2>
-<ul>
-  <li>Itterations: {{ itterations_pdijkstra }}</li>
-  <li>Number of Nodes: {{ node_pdijkstra }}</li>
-  <li>Distance Covered: {{ dist_pdijkstra }}</li>
-</ul>
-<iframe src="../pdijskra/" width="500" height="500"></iframe>
-<h2>Algorithm: A*</h2>
-<ul>
-  <li>Itterations: {{ itterations_astar }}</li>
-  <li>Number of Nodes: {{ node_astar }}</li>
-  <li>Distance Covered: {{ dist_astar }}</li>
-</ul>
-<iframe src="../astar/" width="500" height="500"></iframe>
-</body>  
-</html>  
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Punggol Mapper</title>
+		<style>
+			html
+			{
+				height: 100%;
+			}
+			#leftbox
+			{
+				float:left;
+				width:25%;
+				height: 100%;
+			}
+			#rightbox
+			{
+				float:right;
+				width:75%;
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<div id = "leftbox">
+			<h1 style="font-size: 46px; border-style: solid; margin-right: 10px; text-align:center;">Punggol Mapper</h1>
+			<h1>Route Information</h1>
+			<p><u>From</u><br>{{ org_addr }}</p>
+			<p><u>To</u><br>{{ dst_addr }}</p>
+			<p><u>Mode of Transport</u><br>{{ mode_var }}</p>
+			<p><u>Distance Covered</u><br>{{ dist_astar }} km</p>
+			<p><u>Estimated Travel Time</u><br>{{ time }} min</p>
+			<p><u>Estimated Speed</u><br>{{ estSpeed }} km/h</p>
+			<form action='../index/' method="get">
+				<input type="submit" value="Get Another Route" name="Submit" id="frm1_submit" />
+			</form>
+		</div>
+		<div id = "rightbox">
+			<iframe src="../astar/" style="position: absolute; width: 74%; height: 98%"></iframe>
+		</div>
+	</body>
+</html>

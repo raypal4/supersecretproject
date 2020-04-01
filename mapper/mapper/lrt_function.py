@@ -6,7 +6,7 @@ from mapper.manualPatch.pois import *
 
 from mysite.settings import JSON_FOLDER
 
-transfer = 0
+distance = 0
 
 print("Loading LRT JSON")
 lrtStops = json.loads(open(JSON_FOLDER + "lrt_stops.json").read())
@@ -61,6 +61,7 @@ def isStationInLoop(LoopGraph, station):
 
 
 def findNearestLrt(graph, start, end, start_node, end_node):
+    global distance
     tags = {
         'building': 'train_station',
         'station': 'subway',
@@ -214,7 +215,6 @@ def findNearestLrt(graph, start, end, start_node, end_node):
                       nearestStartStop, nearestEndStop)
     print("----------------------ROUTE DESCRIPTION-----------------------")
     pathLength = 0
-    global transfer;
     transfers = len(path)-1
     for item in path:
         for key in item:
@@ -316,5 +316,5 @@ def lrtRouting(EastLoopGraph, WestLoopGraph, start, end):
         return finalRoute
         # print("No routes found for station", start, "to station", end)
 
-def getTransfer():
-	return transfer
+def getDistanceLRT():
+	return distance

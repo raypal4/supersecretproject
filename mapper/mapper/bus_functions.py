@@ -223,16 +223,20 @@ def bus(busGraph, graph, start, end, start_node, end_node):
 
     cheapestStopsArray = []
 
-    global totalDistance, numStops, numTransfers, busInfo
+    global totalDistance, numStops, busInfo
 
     print("CHEAPEST ROUTE: ", cheapest, "\n")
     print("----------------------ROUTE DESCRIPTION-----------------------")
     cost, distance, transfers, path = cheapest
+    ogService = '0'
     for code, service in path:
         print(service, bus_stop_code_map[code]["Description"])
         cheapestStopsArray.append(
             (bus_stop_code_map[code]["Latitude"], bus_stop_code_map[code]["Longitude"]))
-        busInfo = busInfo + str(service) + ' ' + bus_stop_code_map[code]["Description"] + ' > '
+        if service is not None:
+            busInfo = busInfo + 'Service ' + str(service[0]) + ' >> ' + bus_stop_code_map[code]["Description"] + ','
+        else:
+            busInfo = busInfo + 'Board Bus at ' + bus_stop_code_map[code]["Description"] + ','
     print("--------------------------------------------------------------")
     print("Number of stops: ", len(path) - 1)
     print("cost: ", cost)
@@ -241,7 +245,6 @@ def bus(busGraph, graph, start, end, start_node, end_node):
 
     totalDistance = distance
     numStops = len(path) - 1
-    numTransfer = transfers
 
     startStop = cheapestStopsArray[0]
     endStop = cheapestStopsArray[-1]
@@ -252,9 +255,6 @@ def getDistance():
 
 def getStops():
 	return numStops
-
-def getTransfer():
-	return numTransfers
 
 def getBus():
 	return busInfo + 'End'
