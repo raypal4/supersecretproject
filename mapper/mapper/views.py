@@ -38,47 +38,47 @@ def index(request):
 			org_var = retrieveForm.cleaned_data['var_org'] #punggol, singapore
 			dst_var = retrieveForm.cleaned_data['var_dst'] #blk 128B, punggol, singapore
 			type_var = retrieveForm.cleaned_data['var_type']
-			
+
 			geolocator = Nominatim(user_agent="test")
 			org_addr = geolocator.geocode(org_var)
 			dst_addr = geolocator.geocode(dst_var)
 			org = (org_addr.latitude, org_addr.longitude)
 			dest = (dst_addr.latitude, dst_addr.longitude)
-			
+
 			if type_var == 'Bus':
 				graph = ox.graph_from_file(JSON_FOLDER + "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
-				
+
 				start = ox.geocode(org_var)
 				end = ox.geocode(dst_var)
-				
+
 				print("Found a starting node", start)
 				print("Found a ending node", end)
-				
+
 				start_node = ox.get_nearest_node(graph, start)
 				end_node = ox.get_nearest_node(graph, end)
-				
+
 				nodes, edges = ox.graph_to_gdfs(graph)
-				
+
 				# TO CREATE BUS ROUTING
 				pathcheck = bus(busGraph, graph, start, end, start_node, end_node)
-				
+
 				# IF BUS ROUTE IS AVAILABLE
 				if pathcheck[1] == 0:
 					startStopCoords = pathcheck[2]
 					endStopCoords = pathcheck[3]
-					
+
 					print(startStopCoords)
 					print(endStopCoords)
-					
+
 					start_Bus = ox.get_nearest_node(graph, startStopCoords)
 					end_Bus = ox.get_nearest_node(graph, endStopCoords)
-					
+
 					pathToBusstop = astar_path(graph, start_node, start_Bus)
 					pathFromBusstop = astar_path(graph, end_Bus, end_node)
-					
+
 					latlontobus = []
 					latlonfrombus = []
-					
+
 					# walk from start to bus start
 					startbuscoord = (graph.nodes[start_Bus]['y'], graph.nodes[start_Bus]['x'])
 					prev = None
@@ -107,7 +107,7 @@ def index(request):
 							finally:
 								prev = item
 					latlontobus = latlontobus[:splice+1]
-					
+
 					# walk for bus end to dst
 					endbuscoord = (graph.nodes[end_Bus]['y'], graph.nodes[end_Bus]['x'])
 					prev = None
@@ -134,7 +134,7 @@ def index(request):
 							finally:
 								prev = item
 					latlonfrombus = latlonfrombus[:splice+1]
-					
+
 					path = pathcheck[0]
 					indexing = 0
 					line = []
@@ -148,14 +148,14 @@ def index(request):
 						# in the case of first stop, no bus service stated, take next
 						if service is None:
 							service = path[i + 1][1]
-						
+
 						if service != prevService:
 							indexing = 0
 							prevIndex = 0
-						
+
 						qlat = bus_stop_code_map[stopCode]["Latitude"]
 						qlon = bus_stop_code_map[stopCode]["Longitude"]
-						
+
 						# get routes for respective direction
 						if service[1] == 1:
 							routing = busRoute0[service[0]]["coordinates"]
@@ -194,7 +194,7 @@ def index(request):
 								break
 							indexing += 1
 						i += 1
-						
+
 					# TO CREATE ROUTING WITH BUS
 					nodepath = astar_path(graph, start_node, end_node)
 					m = ox.plot_route_folium(graph, nodepath, tiles='openstreetmap', route_color='green', route_opacity=0)
@@ -203,19 +203,19 @@ def index(request):
 					for loc, code in markers:
 						folium.Marker(location=loc, popup='Bus stop number:' + str(code), icon=folium.Icon(color='green', icon='bus', prefix='fa')).add_to(m)
 					folium.PolyLine(line, color="red", weight=2.5, opacity=1).add_to(m)
-					
+
 					# start point to start busstop
 					folium.PolyLine([start, latlontobus[0]], color="blue", weight=2.5, opacity=1, dasharray="4").add_to(m)
 					folium.PolyLine(latlontobus, color="green", weight=2.5, opacity=1).add_to(m)
 					folium.PolyLine([latlontobus[-1], line[0]], color="blue", weight=2.5, opacity=1, dasharray="4").add_to(m)
-					
+
 					# End  bus stop to end point
 					folium.PolyLine([line[-1], latlonfrombus[0]], color="blue", weight=2.5, opacity=1, dasharray="4").add_to(m)
 					folium.PolyLine(latlonfrombus, color="green", weight=2.5, opacity=1, dasharray="4").add_to(m)
 					folium.PolyLine([latlonfrombus[-1], end], color="blue", weight=2.5, opacity=1, dasharray="4").add_to(m)
-					
+
 					m.save(ROUTE_FOLDER + 'bus_routing.html')
-					
+
 				# IF BUS ROUTE NOT FOUND, RUN WALK ROUTE
 				if pathcheck[1] == 1:
 					nodepath = pathcheck[0]
@@ -223,34 +223,34 @@ def index(request):
 					folium.Marker(location=(start[0], start[1]), popup='START', icon=folium.Icon(color='red', icon='flag')).add_to(m)
 					folium.Marker(location=(end[0], end[1]), popup='END', icon=folium.Icon(color='blue', icon='flag')).add_to(m)
 					m.save(ROUTE_FOLDER + 'bus_routing.html')
-					
+
 				print("bus_routing.html created!")
-				
+
 				contentDict = {"org_addr": org_addr.address, "dst_addr": dst_addr.address, "mode_var": type_var, "distance": getDistance(),
 				 "stops": getStops(), "transfer": getTransfer(), "bus": getBus()}
 				return render(request, "bus.html", contentDict)
-				
+
 			elif type_var == 'LRT':
 				print("Loading OSM")
 				graph = ox.graph_from_file(JSON_FOLDER + "punggol.osm", bidirectional=True, simplify=True, retain_all=False)
-				
+
 				start = ox.geocode(org_var)
 				end = ox.geocode(dst_var)
 				print("Found a starting node", start)
 				print("Found a ending node", end)
-				
+
 				start_node = ox.get_nearest_node(graph, start)
 				end_node = ox.get_nearest_node(graph, end)
-				
+
 				nodes, edges = ox.graph_to_gdfs(graph)
-				
+
 				# TO CREATE ROUTE TO AND FROM LRT
 				path_to_Lrt = findNearestLrt(graph, start, end, start_node, end_node)
-				
+
 				# LRT ROUTING
 				lrtline = []
 				lrtMarkers = []
-				
+
 				if path_to_Lrt is not None:
 					# if LRT path is found
 					if path_to_Lrt[1] == 0:
@@ -270,7 +270,7 @@ def index(request):
 							else:
 								print("D 2 \n")
 								routing = LrtRoute1[loop]["coordinates"]
-							
+
 							while i < len(path[item]):
 								qlat = path[item][i][2]
 								qlon = path[item][i][3]
@@ -299,19 +299,19 @@ def index(request):
 										break
 									indexing += 1
 								i += 1
-							
+
 						nearestStartStop = path_to_Lrt[2]
 						nearestEndStop = path_to_Lrt[3]
-						
+
 						start_Lrt = ox.get_nearest_node(graph, nearestStartStop)
 						end_Lrt = ox.get_nearest_node(graph, nearestEndStop)
-						
+
 						pathToLrtStop = astar_path(graph, start_node, start_Lrt)
 						pathFromLrtStop = astar_path(graph, end_Lrt, end_node)
-						
+
 						latlontolrt = []
 						latlonfromlrt = []
-						
+
 						# walk from start to lrt start
 						startlrtcoord = (graph.nodes[start_Lrt]['y'], graph.nodes[start_Lrt]['x'])
 						prev = None
@@ -339,10 +339,10 @@ def index(request):
 									pass
 								finally:
 									prev = item
-									
-						if latlonfromlrt[:splice+1] is not None:
-							latlontolrt = latlontolrt[:splice+1]
-						
+						if splice is not None:
+							if latlontolrt[:splice+1] is not None:
+								latlontolrt = latlontolrt[:splice+1]
+
 						# walk from lrt end to end
 						endlrtcoord = (graph.nodes[end_Lrt]['y'], graph.nodes[end_Lrt]['x'])
 						prev = None
@@ -374,21 +374,21 @@ def index(request):
 							latlonfromlrt = latlonfromlrt[:splice+1]
 					else:
 						print("LRT route unable to be established")
-					
+
 				# default route
 				nodepath = astar_path(graph, start_node, end_node)
-				
+
 				if path_to_Lrt[1] == 0:
 					# INIT
 					m = ox.plot_route_folium(graph, nodepath, tiles='openstreetmap', route_color='green', route_opacity=0)
-					
+
 					# LRT LINE
 					folium.PolyLine(lrtline, color="black", weight=2.5, opacity=1).add_to(m)
-					
+
 					# Variables for Display
 					strStation = ''
 					stationCount = 0
-					
+
 					# LRT Markers
 					for loc, station, loop, direction in lrtMarkers:
 						folium.Marker(location=loc, popup='<b>Station Name:</b> ' + str(station) + '<br><b>Lat:</b> ' + str(loc[0]) + '<br><b>Lon:</b> ' + str(loc[1]) + '<br><b>Loop:</b> ' + str(loop) + '<br><b>Direction: </b>' + str(direction),
@@ -396,25 +396,26 @@ def index(request):
 						strStation = strStation + str(station) + ' > '
 						stationCount = stationCount + 1
 					strStation = strStation + 'End'
-					
+
 					# START AND END MARKERS
 					folium.Marker(location=(start[0], start[1]), popup='START', icon=folium.Icon(color='red', icon='flag')).add_to(m)
 					folium.Marker(location=(end[0], end[1]), popup='END', icon=folium.Icon(color='blue', icon='flag')).add_to(m)
-					
-					# start point to start lRT
-					folium.PolyLine([start, latlontolrt[0]], color="blue", weight=2.5, opacity=1, dasharray="4").add_to(m)
-					folium.PolyLine(latlontolrt, color="green", weight=2.5, opacity=1).add_to(m)
-					folium.PolyLine([latlontolrt[-1], lrtline[0]], color="blue", weight=2.5, opacity=1, dasharray="4").add_to(m)
-					
-					# End LRT stop to end point
-					folium.PolyLine([lrtline[-1], latlonfromlrt[0]], color="blue", weight=2.5, opacity=1, dasharray="4").add_to(m)
-					folium.PolyLine(latlonfromlrt, color="green", weight=2.5, opacity=1, dasharray="4").add_to(m)
-					folium.PolyLine([latlonfromlrt[-1], end], color="blue", weight=2.5, opacity=1, dasharray="4").add_to(m)
-					
+
+					if len(latlontolrt) != 0:
+						# start point to start lRT
+						folium.PolyLine([start, latlontolrt[0]], color="blue", weight=2.5, opacity=1, dasharray="4").add_to(m)
+						folium.PolyLine(latlontolrt, color="green", weight=2.5, opacity=1).add_to(m)
+						folium.PolyLine([latlontolrt[-1], lrtline[0]], color="blue", weight=2.5, opacity=1, dasharray="4").add_to(m)
+					if latlonfromlrt != 0:
+						# End LRT stop to end point
+						folium.PolyLine([lrtline[-1], latlonfromlrt[0]], color="blue", weight=2.5, opacity=1, dasharray="4").add_to(m)
+						folium.PolyLine(latlonfromlrt, color="green", weight=2.5, opacity=1, dasharray="4").add_to(m)
+						folium.PolyLine([latlonfromlrt[-1], end], color="blue", weight=2.5, opacity=1, dasharray="4").add_to(m)
+
 					m.save(ROUTE_FOLDER + 'lrt_routing.html')
-					
+
 					print("LRT_Routing.html created!")
-					
+
 				# IF LRT ROUTE NOT FOUND, RUN WALK ROUTE
 				if path_to_Lrt[1] == 1:
 					# INIT
@@ -423,10 +424,10 @@ def index(request):
 					folium.Marker(location=(end[0], end[1]), popup='END', icon=folium.Icon( color='blue', icon='flag')).add_to(m)
 					m.save(ROUTE_FOLDER + 'lrt_routing.html')
 					print("LRT_Routing.html created!")
-				
+
 				contentDict = {"org_addr": org_addr.address, "dst_addr": dst_addr.address, "count": stationCount, "route": strStation, "transfer": getTransfer()}
 				return render(request, "lrt.html", contentDict)
-				
+
 			else:
 				if type_var == 'Walk':
 					if org:
@@ -438,19 +439,19 @@ def index(request):
 						graph = ox.graph_from_point(org, distance=2000, network_type='drive')
 					else:
 						graph = ox.graph_from_address(address, distance=5000, network_type='drive')
-				
+
 				# get cloest node to the point of search
 				global target_node
 				orig_node = ox.get_nearest_node(graph, org)
 				target_node = ox.get_nearest_node(graph, dest)
-				
+
 				nodes, edges = ox.graph_to_gdfs(graph)
-				
+
 				node_data = get_nodes(edges)
 				ourRoute = list(creator(node_data, orig_node, target_node))
 				ourRoute2 = list(creator2(node_data, orig_node, target_node))
 				ourRoute3 = list(creator3(nodes, node_data, orig_node, target_node))
-				
+
 				# usage of folium to create interactive web map
 				dijskra_map = ox.plot_route_folium(graph, ourRoute2, popup_attribute='name', tiles='openstreetmap' ,route_color='blue')
 				pdijskra_map = ox.plot_route_folium(graph, ourRoute, popup_attribute='name', tiles='openstreetmap' ,route_color='blue')
@@ -468,7 +469,7 @@ def index(request):
 				pdijskra_map.save(filepath2)
 				astar_map.save(filepath3)
 
-				contentDict = {"org_addr": org_addr.address, "dst_addr": dst_addr.address, "node_dijkstra": len(ourRoute2), "node_pdijkstra": len(ourRoute), "node_astar": len(ourRoute3), 
+				contentDict = {"org_addr": org_addr.address, "dst_addr": dst_addr.address, "node_dijkstra": len(ourRoute2), "node_pdijkstra": len(ourRoute), "node_astar": len(ourRoute3),
 				"itterations_dijkstra": AlgoItterations1, "itterations_pdijkstra": AlgoItterations2, "itterations_astar": AlgoItterations3, "dist_dijkstra": getDistanceTravelled(nodes, node_data, ourRoute2)
 				, "dist_pdijkstra": getDistanceTravelled(nodes, node_data, ourRoute), "dist_astar": getDistanceTravelled(nodes, node_data, ourRoute3), "mode_var": type_var}
 				return render(request, "main.html", contentDict)
@@ -561,7 +562,7 @@ def prioritydijsktra(node_data, initial, end):
 def astar(nodes, node_data, initial, end):
     global AlgoItterations3
     g = defaultdict(list)
-    
+
     targetx = nodes.x[end]
     targety = nodes.y[end]
     target_coord = (targety, targetx)
