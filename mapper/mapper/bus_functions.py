@@ -10,7 +10,7 @@ from mysite.settings import JSON_FOLDER
 totalDistance = 0
 numStops = 0
 numTransfers = 0
-busInfo = ''
+busInfo = ' '
 
 print("Loading BUS JSON")
 busStops = json.loads(open(JSON_FOLDER + "stops.json").read())
@@ -236,7 +236,7 @@ def bus(busGraph, graph, start, end, start_node, end_node):
         if service is not None:
             busInfo = busInfo + 'Service ' + str(service[0]) + ' >> ' + bus_stop_code_map[code]["Description"] + ','
         else:
-            busInfo = busInfo + 'Board Bus at ' + bus_stop_code_map[code]["Description"] + ','
+            busInfo = 'Board Bus at ' + bus_stop_code_map[code]["Description"] + ','
     print("--------------------------------------------------------------")
     print("Number of stops: ", len(path) - 1)
     print("cost: ", cost)
