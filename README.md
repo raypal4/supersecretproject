@@ -31,12 +31,13 @@ With SIT moving to its main campus in Punggol sometime in 2023, this path finder
 ## Installations
 The fast and easy way to ensure you have all the dependencies you need to run the program is to download Anaconda from
 https://www.anaconda.com/distribution/ for python 3.7 and install it. <br />
+
 Anaconda is a python library and package manager popular for data science, and comes preinstalled with most common python modules used in data science.
 
-Alternatively you can use pip
+Addtionally, install the following packages:
 ``` In the command line:
-pip install django
-pip install osmnx
+conda install django
+conda install osmnx
 ```
 
 ## Running The Application
