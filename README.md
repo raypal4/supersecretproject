@@ -41,7 +41,7 @@ conda install osmnx
 ```
 
 ## Running The Application
-If you installed Anaconda, open Anaconda Prompt, navigate to the project folder and
+If you installed Anaconda, open Anaconda Prompt, navigate to the project folder 'mapper' and run:
 ```
 python manage.py runserver
 ```
