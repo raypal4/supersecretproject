@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Punggol Mapper</title>
+		<style>
+			html
+			{
+				height: 100%;
+			}
+			#leftbox
+			{
+				float:left;
+				width:25%;
+				height: 100%;
+			}
+			#rightbox
+			{
+				float:right;
+				width:75%;
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<div id = "leftbox">
+			<h1 style="font-size: 46px; border-style: solid; margin-right: 10px; text-align:center;">Punggol Mapper</h1>
+			<form method="POST" class="post-form">
+				{% csrf_token %}
+				{{ form.as_p }}
+				<button type="submit" class="save btn btn-default">Fetch Route</button>
+			</form>
+			<br>
+			<br>
+			<br>
+			<em>NOTE: Only address registered in OpenStreetMap can be found</em>
+			<br>
+			<ul>
+				<u><b>Guide to a Successful Search</b></u>
+				<li>For train stations, using Station Code is recommended</li>
+				<li>For addresses, postal code is sufficient</li>
+			</ul>
+		</div>
+		<div id = "rightbox"> 
+			<iframe src="../punggol/" style="position: absolute; width: 74%; height: 98%"></iframe>
+		</div>
+	</body>
+</html>

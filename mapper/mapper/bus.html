@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Punggol Mapper</title>
+		<style>
+				html
+				{
+					height: 100%;
+				}
+				#leftbox
+				{
+					float:left;
+					width:25%;
+					height: 100%;
+				}
+				#rightbox
+				{
+					float:right;
+					width:75%;
+					height: 100%;
+				}
+			</style>
+	</head>
+	<body>
+	<div id = "leftbox">
+		<h1 style="font-size: 46px; border-style: solid; margin-right: 10px; text-align:center;">Punggol Mapper</h1>
+		<h1>Route Information</h1>
+		<p><u>From</u><br>{{ org_addr }}</p>
+		<p><u>To</u><br>{{ dst_addr }}</p>
+		<p><u>Mode of Transport</u><br>{{ mode_var }}</p>
+		<p><u>Estimated Travel Time</u><br>{{ time }} min</p>
+		<h2>Bus Information</h2>
+		<p><u>Estimated Cost</u><br>${{ cost }}</p>
+		<p><u>Number of Stops</u><br>{{ stops }}</p>
+		<p><u>Bus Stops</u><br></p>
+		<ul>
+		{% for e in bus %}
+			{% if e != 'End' %}
+				<li>{{ e }}</li>
+			{% endif %}
+		{% endfor %}
+		</ul>
+		<form action='../index/' method="get">
+			<input type="submit" value="Get Another Route" name="Submit" id="frm1_submit" />
+		</form>
+	</div>
+	<div id = "rightbox">
+		<iframe src="../bus/" style="position: absolute; width: 74%; height: 98%"></iframe>
+	</div>
+	</body>
+</html>
