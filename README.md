@@ -4,6 +4,11 @@ The goal of this path finder is to provide ease to residents of Punggol in commu
 
 With SIT moving to its main campus in Punggol sometime in 2023, this path finder aims to help our students to travel around Punggol without difficulties, providing the necessary information needed to travel.
 
+## Algorithms
+To allow our applciation for routing, we chose to utilise popular useful algorithms. One such algorithm that we implemented is the A* Search Algorithm, which is widely used by famous path finder application namely, Google Maps. This algorithm can be used to determine the shortest path for driving, riding, walking and even cycling.
+
+Another such algorithm that we apply is the Breadth First Search Algorithm. This algorithm is used to route the shortest path for when public transport is the mode of traveling. As public transport have predefined routes, using this algorithm allows us to find the fastest bus services/train direction that a user can use to reach their destination.
+
 ## Dependencies
 <table style="width:100%">
   <tr>
